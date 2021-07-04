@@ -1,16 +1,15 @@
 import React from "react";
 import { StyleSheet, SafeAreaView, Text } from "react-native";
-import colors from "../config/colors";
-import appConstants from '../config/appConstants'
-import AppButton from "../components/AppButton";
+import colors from "../../config/colors";
+import appConstants from "../../config/appConstants";
+import AuthButton from "../../components/AuthButton";
 
 const WelcomeScreen = ({ navigation }) => {
-
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>{appConstants.appTitle}</Text>
-      <AppButton title="Login" onPress={() => navigation.navigate('Login')} />
-      <AppButton title="Register" onPress={() => navigation.navigate('Register')}/>
+      <AuthButton title="Login" onPress={() => navigation.navigate("Login")} />
+      <AuthButton title="SignUp"onPress={() => navigation.navigate("SignUp")}/>
     </SafeAreaView>
   );
 };
@@ -23,12 +22,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   title: {
-    color: colors.secondary,
+    color: colors.white,
     fontWeight: "bold",
     fontSize: 50,
     marginBottom: 100,
   },
-
 });
 
 export default WelcomeScreen;
