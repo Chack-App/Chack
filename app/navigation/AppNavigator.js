@@ -35,6 +35,7 @@ const AppNavigator = () => (
     <Tab.Screen name="Activity" component={Activity} />
     <Tab.Screen name="Account" component={Account} />
   </Tab.Navigator>
+
 );
 
 export default AppNavigator;
