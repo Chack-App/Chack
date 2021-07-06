@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import colors from "../config/colors";
 
-function AppButton({ title, onPress }) {
+function AuthButton({ title, onPress }) {
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
       <Text style={styles.text}>{title}</Text>
@@ -12,7 +12,7 @@ function AppButton({ title, onPress }) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.white,
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
@@ -21,11 +21,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   text: {
-    color: colors.white,
+    color: colors.primary,
     fontSize: 20,
     textTransform: "uppercase",
     fontWeight: "bold",
   },
 });
 
-export default AppButton;
+export default AuthButton;

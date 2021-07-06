@@ -1,17 +1,17 @@
 import React from "react";
 import { View, TextInput, StyleSheet } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 
-function AppTextInput({ icon, ...otherProps }) {
+function AppSearchInput({ icon, ...otherProps }) {
   return (
     <View style={styles.container}>
       {icon && (
-        <MaterialCommunityIcons
+        <Ionicons
           name={icon}
           size={20}
-          color={colors.white}
+          color={colors.black}
           style={styles.icon}
         />
       )}
@@ -20,24 +20,23 @@ function AppTextInput({ icon, ...otherProps }) {
   );
 }
 
-export default AppTextInput;
+export default AppSearchInput;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.secondary,
     flexDirection: "row",
-    width: "100%",
-    padding: 15,
+    width: "50%",
+    borderRadius: 100,
+    padding: 7,
     //marginVertical: 10
   },
   input: {
-    color: colors.white,
-    borderColor: colors.white,
-    borderBottomWidth: 1,
-    // height: 40,
-    width: 300,
-    // margin: 12,
-    fontSize: 25,
+    color: colors.black,
+    borderColor: colors.black,
+    // borderBottomWidth: 1,
+    width: '80%',
+    fontSize: 20,
   },
   icon: {
     marginRight: 10,
