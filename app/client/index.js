@@ -1,5 +1,5 @@
 import { ApolloClient, InMemoryCache, ApolloProvider, useQuery, gql } from '@apollo/client';
-
+// add client provider 
 
 const client = new ApolloClient({
   uri: 'http://localhost:8000/graphql',
