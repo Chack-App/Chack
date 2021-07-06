@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, SafeAreaView, StyleSheet, View } from "react-native";
 import colors from "../config/colors";
-import { GET_USER } from "../client/queries";
+import { GET_USER } from "../client/queries/userQueries";
 import { useQuery } from "@apollo/client";
 
 const Account = () => {
