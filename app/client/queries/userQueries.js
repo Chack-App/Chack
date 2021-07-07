@@ -19,13 +19,10 @@ export const GET_USER = gql`
 
 export const GET_USER_EVENTS = gql`
   query UserEvents($id: ID!) {
-    user(id: $id) {
-      username
-      firstName
-      lastName
-      events {
-        ...Event
-      }
+    userEvents(id: $id) {
+      id
+      eventName
+      description
     }
   }
 `

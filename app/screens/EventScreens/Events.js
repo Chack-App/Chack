@@ -20,6 +20,13 @@ const Events = () => {
   const { loading, error, data } = useQuery(GET_USER_EVENTS, {
     variables: { id }
   })
+
+  if (loading) {
+    return <Text>Loading</Text>
+  }
+  if (error) {
+    return <Text>Error</Text>
+  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -37,9 +44,11 @@ const Events = () => {
         <AppButton title="Create Event" />
         <Text>___________________________________________________</Text>
         <View style={styles.activeEventList}>
-          <Text>ACTIVE EVENTS LIST</Text>
-          <Text>lemoo</Text>
+          <Text>ACTIVE EVENTS</Text>
         </View>
+        {data.userEvents.map(event => (
+          <AppButton key={event.id} title={event.eventName} />
+        ))}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )
