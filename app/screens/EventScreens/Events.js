@@ -7,9 +7,9 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import colors from "../config/colors";
-import AppButton from "../components/AppButton";
-import AppSearchInput from "../components/AppSearchInput";
+import colors from "../../config/colors";
+import AppButton from "../../components/AppButton";
+import AppSearchInput from "../../components/AppSearchInput";
 
 // How many characters should each passcode be?
 
