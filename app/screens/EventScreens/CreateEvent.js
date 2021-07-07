@@ -11,10 +11,13 @@ import {
 import colors from "../../config/colors";
 import AppButton from "../../components/AppButton";
 import AppTextInput from "../../components/AppTextInput";
+import { CREATE_EVENT } from "../../client/queries/eventQueries"
+import { useMutation } from "@apollo/client";
 
 const CreateEvent = () => {
   const [eventName, setEventName] = useState();
   const [eventDesc, setEventDesc] = useState();
+  const [addEvent] = useMutation(CREATE_EVENT);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -32,12 +35,15 @@ const CreateEvent = () => {
               placeholder="Description"
               multiline={true}
               numberOfLines={5}
-              onChangeText={(name) => setEventName(name)}
+              onChangeText={(desc) => setEventDesc(desc)}
             />
           </View>
         </View>
         <View style={styles.inputContainer}>
-          <AppButton title="Create Event" />
+          <AppButton
+            title="Create Event"
+            onPress={() => addEvent({variables: {eventName, eventDesc}})}
+          />
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
