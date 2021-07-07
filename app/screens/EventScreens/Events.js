@@ -13,7 +13,7 @@ import AppSearchInput from "../../components/AppSearchInput";
 
 // How many characters should each passcode be?
 
-const Events = () => {
+const Events = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -28,7 +28,10 @@ const Events = () => {
           />
           {/* <AppTextInput/> */}
         </View>
-        <AppButton title="Create Event"/>
+        <AppButton
+          title="Create Event"
+          onPress={() => navigation.navigate("CreateEvent")}
+        />
         <Text>___________________________________________________</Text>
         <View style={styles.activeEventList}>
             <Text>ACTIVE EVENTS LIST</Text>
