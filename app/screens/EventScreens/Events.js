@@ -15,7 +15,7 @@ import { useQuery } from "@apollo/client"
 
 // How many characters should each passcode be?
 
-const Events = () => {
+const Events = ({ navigation }) => {
   const [id, setId] = useState(2)
   const { loading, error, data } = useQuery(GET_USER_EVENTS, {
     variables: { id }
@@ -41,7 +41,10 @@ const Events = () => {
           />
           {/* <AppTextInput/> */}
         </View>
-        <AppButton title="Create Event" />
+        <AppButton
+          title="Create Event"
+          onPress={() => navigation.navigate("CreateEvent")}
+        />
         <Text>___________________________________________________</Text>
         <View style={styles.activeEventList}>
           <Text>ACTIVE EVENTS</Text>
