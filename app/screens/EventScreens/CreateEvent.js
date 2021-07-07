@@ -14,37 +14,40 @@ import AppTextInput from "../../components/AppTextInput";
 import { CREATE_EVENT } from "../../client/queries/eventQueries"
 import { useMutation } from "@apollo/client";
 
-const CreateEvent = () => {
+const CreateEvent = ({ navigation }) => {
   const [eventName, setEventName] = useState();
   const [eventDesc, setEventDesc] = useState();
   const [addEvent] = useMutation(CREATE_EVENT);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        <View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Event Name</Text>
+        <View style={styles.inputContainer}>
+          <View>
+            <Text style={styles.text}>Event Name</Text>
             <AppTextInput
               placeholder="Name"
               onChangeText={(name) => setEventName(name)}
             />
           </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Event Description</Text>
+          <View>
+            <Text style={styles.text}>Event Description</Text>
             <AppTextInput
               placeholder="Description"
               multiline={true}
-              numberOfLines={5}
+              numberOfLines={4}
               onChangeText={(desc) => setEventDesc(desc)}
             />
           </View>
         </View>
-        <View style={styles.inputContainer}>
+
           <AppButton
             title="Create Event"
-            onPress={() => addEvent({variables: {eventName, eventDesc}})}
+            onPress={() => {
+              addEvent({variables: {eventName, eventDesc}});
+              navigation.navigate("Events");
+            }}
           />
-        </View>
+
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )
@@ -58,19 +61,20 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
   },
   inputContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    backgroundColor: colors.primary,
+    borderRadius: 25,
     padding: 15,
-    height: 100,
+    height: 300,
+    width: "95%",
     marginVertical: 10,
   },
   text: {
     color: colors.white,
     fontSize: 20,
     fontWeight: "bold",
-  },
-  label: {
-    color: "black",
-    fontSize: 20,
-    padding: 5
   },
 });
 
