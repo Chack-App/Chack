@@ -1,11 +1,18 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client"
 
 export const GET_USER = gql`
-query User($id: ID!) {
-  user(id: $id) {
+  query User($id: ID!) {
+    user(id: $id) {
       username
+    }
   }
-}
+`
+export const LOGIN = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      token
+    }
+  }
 `
 
 // const [id, setId] = useState(1)

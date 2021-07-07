@@ -1,18 +1,32 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   StyleSheet,
   SafeAreaView,
   View,
   TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
-import AuthButton from "../../components/AuthButton";
-import AppTextInput from "../../components/AppTextInput";
-import colors from "../../config/colors";
+  Keyboard
+} from "react-native"
+import AuthButton from "../../components/AuthButton"
+import AppTextInput from "../../components/AppTextInput"
+import colors from "../../config/colors"
+import { useMutation } from "@apollo/client"
+import { LOGIN } from "../../client/queries/userQueries"
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+  const [login] = useMutation(LOGIN)
+
+  // const onSubmit = () => {
+  //   console.log(email, password)
+  //   login({
+  //     variables: {
+  //       email: email,
+  //       password: password
+  //     }
+  //     // update: updateCache
+  //   })
+  // }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -23,7 +37,7 @@ const LoginScreen = ({ navigation }) => {
             autoCapitalize="none"
             autoCorrect={false}
             keyboardType="email-address"
-            onChangeText={(text) => setEmail(text)}
+            onChangeText={text => setEmail(text)}
             placeholder="Email"
             placeholderTextColor={colors.placeholderColor}
             textContentType="emailAddress"
@@ -32,7 +46,7 @@ const LoginScreen = ({ navigation }) => {
             icon="onepassword"
             autoCapitalize="none"
             autoCorrect={false}
-            onChangeText={(text) => setPassword(text)}
+            onChangeText={text => setPassword(text)}
             placeholder="Password"
             placeholderTextColor={colors.placeholderColor}
             secureTextEntry
@@ -43,29 +57,40 @@ const LoginScreen = ({ navigation }) => {
           title="Login"
           //the onpress should authenticate the login and if successful we need to figure
           //out how to connect it to the Events Screen in the AppNavigator
-          onPress={() => navigation.navigate("Events")}
+
+          onPress={() => {
+            console.log(email, password)
+            login({
+              variables: {
+                email: email,
+                password: password
+              }
+              // update: updateCache
+            })
+          }}
+          // navigation.navigate("Events")
         />
       </SafeAreaView>
     </TouchableWithoutFeedback>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.primary,
+    backgroundColor: colors.primary
   },
   title: {
     color: colors.white,
     fontWeight: "bold",
     fontSize: 50,
-    marginBottom: 100,
+    marginBottom: 100
   },
   inputContainer: {
-    marginBottom: 60,
-  },
-});
+    marginBottom: 60
+  }
+})
 
-export default LoginScreen;
+export default LoginScreen
