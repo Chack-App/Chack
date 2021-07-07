@@ -17,7 +17,7 @@ const Account = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.inputContainer}>
         <Text>ACCOUNT</Text>
-        <Text>{data.user.username}</Text>
+        <Text>{data.user.email}</Text>
       </View>
     </SafeAreaView>
   )
