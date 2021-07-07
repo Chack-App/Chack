@@ -1,19 +1,25 @@
-import React from "react";
+import React, { useState } from "react"
 import {
   SafeAreaView,
   StyleSheet,
   View,
   Text,
   Keyboard,
-  TouchableWithoutFeedback,
-} from "react-native";
-import colors from "../../config/colors";
-import AppButton from "../../components/AppButton";
-import AppSearchInput from "../../components/AppSearchInput";
+  TouchableWithoutFeedback
+} from "react-native"
+import colors from "../../config/colors"
+import AppButton from "../../components/AppButton"
+import AppSearchInput from "../../components/AppSearchInput"
+import { GET_USER_EVENTS } from "../../client/queries/userQueries"
+import { useQuery } from "@apollo/client"
 
 // How many characters should each passcode be?
 
 const Events = () => {
+  const [id, setId] = useState(2)
+  const { loading, error, data } = useQuery(GET_USER_EVENTS, {
+    variables: { id }
+  })
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -28,22 +34,23 @@ const Events = () => {
           />
           {/* <AppTextInput/> */}
         </View>
-        <AppButton title="Create Event"/>
+        <AppButton title="Create Event" />
         <Text>___________________________________________________</Text>
         <View style={styles.activeEventList}>
-            <Text>ACTIVE EVENTS LIST</Text>
+          <Text>ACTIVE EVENTS LIST</Text>
+          <Text>lemoo</Text>
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.secondary
   },
   eventPasscodeContainer: {
     flexDirection: "row",
@@ -54,20 +61,19 @@ const styles = StyleSheet.create({
     padding: 15,
     height: 100,
     width: "95%",
-    marginVertical: 10,
+    marginVertical: 10
   },
   text: {
     color: colors.white,
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: "bold"
   },
   activeEventsList: {
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center'
-
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center"
   }
-});
+})
 
-export default Events;
+export default Events
