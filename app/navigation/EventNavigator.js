@@ -1,6 +1,7 @@
 import React from "react"
 import colors from "../config/colors"
 import Events from "../screens/EventScreens/Events"
+import CreateEvent from "../screens/EventScreens/CreateEvent"
 import ManualItemEntry from "../screens/EventScreens/ManualItemEntry"
 import { createStackNavigator } from "@react-navigation/stack"
 
@@ -17,6 +18,11 @@ const EventNavigator = () => (
       name="ManualItemEntry"
       component={ManualItemEntry}
       options={{ ...gatewayHeaderStyles, headerTitle: "Manual Item Entry" }}
+    />
+    <Stack.Screen
+      name="CreateEvent"
+      component={CreateEvent}
+      options={{ ...gatewayHeaderStyles, headerTitle: "Create New Event" }}
     />
   </Stack.Navigator>
 )
