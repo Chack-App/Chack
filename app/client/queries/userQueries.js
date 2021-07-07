@@ -1,11 +1,11 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client"
 
 export const GET_USER = gql`
-query User($id: ID!) {
-  user(id: $id) {
+  query User($id: ID!) {
+    user(id: $id) {
       username
+    }
   }
-}
 `
 
 // const [id, setId] = useState(1)
@@ -16,3 +16,13 @@ query User($id: ID!) {
 // if (error) {
 //   return <Text>Error</Text>
 // }
+
+export const GET_USER_EVENTS = gql`
+  query UserEvents($id: ID!) {
+    userEvents(id: $id) {
+      id
+      eventName
+      description
+    }
+  }
+`
