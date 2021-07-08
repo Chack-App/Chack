@@ -16,7 +16,15 @@ const SingleEvent = () => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}
       >
-
+        <AppButton
+          title="New Receipt"
+        />
+        <AppButton
+          title="Go To Active Receipt"
+        />
+        <AppButton
+          title="Past Receipt"
+        />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )
@@ -25,7 +33,7 @@ const SingleEvent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: colors.secondary,
   },

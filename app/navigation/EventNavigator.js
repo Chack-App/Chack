@@ -23,7 +23,7 @@ const EventNavigator = () => (
     <Stack.Screen
       name="CreateEvent"
       component={CreateEvent}
-      options={{ ...gatewayHeaderStyles, headerTitle: "Create New Event" }}
+      options={{ ...gatewayHeaderStyles, headerTitle: "Create Event" }}
     />
     <Stack.Screen
       name="SingleEvent"

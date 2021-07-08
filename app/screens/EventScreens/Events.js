@@ -23,7 +23,6 @@ const Events = ({ navigation }) => {
     variables: { id }
   })
   const [joinEvent] = useMutation(JOIN_EVENT);
-  console.log(passcode)
   if (loading) {
     return <Text>Loading</Text>
   }
