@@ -15,13 +15,12 @@ export default function App() {
   useEffect(() => {
     const getToken = async () => {
       const token = await AsyncStorage.getItem("TOKEN")
-      console.log(token)
+      // console.log(token)
       setToken(token)
     }
     getToken()
   })
 
-  console.log(user)
   return (
     <ApolloProvider client={client}>
       <NavigationContainer>
