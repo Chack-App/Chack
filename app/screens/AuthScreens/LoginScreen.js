@@ -18,12 +18,12 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
   const [login, response] = useMutation(LOGIN)
-  const { loading, error, data } = useQuery(GET_USER)
+  // const { loading, error, data } = useQuery(GET_USER)
 
-  if (loading) return "Loading..."
-  if (error) return `Error! ${error.message}`
+  // if (loading) return "Loading..."
+  // if (error) return `Error! ${error.message}`
 
-  console.log(data)
+  // console.log(data)
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
