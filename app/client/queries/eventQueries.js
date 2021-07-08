@@ -18,6 +18,28 @@ query FetchAnEvent($id: ID!) {
 }
 `
 
+export const GET_ACTIVE_EVENT_RECEIPTS = gql`
+query ActiveEventReceipts($id: ID!){
+  activeEventReceipts(id: $id){  
+  	id
+    name
+    cardDownId
+  	isPaid
+  }
+ }
+ `
+
+ export const GET_PAST_EVENT_RECEIPTS = gql`
+ query PastEventReceipts($id: ID!){
+  pastEventReceipts(id: $id){  
+  	id
+    name
+    cardDownId
+  	isPaid
+  }
+ }
+ `
+
 export const CREATE_EVENT = gql`
   mutation CreateAnEvent($eventName: String, $description: String) {
     addEvent(eventName: $eventName, description: $description) {

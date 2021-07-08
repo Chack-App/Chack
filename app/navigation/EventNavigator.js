@@ -2,7 +2,6 @@ import React from "react"
 import colors from "../config/colors"
 import Events from "../screens/EventScreens/Events"
 import CreateEvent from "../screens/EventScreens/CreateEvent"
-import ManualItemEntry from "../screens/ReceiptScreens/ManualItemEntry"
 import { createStackNavigator } from "@react-navigation/stack";
 import SingleEvent from "../screens/EventScreens/SingleEvent";
 

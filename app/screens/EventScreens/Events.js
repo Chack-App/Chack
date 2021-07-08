@@ -20,7 +20,7 @@ const Events = ({ navigation }) => {
   const [id, setId] = useState(1);
   const [passcode, setPasscode] = useState();
   const { loading, error, data } = useQuery(GET_ACTIVE_USER_EVENTS, {
-    variables: { id }
+    variables: { id: 3 } // need to use Users Id here
   })
   const [joinEvent] = useMutation(JOIN_EVENT);
   if (loading) {
@@ -61,7 +61,7 @@ const Events = ({ navigation }) => {
         <View style={styles.activeEventList}>
           <Text>ACTIVE EVENTS</Text>
         </View>
-        {data.userEvents.map(event => (
+        {data.activeUserEvents.map(event => (
           <AppButton key={event.id} title={event.eventName} />
         ))}
       </SafeAreaView>

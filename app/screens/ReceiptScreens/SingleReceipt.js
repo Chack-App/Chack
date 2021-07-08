@@ -34,6 +34,7 @@ const SingleReceipt = () => {
         <View style={styles.itemContainer}>
           {data.receipt.items &&
             data.receipt.items.map(item => {
+                
               subTotal += item.price / 100
               return (
                 <ItemButton
@@ -41,7 +42,6 @@ const SingleReceipt = () => {
                   title={item.name}
                   price={item.price / 100}
                   onPress={()=>{
-                      Alert.alert
                   }}
                 />
               )
