@@ -1,14 +1,14 @@
-import React from "react";
-import colors from "../config/colors";
-import Events from "../screens/EventScreens/Events";
-import CreateEvent from "../screens/EventScreens/CreateEvent";
-import ManualItemEntry from "../screens/EventScreens/ManualItemEntry";
-import { createStackNavigator } from "@react-navigation/stack";
+import React from "react"
+import colors from "../config/colors"
+import Events from "../screens/EventScreens/Events"
+import CreateEvent from "../screens/EventScreens/CreateEvent"
+import ManualItemEntry from "../screens/EventScreens/ManualItemEntry"
+import { createStackNavigator } from "@react-navigation/stack"
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator()
 
 const EventNavigator = () => (
-  <Stack.Navigator initialRouteName="ManualItemEntry">
+  <Stack.Navigator initialRouteName="Events">
     <Stack.Screen
       name="Events"
       component={Events}
@@ -25,15 +25,15 @@ const EventNavigator = () => (
       options={{ ...gatewayHeaderStyles, headerTitle: "Create New Event" }}
     />
   </Stack.Navigator>
-);
+)
 
 const gatewayHeaderStyles = {
   headerTransparent: false,
   headerTintColor: colors.white,
   headerStyle: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.primary
   },
-  headerTitle: "",
-};
+  headerTitle: ""
+}
 
-export default EventNavigator;
+export default EventNavigator
