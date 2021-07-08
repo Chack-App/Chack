@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client"
 
 export const GET_USER = gql`
+
   query User {
     user {
       id
@@ -21,6 +22,7 @@ export const SIGNUP = gql`
     signup(email: $email, password: $password) {
       token
     }
+
   }
 `
 
@@ -32,3 +34,13 @@ export const SIGNUP = gql`
 // if (error) {
 //   return <Text>Error</Text>
 // }
+
+export const GET_USER_EVENTS = gql`
+  query UserEvents($id: ID!) {
+    userEvents(id: $id) {
+      id
+      eventName
+      description
+    }
+  }
+`
