@@ -10,14 +10,20 @@ import {
 import AuthButton from "../../components/AuthButton"
 import AppTextInput from "../../components/AppTextInput"
 import colors from "../../config/colors"
-import { useMutation } from "@apollo/client"
-import { LOGIN } from "../../client/queries/userQueries"
+import { useMutation, useQuery } from "@apollo/client"
+import { GET_USER, LOGIN } from "../../client/queries/userQueries"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
   const [login, response] = useMutation(LOGIN)
+  const { loading, error, data } = useQuery(GET_USER)
+
+  if (loading) return "Loading..."
+  if (error) return `Error! ${error.message}`
+
+  console.log(data)
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -56,7 +62,6 @@ const LoginScreen = ({ navigation }) => {
                 email: email,
                 password: password
               }
-              // update: updateCache
             })
             await AsyncStorage.clear()
             await AsyncStorage.setItem("TOKEN", data.login.token)

@@ -13,7 +13,6 @@ const httpLink = createHttpLink({
 
 const authLink = new ApolloLink(async (operation, forward) => {
   const token = await AsyncStorage.getItem("TOKEN")
-  console.log(token, "TOKEN")
   operation.setContext({
     headers: {
       authorization: token
