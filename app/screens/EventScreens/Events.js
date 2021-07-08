@@ -20,13 +20,13 @@ import { AuthContext } from "../../context/authContext"
 const Events = ({ navigation }) => {
   const { token } = useContext(AuthContext)
   const { user } = useContext(AuthContext)
-  console.log(token)
-  console.log(user)
   const [id, setId] = useState(user)
   const [passcode, setPasscode] = useState()
+
   const { loading, error, data } = useQuery(GET_USER_EVENTS, {
     variables: { id: user }
   })
+
   const [joinEvent] = useMutation(JOIN_EVENT)
   if (loading) {
     return <Text>Loading</Text>
@@ -34,6 +34,7 @@ const Events = ({ navigation }) => {
   if (error) {
     return <Text>Error</Text>
   }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -66,9 +67,13 @@ const Events = ({ navigation }) => {
         <View style={styles.activeEventList}>
           <Text>ACTIVE EVENTS</Text>
         </View>
-        {data.userEvents.map(event => (
-          <AppButton key={event.id} title={event.eventName} />
-        ))}
+        {user === null ? (
+          <Text>No Events</Text>
+        ) : (
+          data.userEvents.map(event => (
+            <AppButton key={event.id} title={event.eventName} />
+          ))
+        )}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )

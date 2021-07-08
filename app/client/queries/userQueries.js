@@ -38,7 +38,7 @@ export const SIGNUP = gql`
 // }
 
 export const GET_USER_EVENTS = gql`
-  query UserEvents($id: ID!) {
+  query UserEvents($id: ID) {
     userEvents(id: $id) {
       id
       eventName
