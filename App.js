@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react"
 import { NavigationContainer } from "@react-navigation/native"
 import AuthNavigator from "./app/navigation/AuthNavigator"
 import AppNavigator from "./app/navigation/AppNavigator"
+import ReceiptNavigator from "./app/navigation/ReceiptNavigator"
 import { ApolloProvider } from "@apollo/client"
 import client from "./app/client"
 import { GET_USER } from "./app/client/queries/userQueries"
@@ -11,6 +12,7 @@ import AuthProvider from "./app/context/authContext"
 import { AuthContext } from "./app/context/authContext"
 import AppButton from "./app/components/AppButton"
 import Main from "./Main"
+
 
 export default function App() {
   const [user, setUser] = useState(false)

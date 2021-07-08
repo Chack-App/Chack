@@ -46,3 +46,22 @@ export const GET_USER_EVENTS = gql`
     }
   }
 `
+
+export const GET_ACTIVE_USER_EVENTS = gql`
+  query ActiveUserEvents($id: ID!) {
+    activeUserEvents(id: $id) {
+      id
+      eventName
+      description
+    }
+  }
+`
+export const GET_PAST_USER_EVENTS = gql`
+  query PastUserEvents($id: ID!) {
+    pastUserEvents(id: $id) {
+      id
+      eventName
+      description
+    }
+  }
+`
