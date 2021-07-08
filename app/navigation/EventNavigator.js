@@ -3,7 +3,8 @@ import colors from "../config/colors"
 import Events from "../screens/EventScreens/Events"
 import CreateEvent from "../screens/EventScreens/CreateEvent"
 import ManualItemEntry from "../screens/EventScreens/ManualItemEntry"
-import { createStackNavigator } from "@react-navigation/stack"
+import { createStackNavigator } from "@react-navigation/stack";
+import SingleEvent from "../screens/EventScreens/SingleEvent";
 
 const Stack = createStackNavigator()
 
@@ -22,7 +23,12 @@ const EventNavigator = () => (
     <Stack.Screen
       name="CreateEvent"
       component={CreateEvent}
-      options={{ ...gatewayHeaderStyles, headerTitle: "Create New Event" }}
+      options={{ ...gatewayHeaderStyles, headerTitle: "Create Event" }}
+    />
+    <Stack.Screen
+      name="SingleEvent"
+      component={SingleEvent}
+      options={{ ...gatewayHeaderStyles, headerTitle: "Your Event" }}
     />
   </Stack.Navigator>
 )
