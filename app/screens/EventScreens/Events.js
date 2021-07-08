@@ -17,7 +17,7 @@ import { useQuery, useMutation } from "@apollo/client"
 // How many characters should each passcode be?
 
 const Events = ({ navigation }) => {
-  const [id, setId] = useState(2);
+  const [id, setId] = useState(1);
   const [passcode, setPasscode] = useState();
   const { loading, error, data } = useQuery(GET_USER_EVENTS, {
     variables: { id }
