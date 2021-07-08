@@ -43,7 +43,7 @@ const CreateEvent = ({ navigation }) => {
             title="Create Event"
             onPress={() => {
               addEvent({variables: {eventName, eventDesc}});
-              navigation.navigate("Events");
+              navigation.navigate("SingleEvent");
             }}
           />
 

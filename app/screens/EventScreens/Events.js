@@ -45,9 +45,12 @@ const Events = ({ navigation }) => {
           />
           <AppButton
             title="Join"
-            onPress={() => joinEvent({
+            onPress={() => {
+              joinEvent({
                 variables: {passcode}
-            })}
+              });
+              navigation.navigate("SingleEvent");
+            }}
           />
           {/* <AppTextInput/> */}
         </View>
