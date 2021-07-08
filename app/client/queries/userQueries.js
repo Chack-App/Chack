@@ -12,6 +12,10 @@ export const LOGIN = gql`
   mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       token
+      firstName
+      email
+      lastName
+      id
     }
   }
 `
@@ -34,7 +38,7 @@ export const SIGNUP = gql`
 // }
 
 export const GET_USER_EVENTS = gql`
-  query UserEvents($id: ID!) {
+  query UserEvents($id: ID) {
     userEvents(id: $id) {
       id
       eventName

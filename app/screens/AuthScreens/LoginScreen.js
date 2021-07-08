@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import {
   StyleSheet,
   SafeAreaView,
@@ -13,17 +13,14 @@ import colors from "../../config/colors"
 import { useMutation, useQuery } from "@apollo/client"
 import { GET_USER, LOGIN } from "../../client/queries/userQueries"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { AuthContext } from "../../context/authContext"
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
   const [login, response] = useMutation(LOGIN)
-  // const { loading, error, data } = useQuery(GET_USER)
-
-  // if (loading) return "Loading..."
-  // if (error) return `Error! ${error.message}`
-
-  // console.log(data)
+  const { token, setToken } = useContext(AuthContext)
+  const { user, setUser } = useContext(AuthContext)
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -64,9 +61,12 @@ const LoginScreen = ({ navigation }) => {
               }
             })
             await AsyncStorage.clear()
+            await AsyncStorage.setItem("USER", data.login.id)
             await AsyncStorage.setItem("TOKEN", data.login.token)
+            console.log(data.login)
+            setToken(data.login.token)
+            setUser(data.login.id)
           }}
-          // navigation.navigate("Events")
         />
       </SafeAreaView>
     </TouchableWithoutFeedback>
