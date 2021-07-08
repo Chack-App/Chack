@@ -5,7 +5,7 @@ query FetchAnEvent($id: ID!) {
   event(id: $id) {
     id
     eventName
-     description
+    description
     passcode
     receipts {
       id

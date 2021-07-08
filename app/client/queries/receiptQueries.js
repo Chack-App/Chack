@@ -7,6 +7,12 @@ query GetReceipt($id: ID!) {
     name
     isPaid
     cardDownId
+    items{
+      name
+      price
+      isClaimed
+      splitBetween
+    }
   }
 }
 `

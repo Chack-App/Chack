@@ -10,7 +10,7 @@ import {
 import colors from "../../config/colors"
 import AppButton from "../../components/AppButton"
 import AppSearchInput from "../../components/AppSearchInput"
-import { GET_USER_EVENTS } from "../../client/queries/userQueries"
+import { GET_ACTIVE_USER_EVENTS } from "../../client/queries/userQueries"
 import { JOIN_EVENT } from "../../client/queries/eventQueries";
 import { useQuery, useMutation } from "@apollo/client"
 
@@ -19,7 +19,7 @@ import { useQuery, useMutation } from "@apollo/client"
 const Events = ({ navigation }) => {
   const [id, setId] = useState(1);
   const [passcode, setPasscode] = useState();
-  const { loading, error, data } = useQuery(GET_USER_EVENTS, {
+  const { loading, error, data } = useQuery(GET_ACTIVE_USER_EVENTS, {
     variables: { id }
   })
   const [joinEvent] = useMutation(JOIN_EVENT);
