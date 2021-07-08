@@ -39,7 +39,6 @@ const CreateEvent = ({ navigation }) => {
             />
           </View>
         </View>
-
           <AppButton
             title="Create Event"
             onPress={() => {

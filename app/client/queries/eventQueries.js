@@ -15,4 +15,4 @@ export const JOIN_EVENT = gql`
       passcode
   }
 }
-`
+`;

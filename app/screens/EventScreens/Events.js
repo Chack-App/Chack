@@ -11,16 +11,19 @@ import colors from "../../config/colors"
 import AppButton from "../../components/AppButton"
 import AppSearchInput from "../../components/AppSearchInput"
 import { GET_USER_EVENTS } from "../../client/queries/userQueries"
-import { useQuery } from "@apollo/client"
+import { JOIN_EVENT } from "../../client/queries/eventQueries";
+import { useQuery, useMutation } from "@apollo/client"
 
 // How many characters should each passcode be?
 
 const Events = ({ navigation }) => {
-  const [id, setId] = useState(2)
+  const [id, setId] = useState(2);
+  const [passcode, setPasscode] = useState();
   const { loading, error, data } = useQuery(GET_USER_EVENTS, {
     variables: { id }
   })
-
+  const [joinEvent] = useMutation(JOIN_EVENT);
+  console.log(passcode)
   if (loading) {
     return <Text>Loading</Text>
   }
@@ -38,6 +41,13 @@ const Events = ({ navigation }) => {
             icon="search"
             color="black"
             returnKeyType="search"
+            onChangeText={(passcode)=>setPasscode(passcode)}
+          />
+          <AppButton
+            title="Join"
+            onPress={() => joinEvent({
+                variables: {passcode}
+            })}
           />
           {/* <AppTextInput/> */}
         </View>
@@ -66,12 +76,13 @@ const styles = StyleSheet.create({
   },
   eventPasscodeContainer: {
     flexDirection: "row",
+    flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: colors.primary,
     borderRadius: 25,
     padding: 15,
-    height: 100,
+    height: 120,
     width: "95%",
     marginVertical: 10
   },
