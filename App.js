@@ -23,8 +23,8 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
       <NavigationContainer>
-        <AuthNavigator />
-        {/* <AppNavigator /> */}
+        {/* <AuthNavigator /> */}
+        <AppNavigator />
       </NavigationContainer>
     </ApolloProvider>
   )
