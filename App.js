@@ -6,25 +6,28 @@ import AppNavigator from "./app/navigation/AppNavigator"
 import { ApolloProvider } from "@apollo/client"
 import client from "./app/client"
 import { GET_USER } from "./app/client/queries/userQueries"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export default function App() {
   const [user, setUser] = useState(false)
+  const [token, setToken] = useState(false)
 
   useEffect(() => {
-    const res = client.readQuery({
-      query: GET_USER
-    })
-    console.log("res", res)
-    if (res) {
-      setUser(res.user)
+    const getToken = async () => {
+      const token = await AsyncStorage.getItem("TOKEN")
+      console.log(token)
+      setToken(token)
     }
-  }, [])
+    getToken()
+  })
+
   console.log(user)
   return (
     <ApolloProvider client={client}>
       <NavigationContainer>
-        {/* <AuthNavigator /> */}
-        <AppNavigator />
+        {token ? <AppNavigator /> : <AuthNavigator />}
+        {/* <AuthNavigator />
+        <AppNavigator /> */}
       </NavigationContainer>
     </ApolloProvider>
   )
