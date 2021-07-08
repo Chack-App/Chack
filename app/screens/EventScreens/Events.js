@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,24 +11,30 @@ import colors from "../../config/colors"
 import AppButton from "../../components/AppButton"
 import AppSearchInput from "../../components/AppSearchInput"
 import { GET_USER_EVENTS } from "../../client/queries/userQueries"
-import { JOIN_EVENT } from "../../client/queries/eventQueries";
+import { JOIN_EVENT } from "../../client/queries/eventQueries"
 import { useQuery, useMutation } from "@apollo/client"
+import { AuthContext } from "../../context/authContext"
 
 // How many characters should each passcode be?
 
 const Events = ({ navigation }) => {
-  const [id, setId] = useState(1);
-  const [passcode, setPasscode] = useState();
+  const { token } = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
+  const [id, setId] = useState(user)
+  const [passcode, setPasscode] = useState()
+
   const { loading, error, data } = useQuery(GET_USER_EVENTS, {
-    variables: { id }
+    variables: { id: user }
   })
-  const [joinEvent] = useMutation(JOIN_EVENT);
+
+  const [joinEvent] = useMutation(JOIN_EVENT)
   if (loading) {
     return <Text>Loading</Text>
   }
   if (error) {
     return <Text>Error</Text>
   }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -40,15 +46,15 @@ const Events = ({ navigation }) => {
             icon="search"
             color="black"
             returnKeyType="search"
-            onChangeText={(passcode)=>setPasscode(passcode)}
+            onChangeText={passcode => setPasscode(passcode)}
           />
           <AppButton
             title="Join"
             onPress={() => {
               joinEvent({
-                variables: {passcode}
-              });
-              navigation.navigate("SingleEvent");
+                variables: { passcode }
+              })
+              navigation.navigate("SingleEvent")
             }}
           />
           {/* <AppTextInput/> */}
@@ -61,9 +67,13 @@ const Events = ({ navigation }) => {
         <View style={styles.activeEventList}>
           <Text>ACTIVE EVENTS</Text>
         </View>
-        {data.userEvents.map(event => (
-          <AppButton key={event.id} title={event.eventName} />
-        ))}
+        {user === null ? (
+          <Text>No Events</Text>
+        ) : (
+          data.userEvents.map(event => (
+            <AppButton key={event.id} title={event.eventName} />
+          ))
+        )}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )
