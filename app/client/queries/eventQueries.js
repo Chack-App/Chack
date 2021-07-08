@@ -10,5 +10,9 @@ export const CREATE_EVENT = gql`
 `;
 
 export const JOIN_EVENT = gql`
-  
+  mutation JoinAnEvent($passcode: String) {
+    joinEvent(passcode: $passcode) {
+      passcode
+  }
+}
 `
