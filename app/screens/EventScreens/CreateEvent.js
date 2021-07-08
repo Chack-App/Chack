@@ -39,12 +39,11 @@ const CreateEvent = ({ navigation }) => {
             />
           </View>
         </View>
-
           <AppButton
             title="Create Event"
             onPress={() => {
               addEvent({variables: {eventName, eventDesc}});
-              navigation.navigate("Events");
+              navigation.navigate("SingleEvent");
             }}
           />
 
