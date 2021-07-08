@@ -4,34 +4,26 @@ import {
   SafeAreaView,
   View,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  Text
 } from "react-native"
 import AuthButton from "../../components/AuthButton"
 import AppTextInput from "../../components/AppTextInput"
 import colors from "../../config/colors"
 import { useMutation } from "@apollo/client"
 import { LOGIN } from "../../client/queries/userQueries"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
-  const [login] = useMutation(LOGIN)
-
-  // const onSubmit = () => {
-  //   console.log(email, password)
-  //   login({
-  //     variables: {
-  //       email: email,
-  //       password: password
-  //     }
-  //     // update: updateCache
-  //   })
-  // }
+  const [login, response] = useMutation(LOGIN)
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
         <View style={styles.inputContainer}>
+          {/* <Text>{data}</Text> */}
           <AppTextInput
             icon="email"
             autoCapitalize="none"
@@ -58,15 +50,16 @@ const LoginScreen = ({ navigation }) => {
           //the onpress should authenticate the login and if successful we need to figure
           //out how to connect it to the Events Screen in the AppNavigator
 
-          onPress={() => {
-            console.log(email, password)
-            login({
+          onPress={async () => {
+            const { data } = await login({
               variables: {
                 email: email,
                 password: password
               }
               // update: updateCache
             })
+            await AsyncStorage.clear()
+            await AsyncStorage.setItem("TOKEN", data.login.token)
           }}
           // navigation.navigate("Events")
         />
