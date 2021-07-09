@@ -1080,3 +1080,45 @@ const badResultsBecauseKeyValuePairsGotOverWritten = {
 //Keep in mind, each key-value pair should be unique --> I have an object with description: '2' and vertex [a,b] and another object with description '2' and vertex [b,c]. I should be able to find both objects in my return object
 
 //We want the descriptions to be accessible because eventually we want to concatenate them all onto 1 line of item and price based or their vertices.
+
+// {
+//   locations: [],
+//   properties: [],
+//   mid: "",
+//   locale: "",
+//   description: "KS#02",
+//   score: 0,
+//   confidence: 0,
+//   topicality: 0,
+//   boundingPoly: { vertices: [Array], normalizedVertices: [] }
+// },
+// {
+
+// description: "10.15",
+// vertices: [Array]}
+// }
+
+// {
+//   description: vertices
+// }
+
+function runThisThing(apiArray) {
+  let result = {}
+  apiArray.forEach(item => {
+    if (result.hasOwnProperty(`${item.description}`)) {
+      const test = Math.ceil(Math.random() * 100)
+      result[`${item.description}#${test}`] = item.boundingPoly.vertices
+    } else {
+      result[item.description] = item.boundingPoly.vertices
+    }
+  })
+  return result
+  //
+  //   console.log(apiArray.length)
+}
+
+const resultData = runThisThing(giantArray)
+
+console.log(resultData)
+console.log(giantArray.length)
+console.log(Object.keys(resultData).length)
