@@ -23,16 +23,17 @@ const Events = ({ navigation }) => {
   const { user } = useContext(AuthContext)
   const [id, setId] = useState(user)
   const [passcode, setPasscode] = useState()
+  const [joinEvent] = useMutation(JOIN_EVENT)
 
   const { loading, error, data } = useQuery(GET_ACTIVE_USER_EVENTS, {
     variables: { id: user }
   })
-
-  const [joinEvent] = useMutation(JOIN_EVENT)
+  console.log(data)
   if (loading) {
     return <Text>Loading</Text>
   }
   if (error) {
+    console.error(error)
     return <Text>Error</Text>
   }
 

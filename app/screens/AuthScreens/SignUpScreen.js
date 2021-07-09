@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import {
   StyleSheet,
   SafeAreaView,
@@ -9,12 +9,19 @@ import {
 import AppTextInput from "../../components/AppTextInput"
 import AuthButton from "../../components/AuthButton"
 import colors from "../../config/colors"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { AuthContext } from "../../context/authContext"
+import { SIGNUP } from "../../client/queries/userQueries"
+import { useMutation } from "@apollo/client"
 
 const SignUpScreen = () => {
   const [firstName, setFirstName] = useState()
   const [lastName, setLastName] = useState()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
+  const { token, setToken } = useContext(AuthContext)
+  const { user, setUser } = useContext(AuthContext)
+  const [signup] = useMutation(SIGNUP)
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -55,7 +62,25 @@ const SignUpScreen = () => {
             textContentType="password"
           />
         </View>
-        <AuthButton title="Sign Up" />
+        <AuthButton
+          title="Sign Up"
+          onPress={async () => {
+            const { data } = await signup({
+              variables: {
+                email: email,
+                password: password,
+                firstName: firstName,
+                lastName: lastName
+              }
+            })
+            await AsyncStorage.setItem("USER", data.signup.id)
+            await AsyncStorage.setItem("TOKEN", data.signup.token)
+
+            setToken(data.signup.token)
+            setUser(data.signup.id)
+            console.log(data)
+          }}
+        />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )
