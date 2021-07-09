@@ -10,17 +10,41 @@ async function readReceipt() {
     keyFilename: "./GoogleKey.json"
   })
 
-  const fileName = "./dummyReceipt.jpeg"
+  const fileName = "mickyDsR.jpeg"
 
   // Performs text detection on the local file
 
   const [result] = await client.textDetection(fileName)
   const detections = result.textAnnotations
-  console.log("Text:")
-  detections.forEach(text => console.log(text))
+  return detections
+
+  // console.log("Text:")
+  // detections.forEach(text => console.log(text))
+
+  // console.log("vertices start here ********")
+  // const verticesArray = detections.map(text => {
+  //   // console.log(text.boundingPoly.vertices)
+  //   return text.boundingPoly.vertices
+  // })
+  // const descriptionArray = detections.map(text => {
+  //   // console.log(text.description)
+  //   return text.description
+  // })
 }
 
-readReceipt()
+function createReceiptObject(giantArray) {
+  let returnObj = {}
+
+  for (let i = 0; i < giantArray.length; i++) {
+    let currentObject = giantArray[i]
+    returnObj[currentObject.description] = currentObject.boundingPoly.vertices
+  }
+
+  console.log("for loop finished", returnObj)
+  return returnObj
+}
+
+createReceiptObject(readReceipt())
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
 
