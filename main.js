@@ -4,25 +4,23 @@ const PORT = process.env.PORT || 5000
 
 const vision = require("@google-cloud/vision")
 
+async function readReceipt() {
+  // Creates a client
+  const client = new vision.ImageAnnotatorClient({
+    keyFilename: "./GoogleKey.json"
+  })
 
-async function readReceipt(){
-// Creates a client
-const client = new vision.ImageAnnotatorClient({
-  keyFilename: "./GoogleKey.json"
-})
+  const fileName = "./dummyReceipt.jpeg"
 
-const fileName = "./dummyReceipt.jpeg"
+  // Performs text detection on the local file
 
-// Performs text detection on the local file
-
-const [result] = await client.textDetection(fileName)
-const detections = result.textAnnotations
-console.log("Text:")
-detections.forEach(text => console.log(text))
+  const [result] = await client.textDetection(fileName)
+  const detections = result.textAnnotations
+  console.log("Text:")
+  detections.forEach(text => console.log(text))
 }
 
 readReceipt()
-
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
 
@@ -56,3 +54,11 @@ app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
 // 'Approval Code\n' +
 // 'THANK YOU!\n' +
 // 'designed by freepik\n',
+
+// [string arr]
+// items[]
+// price[]
+
+// final{}
+
+// look at vertices
