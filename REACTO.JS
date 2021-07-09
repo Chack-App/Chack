@@ -1068,6 +1068,13 @@ const badResultsBecauseKeyValuePairsGotOverWritten = {
   ]
 }
 
+// input [{"description":"Hello", "vertices": [{a: b},{b: c}]},
+// {"description":"World", "vertices": [{a: b},{b: c}]},
+// {"description":"Hello", "vertices": [{3: 4},{6: 2}]},
+// {"description":"4", "vertices": [{a: b},{b: c}]}]
+
+// output => an obj where we can still reference both instances of "Hello" and its respective vertices
+
 //Given the giant array, how can we return an object with the proper descriptions associated with the vertices as a key-value pair?
 
 //Keep in mind, each key-value pair should be unique --> I have an object with description: '2' and vertex [a,b] and another object with description '2' and vertex [b,c]. I should be able to find both objects in my return object
