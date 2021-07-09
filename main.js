@@ -1,49 +1,58 @@
-// const express = require("express")
-// const app = express()
-// const PORT = process.env.PORT || 5000
+const express = require("express")
+const app = express()
+const PORT = process.env.PORT || 5000
 
-// const vision = require("@google-cloud/vision")
+const vision = require("@google-cloud/vision")
 
-// // Creates a client
-// const client = new vision.ImageAnnotatorClient({
-//   keyFilename: "./GoogleKey.json"
-// })
 
-// /**
-//  * TODO(developer): Uncomment the following line before running the sample.
-//  */
-// const fileName = "./dummyReceipt.jpeg"
+async function readReceipt(){
+// Creates a client
+const client = new vision.ImageAnnotatorClient({
+  keyFilename: "./GoogleKey.json"
+})
 
-// // Performs text detection on the local file
+const fileName = "./dummyReceipt.jpeg"
 
-// const [result] = await client.textDetection(fileName)
-// const detections = result.textAnnotations
-// console.log("Text:")
-// detections.forEach(text => console.log(text))
+// Performs text detection on the local file
 
-// app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
-
-// Imports the Google Cloud client library.
-
-const { Storage } = require("@google-cloud/storage")
-
-// Instantiates a client. If you don't specify credentials when constructing
-// the client, the client library will look for credentials in the
-// environment.
-const storage = new Storage()
-// Makes an authenticated API request.
-async function listBuckets() {
-  try {
-    const results = await storage.getBuckets()
-
-    const [buckets] = results
-
-    console.log("Buckets:")
-    buckets.forEach(bucket => {
-      console.log(bucket.name)
-    })
-  } catch (err) {
-    console.error("ERROR:", err)
-  }
+const [result] = await client.textDetection(fileName)
+const detections = result.textAnnotations
+console.log("Text:")
+detections.forEach(text => console.log(text))
 }
-listBuckets()
+
+readReceipt()
+
+
+app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
+
+//regular text
+// description: 'SHOP NAME\n' +
+// 'Address: Lorem Ipsum, 23-10\n' +
+// 'Telp. 11223344\n' +
+// 'CASH RECEIPT\n' +
+// 'Description\n' +
+// 'Lorem\n' +
+// 'Ipsum\n' +
+// 'Dolor sit amet\n' +
+// 'Consectetur\n' +
+// 'Adipiscing elit\n' +
+// 'Price\n' +
+// '1.1\n' +
+// '2.2\n' +
+// '3.3\n' +
+// '4.4\n' +
+// '5.5\n' +
+// 'Total\n' +
+// 'Cash\n' +
+// 'Change\n' +
+// '16.5\n' +
+// '20.0\n' +
+// '3.5\n' +
+// '**.\n' +
+// 'Bank card\n' +
+// '234\n' +
+// '#123456\n' +
+// 'Approval Code\n' +
+// 'THANK YOU!\n' +
+// 'designed by freepik\n',
