@@ -8,6 +8,7 @@ export const AuthContext = React.createContext()
 const AuthProvider = ({ children }) => {
   const [token, setToken] = useState("")
   const [user, setUser] = useState("")
+  const [currentEventId, setCurrentEventId] = useState("")
 
   useEffect(() => {
     let isMounted = true
@@ -45,8 +46,8 @@ const AuthProvider = ({ children }) => {
   // }
 
   const providerValue = useMemo(() => {
-    return { token, setToken, user, setUser }
-  }, [token, user])
+    return { token, setToken, user, setUser, currentEventId, setCurrentEventId }
+  }, [token, user, currentEventId])
 
   return (
     <AuthContext.Provider value={providerValue}>

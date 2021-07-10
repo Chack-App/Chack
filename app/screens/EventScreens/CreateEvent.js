@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,12 +12,38 @@ import colors from "../../config/colors";
 import AppButton from "../../components/AppButton";
 import AppTextInput from "../../components/AppTextInput";
 import { CREATE_EVENT } from "../../client/queries/eventQueries"
+import { GET_ACTIVE_USER_EVENTS } from "../../client/queries/userQueries"
 import { useMutation } from "@apollo/client";
+import { AuthContext } from "../../context/authContext"
+
 
 const CreateEvent = ({ navigation }) => {
+  const { user } = useContext(AuthContext)
   const [eventName, setEventName] = useState();
   const [eventDesc, setEventDesc] = useState();
-  const [addEvent] = useMutation(CREATE_EVENT);
+  const [addEvent] = useMutation(CREATE_EVENT, {
+      refetchQueries: [{
+        query: GET_ACTIVE_USER_EVENTS,
+        variables: {id: user}
+      }]
+    }
+    // {
+    //   update (cache, { data }) {
+    //     const newEvent = data?.addEvent;
+    //     const existingEvents = cache.readQuery({
+    //       query: GET_ACTIVE_USER_EVENTS,
+    //     });
+    //     console.log(existingEvents);
+    //     console.log(newEvent)
+    //     cache.writeQuery({
+    //       query: GET_ACTIVE_USER_EVENTS,
+    //       data: {
+    //         activeUserEvents: existingEvents?.activeUserEvents.concat({name: "Hello World"})
+    //       }
+    //     });
+    //   }
+    // }
+    );
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
