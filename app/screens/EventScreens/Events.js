@@ -25,12 +25,12 @@ const Events = ({ navigation }) => {
   const [id, setId] = useState(user)
   const [passcode, setPasscode] = useState()
   const [joinEvent] = useMutation(JOIN_EVENT)
-  console.log('user (in events)', user)
+  // console.log('user (in events)', user)
   const { loading, error, data } = useQuery(GET_ACTIVE_USER_EVENTS, {
     variables: { id: user },
     fetchPolicy: "cache-and-network"
   })
-  console.log(data)
+  // console.log(data)
   if (loading) {
     return <Text>Loading</Text>
   }

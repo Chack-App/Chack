@@ -78,7 +78,7 @@ const SignUpScreen = () => {
 
             setToken(data.signup.token)
             setUser(data.signup.id)
-            console.log(data)
+            // console.log(data)
           }}
         />
       </SafeAreaView>

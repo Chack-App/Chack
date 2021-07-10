@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,17 +9,33 @@ import {
 } from "react-native";
 import colors from "../../config/colors";
 import ReceiptButton from "../../components/ReceiptButton";
+import AppTextInput from "../../components/AppTextInput";
 import AppButton from "../../components/AppButton";
-import { GET_EVENT } from "../../client/queries/eventQueries"
-import { useQuery } from "@apollo/client"
+import { GET_EVENT } from "../../client/queries/eventQueries";
+import { CREATE_RECEIPT } from "../../client/queries/receiptQueries";
+import { useQuery, useMutation } from "@apollo/client";
 import { AuthContext } from "../../context/authContext";
 
 const SingleEvent = (props) => {
-  const { currentEventId } = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
+  const { currentEventId } = useContext(AuthContext);
+
+  const [receiptName, setReceiptName] = useState("")
+
   const {data, loading, error} = useQuery(GET_EVENT, {
-    variables: { id: currentEventId} // need to use Event Id here
+    variables: { id: currentEventId},
+    fetchPolicy: "cache-and-network"
   })
-  console.log(currentEventId)
+
+  const [addReceipt] = useMutation(CREATE_RECEIPT, {
+    refetchQueries: [{
+      query: GET_EVENT,
+      variables: {id: currentEventId}
+    }]
+  }
+);
+
+
   if (loading) {
     return <Text>Loading</Text>
   }
@@ -29,15 +45,30 @@ const SingleEvent = (props) => {
   if (!data || !data.event) {
     return <Text>No Data</Text>
   }
+  console.log(receiptName)
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}
       >
-        <Text>{data.event.eventName}</Text>
-        <AppButton
-          title="New Receipt"
-        />
-         <View style={styles.receiptContainer}>
+        <Text style={styles.text}>{data.event.eventName}</Text>
+        <View style={styles.createReceiptContainer}>
+          <Text style={styles.text}>New Receipt</Text>
+          <AppTextInput
+            keyboardTyp="default"
+            placeholder="Name"
+            onChangeText={receiptName => setReceiptName(receiptName)}
+          />
+          <AppButton
+            title="Create"
+            onPress={() => {
+              addReceipt({variables: {
+                name: String(receiptName),
+                eventId: Number(currentEventId),
+                cardDownId: Number(user)
+            }})}}
+          />
+        </View>
+        <View style={styles.receiptContainer}>
           <Text style={styles.text}>ACTIVE RECEIPTS</Text>
           {data.event.receipts && data.event.receipts.map(receipt=>{
             if(!receipt.isPaid){
@@ -69,6 +100,18 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 20,
     fontWeight: "bold",
+  },
+  createReceiptContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: colors.primary,
+    borderRadius: 25,
+    padding: 15,
+    height: 180,
+    width: "95%",
+    marginVertical: 10
   },
   receiptContainer: {
     backgroundColor: colors.primary,
