@@ -12,21 +12,23 @@ import AppButton from "../../components/AppButton"
 import AppSearchInput from "../../components/AppSearchInput"
 import { GET_ACTIVE_USER_EVENTS } from "../../client/queries/userQueries"
 import { GET_USER_EVENTS } from "../../client/queries/userQueries"
-import { JOIN_EVENT } from "../../client/queries/eventQueries"
+import { JOIN_EVENT, GET_EVENT } from "../../client/queries/eventQueries"
 import { useQuery, useMutation } from "@apollo/client"
 import { AuthContext } from "../../context/authContext"
 
 // How many characters should each passcode be?
 
 const Events = ({ navigation }) => {
-  const { token } = useContext(AuthContext)
+  // const { token } = useContext(AuthContext)
   const { user } = useContext(AuthContext)
+  const { setCurrentEventId } = useContext(AuthContext)
   const [id, setId] = useState(user)
   const [passcode, setPasscode] = useState()
   const [joinEvent] = useMutation(JOIN_EVENT)
-
+  console.log('user (in events)', user)
   const { loading, error, data } = useQuery(GET_ACTIVE_USER_EVENTS, {
-    variables: { id: user }
+    variables: { id: user },
+    fetchPolicy: "cache-and-network"
   })
   console.log(data)
   if (loading) {
@@ -35,6 +37,9 @@ const Events = ({ navigation }) => {
   if (error) {
     console.error(error)
     return <Text>Error</Text>
+  }
+  if (!data || !user) {
+    return <Text>No Data</Text>
   }
 
   return (
@@ -69,13 +74,20 @@ const Events = ({ navigation }) => {
         <View style={styles.activeEventList}>
           <Text>ACTIVE EVENTS</Text>
         </View>
-        {user === null ? (
-          <Text>No Events</Text>
-        ) : (
+        {
           data.activeUserEvents.map(event => (
-            <AppButton key={event.id} title={event.eventName} />
+            <AppButton
+            key={event.id}
+            title={event.eventName}
+            eventId={event.id}
+            onPress={() => {
+              setCurrentEventId(event.id);
+              navigation.navigate("SingleEvent");
+            }
+          }
+            />
           ))
-        )}
+        }
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )

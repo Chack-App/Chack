@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,23 +12,28 @@ import ReceiptButton from "../../components/ReceiptButton";
 import AppButton from "../../components/AppButton";
 import { GET_EVENT } from "../../client/queries/eventQueries"
 import { useQuery } from "@apollo/client"
+import { AuthContext } from "../../context/authContext";
 
-
-const SingleEvent = () => {
+const SingleEvent = (props) => {
+  const { currentEventId } = useContext(AuthContext)
   const {data, loading, error} = useQuery(GET_EVENT, {
-    variables: { id: 4 } // need to use Event Id here
+    variables: { id: currentEventId} // need to use Event Id here
   })
-
+  console.log(currentEventId)
   if (loading) {
     return <Text>Loading</Text>
   }
   if (error) {
     return <Text>Error</Text>
   }
+  if (!data || !data.event) {
+    return <Text>No Data</Text>
+  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}
       >
+        <Text>{data.event.eventName}</Text>
         <AppButton
           title="New Receipt"
         />
