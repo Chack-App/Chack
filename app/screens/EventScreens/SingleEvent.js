@@ -16,9 +16,10 @@ import { CREATE_RECEIPT } from "../../client/queries/receiptQueries";
 import { useQuery, useMutation } from "@apollo/client";
 import { AuthContext } from "../../context/authContext";
 
-const SingleEvent = (props) => {
+const SingleEvent = ({ navigation }) => {
   const { user } = useContext(AuthContext);
   const { currentEventId } = useContext(AuthContext);
+  const { setCurrentReceiptId } = useContext(AuthContext);
 
   const [receiptName, setReceiptName] = useState("")
 
@@ -31,7 +32,10 @@ const SingleEvent = (props) => {
     refetchQueries: [{
       query: GET_EVENT,
       variables: {id: currentEventId}
-    }]
+    }],
+    onCompleted(data) {
+      setCurrentReceiptId(data.addReceipt.id);
+    }
   }
 );
 
@@ -62,17 +66,29 @@ const SingleEvent = (props) => {
             title="Create"
             onPress={() => {
               addReceipt({variables: {
-                name: String(receiptName),
+                name: receiptName,
                 eventId: Number(currentEventId),
                 cardDownId: Number(user)
-            }})}}
+              }});
+              setReceiptName("");
+              navigation.navigate("ManualItemEntry")
+          }}
           />
         </View>
         <View style={styles.receiptContainer}>
           <Text style={styles.text}>ACTIVE RECEIPTS</Text>
           {data.event.receipts && data.event.receipts.map(receipt=>{
             if(!receipt.isPaid){
-              return <ReceiptButton key={receipt.id} title={receipt.name} />
+              return (
+                <ReceiptButton
+                  key={receipt.id}
+                  title={receipt.name}
+                  onPress={() => {
+                    setCurrentReceiptId(receipt.id);
+                    navigation.navigate("ManualItemEntry")
+                  }}
+                />
+              )
             }
           })}
           </View>
