@@ -85,7 +85,7 @@ const SingleEvent = ({ navigation }) => {
                   title={receipt.name}
                   onPress={() => {
                     setCurrentReceiptId(receipt.id);
-                    navigation.navigate("ManualItemEntry")
+                    navigation.navigate("SingleReceipt")
                   }}
                 />
               )
