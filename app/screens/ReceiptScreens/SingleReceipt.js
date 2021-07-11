@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,13 +11,17 @@ import {
 } from "react-native"
 import colors from "../../config/colors"
 import ItemButton from "../../components/ItemButton"
+import AppButton from "../../components/AppButton"
 import { useQuery } from "@apollo/client"
 import { GET_RECEIPT } from "../../client/queries/receiptQueries"
+import { AuthContext } from "../../context/authContext"
 
 const SingleReceipt = () => {
-  const id = 1
+  const { user } = useContext(AuthContext)
+  const { currentReceiptId } = useContext(AuthContext)
+
   const { loading, error, data } = useQuery(GET_RECEIPT, {
-    variables: { id }
+    variables: { id: currentReceiptId }
   })
   if (loading) {
     return <Text>Loading</Text>
@@ -27,14 +31,14 @@ const SingleReceipt = () => {
     return <Text>Error</Text>
   }
   let subTotal = 0
-  
+  console.log(data)
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
         <View style={styles.itemContainer}>
           {data.receipt.items &&
             data.receipt.items.map(item => {
-                
+
               subTotal += item.price / 100
               return (
                 <ItemButton
@@ -46,10 +50,18 @@ const SingleReceipt = () => {
                 />
               )
             })}
+          <View style={styles.priceContainer}>
+            <Text style={styles.text}>Subtotal: ${subTotal}</Text>
+          </View>
         </View>
-        <View style={styles.priceContainer}>
-          <Text style={styles.text}>Subtotal: ${subTotal}</Text>
-        </View>
+        {Number(user) === data.receipt.cardDownId ?
+          (<View>
+            <Text style={styles.text}>You are the card down person</Text>
+            <AppButton
+              title="Approve Selections"
+            />
+          </View>) : (
+          <View></View>)}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )
@@ -58,9 +70,9 @@ const SingleReceipt = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "flex-start",
+    justifyContent: "space-between",
     // alignItems: "center",
-    backgroundColor: colors.secondary
+    backgroundColor: colors.secondary,
   },
   itemContainer: {
     justifyContent: "flex-start",
