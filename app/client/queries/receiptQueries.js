@@ -8,6 +8,7 @@ query GetReceipt($id: ID!) {
     isPaid
     cardDownId
     items{
+      id
       name
       price
       isClaimed
