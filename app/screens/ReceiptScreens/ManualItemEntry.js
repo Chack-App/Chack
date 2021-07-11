@@ -12,15 +12,26 @@ import colors from "../../config/colors"
 import AppButton from "../../components/AppButton"
 import AppTextInput from "../../components/AppTextInput"
 import { AuthContext } from "../../context/authContext"
+import { ADD_ITEMS } from "../../client/queries/itemQueries"
+import { GET_RECEIPT } from "../../client/queries/receiptQueries"
+import { useMutation } from "@apollo/client"
 
 // How many characters should each passcode be?
 
-const ManualItemEntry = () => {
+const ManualItemEntry = ({ navigation }) => {
   const { currentReceiptId } = useContext(AuthContext)
-  console.log(currentReceiptId);
+
   const [itemList, setItemList] = useState([])
   const [itemName, setItemName] = useState()
   const [itemPrice, setItemPrice] = useState()
+
+  const [addItems] = useMutation(ADD_ITEMS, {
+    refetchQueries: [{
+      query: GET_RECEIPT,
+      variables: {id: currentReceiptId}
+    }]
+  })
+
   const handleChange = (event, index, type) => {
     console.log('event', event)
     const updatedItemList = [...itemList];
@@ -46,7 +57,6 @@ const ManualItemEntry = () => {
               setItemList([{name: itemName, price: itemPrice}, ...itemList])
               setItemName("")
               setItemPrice("")
-              console.log('current receipt:', currentReceiptId)
             }}
           />
         </View>
@@ -67,7 +77,19 @@ const ManualItemEntry = () => {
           </View>
         ) : <Text>No Items</Text>}
         </ScrollView>
-        <AppButton title="Confirm All" />
+        <AppButton
+          title="Confirm All"
+          onPress={() => {
+            const itemListIntegers = itemList.map((item) => {
+              return {name: item.name, price: Math.floor(Number(item.price) * 100)}
+            });
+            addItems({variables: {
+              items: itemListIntegers,
+              receiptId: currentReceiptId
+            }});
+            navigation.navigate("SingleReceipt");
+        }}
+        />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )
