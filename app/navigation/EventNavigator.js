@@ -2,12 +2,12 @@ import React from "react"
 import colors from "../config/colors"
 import Events from "../screens/EventScreens/Events"
 import CreateEvent from "../screens/EventScreens/CreateEvent"
-import { createStackNavigator } from "@react-navigation/stack";
-import SingleEvent from "../screens/EventScreens/SingleEvent";
+import { createStackNavigator } from "@react-navigation/stack"
+import SingleEvent from "../screens/EventScreens/SingleEvent"
 // Added Receipt components to event navigator:
-import ManualItemEntry from "../screens/ReceiptScreens/ManualItemEntry";
-import SingleReceipt from "../screens/ReceiptScreens/SingleReceipt";
-
+import ManualItemEntry from "../screens/ReceiptScreens/ManualItemEntry"
+import SingleReceipt from "../screens/ReceiptScreens/SingleReceipt"
+import CameraScreen from "../screens/ReceiptScreens/CameraScreen"
 
 const Stack = createStackNavigator()
 
@@ -38,6 +38,11 @@ const EventNavigator = () => (
       name="ManualItemEntry"
       component={ManualItemEntry}
       options={{ ...gatewayHeaderStyles, headerTitle: "Manual Item Entry" }}
+    />
+    <Stack.Screen
+      name="CameraScreen"
+      component={CameraScreen}
+      options={{ ...gatewayHeaderStyles, headerTitle: "CameraScreen" }}
     />
   </Stack.Navigator>
 )
