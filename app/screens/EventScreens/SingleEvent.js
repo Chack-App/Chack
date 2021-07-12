@@ -1,44 +1,44 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState } from "react"
 import {
   SafeAreaView,
   StyleSheet,
   View,
   Text,
   Keyboard,
-  TouchableWithoutFeedback,
-} from "react-native";
-import colors from "../../config/colors";
-import ReceiptButton from "../../components/ReceiptButton";
-import AppTextInput from "../../components/AppTextInput";
-import AppButton from "../../components/AppButton";
-import { GET_EVENT } from "../../client/queries/eventQueries";
-import { CREATE_RECEIPT } from "../../client/queries/receiptQueries";
-import { useQuery, useMutation } from "@apollo/client";
-import { AuthContext } from "../../context/authContext";
+  TouchableWithoutFeedback
+} from "react-native"
+import colors from "../../config/colors"
+import ReceiptButton from "../../components/ReceiptButton"
+import AppTextInput from "../../components/AppTextInput"
+import AppButton from "../../components/AppButton"
+import { GET_EVENT } from "../../client/queries/eventQueries"
+import { CREATE_RECEIPT } from "../../client/queries/receiptQueries"
+import { useQuery, useMutation } from "@apollo/client"
+import { AuthContext } from "../../context/authContext"
 
 const SingleEvent = ({ navigation }) => {
-  const { user } = useContext(AuthContext);
-  const { currentEventId } = useContext(AuthContext);
-  const { setCurrentReceiptId } = useContext(AuthContext);
+  const { user } = useContext(AuthContext)
+  const { currentEventId } = useContext(AuthContext)
+  const { setCurrentReceiptId } = useContext(AuthContext)
 
   const [receiptName, setReceiptName] = useState("")
 
-  const {data, loading, error} = useQuery(GET_EVENT, {
-    variables: { id: currentEventId},
+  const { data, loading, error } = useQuery(GET_EVENT, {
+    variables: { id: currentEventId },
     fetchPolicy: "cache-and-network"
   })
 
   const [addReceipt] = useMutation(CREATE_RECEIPT, {
-    refetchQueries: [{
-      query: GET_EVENT,
-      variables: {id: currentEventId}
-    }],
+    refetchQueries: [
+      {
+        query: GET_EVENT,
+        variables: { id: currentEventId }
+      }
+    ],
     onCompleted(data) {
-      setCurrentReceiptId(data.addReceipt.id);
+      setCurrentReceiptId(data.addReceipt.id)
     }
-  }
-);
-
+  })
 
   if (loading) {
     return <Text>Loading</Text>
@@ -52,8 +52,7 @@ const SingleEvent = ({ navigation }) => {
   console.log(receiptName)
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView style={styles.container}
-      >
+      <SafeAreaView style={styles.container}>
         <Text style={styles.text}>{data.event.eventName}</Text>
         <View style={styles.createReceiptContainer}>
           <Text style={styles.text}>New Receipt</Text>
@@ -62,7 +61,7 @@ const SingleEvent = ({ navigation }) => {
             placeholder="Name"
             onChangeText={receiptName => setReceiptName(receiptName)}
           />
-          <AppButton
+          {/* <AppButton
             title="Create"
             onPress={() => {
               addReceipt({variables: {
@@ -73,32 +72,49 @@ const SingleEvent = ({ navigation }) => {
               setReceiptName("");
               navigation.navigate("ManualItemEntry")
           }}
+          /> */}
+
+          <AppButton
+            title="Create"
+            onPress={() => {
+              addReceipt({
+                variables: {
+                  name: receiptName,
+                  eventId: Number(currentEventId),
+                  cardDownId: Number(user)
+                }
+              })
+              setReceiptName("")
+              navigation.navigate("CameraScreen")
+            }}
           />
         </View>
         <View style={styles.receiptContainer}>
           <Text style={styles.text}>ACTIVE RECEIPTS</Text>
-          {data.event.receipts && data.event.receipts.map(receipt=>{
-            if(!receipt.isPaid){
-              return (
-                <ReceiptButton
-                  key={receipt.id}
-                  title={receipt.name}
-                  onPress={() => {
-                    setCurrentReceiptId(receipt.id);
-                    navigation.navigate("SingleReceipt")
-                  }}
-                />
-              )
-            }
-          })}
-          </View>
+          {data.event.receipts &&
+            data.event.receipts.map(receipt => {
+              if (!receipt.isPaid) {
+                return (
+                  <ReceiptButton
+                    key={receipt.id}
+                    title={receipt.name}
+                    onPress={() => {
+                      setCurrentReceiptId(receipt.id)
+                      navigation.navigate("SingleReceipt")
+                    }}
+                  />
+                )
+              }
+            })}
+        </View>
         <View style={styles.receiptContainer}>
           <Text style={styles.text}>PAST RECEIPTS</Text>
-          {data.event.receipts && data.event.receipts.map(receipt=>{
-            if(receipt.isPaid){
-              return <ReceiptButton key={receipt.id} title={receipt.name} />
-            }
-          })}
+          {data.event.receipts &&
+            data.event.receipts.map(receipt => {
+              if (receipt.isPaid) {
+                return <ReceiptButton key={receipt.id} title={receipt.name} />
+              }
+            })}
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
@@ -110,12 +126,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.secondary
   },
   text: {
     color: colors.white,
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: "bold"
   },
   createReceiptContainer: {
     flexDirection: "row",
@@ -138,6 +154,6 @@ const styles = StyleSheet.create({
     width: "95%",
     marginVertical: 10
   }
-});
+})
 
-export default SingleEvent;
+export default SingleEvent

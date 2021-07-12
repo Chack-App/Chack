@@ -1,9 +1,8 @@
 import React from "react"
 import colors from "../config/colors"
-import { createStackNavigator } from "@react-navigation/stack";
-import SingleReceipt from "../screens/ReceiptScreens/SingleReceipt";
+import { createStackNavigator } from "@react-navigation/stack"
+import SingleReceipt from "../screens/ReceiptScreens/SingleReceipt"
 import ManualItemEntry from "../screens/ReceiptScreens/ManualItemEntry"
-
 
 const Stack = createStackNavigator()
 
