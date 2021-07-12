@@ -63,7 +63,7 @@ const LoginScreen = ({ navigation }) => {
             await AsyncStorage.clear()
             await AsyncStorage.setItem("USER", data.login.id)
             await AsyncStorage.setItem("TOKEN", data.login.token)
-            console.log(data.login)
+            // console.log(data.login)
             setToken(data.login.token)
             setUser(data.login.id)
           }}

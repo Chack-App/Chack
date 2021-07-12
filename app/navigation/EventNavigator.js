@@ -4,6 +4,9 @@ import Events from "../screens/EventScreens/Events"
 import CreateEvent from "../screens/EventScreens/CreateEvent"
 import { createStackNavigator } from "@react-navigation/stack";
 import SingleEvent from "../screens/EventScreens/SingleEvent";
+// Added Receipt components to event navigator:
+import ManualItemEntry from "../screens/ReceiptScreens/ManualItemEntry";
+import SingleReceipt from "../screens/ReceiptScreens/SingleReceipt";
 
 
 const Stack = createStackNavigator()
@@ -24,6 +27,17 @@ const EventNavigator = () => (
       name="SingleEvent"
       component={SingleEvent}
       options={{ ...gatewayHeaderStyles, headerTitle: "Your Event" }}
+    />
+    {/* Moved receipt navigation to event navigator below */}
+    <Stack.Screen
+      name="SingleReceipt"
+      component={SingleReceipt}
+      options={{ ...gatewayHeaderStyles, headerTitle: "Your Receipt" }}
+    />
+    <Stack.Screen
+      name="ManualItemEntry"
+      component={ManualItemEntry}
+      options={{ ...gatewayHeaderStyles, headerTitle: "Manual Item Entry" }}
     />
   </Stack.Navigator>
 )

@@ -8,6 +8,7 @@ query GetReceipt($id: ID!) {
     isPaid
     cardDownId
     items{
+      id
       name
       price
       isClaimed
@@ -20,6 +21,7 @@ query GetReceipt($id: ID!) {
 export const CREATE_RECEIPT = gql`
 mutation AddReceipt($cardDownId: Int, $eventId: Int, $name: String) {
   addReceipt(cardDownId: $cardDownId, eventId: $eventId, name: $name) {
+    id
     cardDownId
     eventId
     name
