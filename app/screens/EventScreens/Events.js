@@ -22,10 +22,20 @@ const Events = ({ navigation }) => {
   // const { token } = useContext(AuthContext)
   const { user } = useContext(AuthContext)
   const { setCurrentEventId } = useContext(AuthContext)
+
   const [id, setId] = useState(user)
   const [passcode, setPasscode] = useState()
-  const [joinEvent] = useMutation(JOIN_EVENT)
-  // console.log('user (in events)', user)
+
+  const [joinEvent] = useMutation(JOIN_EVENT, {
+    refetchQueries: [{
+      query: GET_ACTIVE_USER_EVENTS,
+      variables: {id: user}
+    }],
+    onCompleted(data) {
+      setCurrentEventId(data.joinEvent.id)
+    }
+  })
+
   const { loading, error, data } = useQuery(GET_ACTIVE_USER_EVENTS, {
     variables: { id: user },
     fetchPolicy: "cache-and-network"
