@@ -4,7 +4,7 @@ const PORT = process.env.PORT || 5000
 
 const vision = require("@google-cloud/vision")
 
-async function readReceipt(imguri) {
+export default async function readReceipt(imguri) {
   // Creates a client
   const client = new vision.ImageAnnotatorClient({
     keyFilename: "./GoogleKey.json"
@@ -22,7 +22,7 @@ async function readReceipt(imguri) {
   let textArr = []
   detections.forEach(text => textArr.push(text))
 
-  console.log("ORIGINAL ---->", textArr)
+  // console.log("ORIGINAL ---->", textArr)
 
   let returnObj = {}
 
@@ -35,7 +35,7 @@ async function readReceipt(imguri) {
   return returnObj
 }
 
-readReceipt(/Users/jasonchen/Fullstack/senior-phase/capstone/Chack/assets/mickyDsR.jpeg)
+readReceipt("assets/foodReceipt2.jpeg")
 
 // const result = {
 //   '1': [
