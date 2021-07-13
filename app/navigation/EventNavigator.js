@@ -5,6 +5,7 @@ import CreateEvent from "../screens/EventScreens/CreateEvent"
 import { createStackNavigator } from "@react-navigation/stack"
 import SingleEvent from "../screens/EventScreens/SingleEvent"
 // Added Receipt components to event navigator:
+import SelectCamera from "../screens/ReceiptScreens/SelectCamera"
 import ManualItemEntry from "../screens/ReceiptScreens/ManualItemEntry"
 import SingleReceipt from "../screens/ReceiptScreens/SingleReceipt"
 import CameraScreen from "../screens/ReceiptScreens/CameraScreen"
@@ -32,14 +33,19 @@ const EventNavigator = () => (
     {/* Moved receipt navigation to event navigator below */}
     <Stack.Screen
       name="SingleReceipt"
-      // component={SingleReceipt}
-      component={SummaryScreen}
+      component={SingleReceipt}
+      // component={SummaryScreen}
       options={{ ...gatewayHeaderStyles, headerTitle: "Your Receipt" }}
     />
     <Stack.Screen
       name="SummaryScreen"
       component={SummaryScreen}
       options={{ ...gatewayHeaderStyles, headerTitle: "Receipt Summary" }}
+    />
+    <Stack.Screen
+      name="SelectCamera"
+      component={SelectCamera}
+      options={{ ...gatewayHeaderStyles, headerTitle: "New Receipt" }}
     />
     <Stack.Screen
       name="ManualItemEntry"

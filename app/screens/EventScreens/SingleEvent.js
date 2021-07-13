@@ -29,7 +29,7 @@ const SingleEvent = ({ navigation }) => {
     fetchPolicy: "cache-and-network"
   })
 
-  console.log(data)
+  // console.log(data)
 
   const [addReceipt] = useMutation(CREATE_RECEIPT, {
     refetchQueries: [
@@ -52,7 +52,7 @@ const SingleEvent = ({ navigation }) => {
   if (!data || !data.event) {
     return <Text>No Data</Text>
   }
-  console.log(receiptName)
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -64,19 +64,6 @@ const SingleEvent = ({ navigation }) => {
             placeholder="Name"
             onChangeText={receiptName => setReceiptName(receiptName)}
           />
-          {/* <AppButton
-            title="Create"
-            onPress={() => {
-              addReceipt({variables: {
-                name: receiptName,
-                eventId: Number(currentEventId),
-                cardDownId: Number(user)
-              }});
-              setReceiptName("");
-              navigation.navigate("ManualItemEntry")
-          }}
-          /> */}
-
           <AppButton
             title="Create"
             onPress={() => {
@@ -88,7 +75,7 @@ const SingleEvent = ({ navigation }) => {
                 }
               })
               setReceiptName("")
-              navigation.navigate("CameraScreen")
+              navigation.navigate("SelectCamera")
             }}
           />
         </View>

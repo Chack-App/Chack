@@ -31,14 +31,21 @@ const SummaryScreen = () => {
     console.error(error)
     return <Text>Error</Text>
   }
-  // console.log(data)
+  if (!data) {
+    return <Text>No Data</Text>
+  }
+
+  console.log('data...', data)
   // console.log(currentEventUsers)
 
   const isCardDownUser = user === data.receipt.cardDownId
 
   //need to set current user's subtotal
   let userSubtotal = 0
-  let filteredItems = data.receipt.items.filter(
+  let claimedItems = data.receipt.items.filter(
+    item => item.users[0]
+  )
+  let filteredItems = claimedItems.filter(
     item => item.users[0].id === user
   )
   // console.log(filteredItems)
@@ -51,7 +58,7 @@ const SummaryScreen = () => {
         {currentEventUsers &&
           currentEventUsers.map(user => {
             //need filtered list
-            const itemList = data.receipt.items
+            const itemList = claimedItems
             const filteredUserItems = itemList.filter(
               item => item.users[0].id === user.id
             )
