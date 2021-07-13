@@ -16,6 +16,7 @@ export const LOGIN = gql`
       email
       lastName
       id
+      payPalMe
     }
   }
 `
@@ -26,18 +27,21 @@ export const SIGNUP = gql`
     $password: String!
     $firstName: String!
     $lastName: String!
+    $payPalMe: String!
   ) {
     signup(
       email: $email
       password: $password
       firstName: $firstName
       lastName: $lastName
+      payPalMe: $payPalMe
     ) {
       token
       email
       id
       firstName
       lastName
+      payPalMe
     }
   }
 `

@@ -2,7 +2,26 @@ import React from "react"
 import { StyleSheet, Text, TouchableOpacity,View } from "react-native"
 import colors from "../config/colors"
 
-function ItemButton({ title, price, onPress }) {
+function ItemButton({ title, price, onPress, isToggled, isClaimed }) {
+  const styles = StyleSheet.create({
+    button: {
+      backgroundColor: isToggled ? colors.isSelected: colors.primary,
+      borderRadius: 25,
+      justifyContent: "space-between",
+      flexDirection: "row",
+      alignItems: "center",
+      padding: 15,
+      width: "95%",
+      marginVertical: 10
+      
+    },
+    text: {
+      color: colors.white,
+      fontSize: 20,
+      // textTransform: "uppercase",
+      fontWeight: "bold"
+    }
+  })
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
       <View>
@@ -15,24 +34,5 @@ function ItemButton({ title, price, onPress }) {
   )
 }
 
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: colors.primary,
-    borderRadius: 25,
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 15,
-    width: "95%",
-    marginVertical: 10
-    
-  },
-  text: {
-    color: colors.white,
-    fontSize: 20,
-    // textTransform: "uppercase",
-    fontWeight: "bold"
-  }
-})
 
 export default ItemButton

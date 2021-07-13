@@ -3,5 +3,6 @@ export default {
   secondary: "#FFD393",
   white: "white",
   black: "#000",
-  placeholderColor: '#e7e7e7'
+  placeholderColor: "#e7e7e7",
+  isSelected: "#48D226"
 };
