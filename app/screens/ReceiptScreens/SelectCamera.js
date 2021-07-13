@@ -19,11 +19,11 @@ const SelectCamera = ({ navigation }) => {
         <View />
         <AppButton
           title="Scan Receipt"
-          onPress={navigation.navigate("CameraScreen")}
+          onPress={() => navigation.navigate("CameraScreen")}
         />
         <AppButton
           title="Enter Items Manually"
-          onPress={navigation.navigate("ManualItemEntry")}
+          onPress={() => navigation.navigate("ManualItemEntry")}
         />
       </SafeAreaView>
     </TouchableWithoutFeedback>
