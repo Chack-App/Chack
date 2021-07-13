@@ -44,6 +44,7 @@ const SingleReceipt = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
+
         <ScrollView>
           <View style={styles.itemContainer}>
             {data.receipt.items &&
@@ -71,6 +72,7 @@ const SingleReceipt = () => {
         <AppButton title="Refresh List" /> 
 
         </View>
+
         {Number(user) === data.receipt.cardDownId && (
           <>
             <Text style={styles.text}>You are the card down person</Text>
