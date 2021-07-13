@@ -13,15 +13,22 @@ import {
 import colors from "../../config/colors"
 import ItemButton from "../../components/ItemButton"
 import AppButton from "../../components/AppButton"
-import { useQuery } from "@apollo/client"
+import { useQuery, useMutation } from "@apollo/client"
 import { GET_RECEIPT } from "../../client/queries/receiptQueries"
+import { CLAIM_ITEM } from "../../client/queries/itemQueries"
 import { AuthContext } from "../../context/authContext"
 
 const SingleReceipt = ({ navigation }) => {
   const { user } = useContext(AuthContext)
   const { currentReceiptId } = useContext(AuthContext)
-  const [myItems, setMyItems] = useState([])
-
+  const [claimItem] = useMutation(CLAIM_ITEM, {
+    refetchQueries: [
+      { query: GET_RECEIPT, variables: { id: currentReceiptId } }
+    ], 
+    onCompleted(data){
+      console.log(data)
+    }
+  })
   const { loading, error, data } = useQuery(GET_RECEIPT, {
     variables: { id: currentReceiptId }
   })
@@ -31,16 +38,9 @@ const SingleReceipt = ({ navigation }) => {
   if (error) {
     return <Text>Error</Text>
   }
+  let claimedItems = data.receipt.items.filter(item => item.users[0]) // all claimed items
+  let filteredItems = claimedItems.filter(item => item.users[0].id === user) // items that belong to user
   let subTotal = 0
-  //console.log(data)
-
-  const toggle = item => {
-    const itemId = item.id
-    const indexInState = myItems.indexOf(item)
-    indexInState === -1
-      ? setMyItems([...myItems, item])
-      : setMyItems(myItems => myItems.filter(item => item.id != itemId))
-  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -55,8 +55,11 @@ const SingleReceipt = ({ navigation }) => {
                     title={item.name}
                     price={item.price / 100}
                     isClaimed={item.isClaimed}
-                    isToggled={myItems.indexOf(item) != -1}
-                    onPress={() => toggle(item)}
+                    isMine={filteredItems.includes(item)}
+                    onPress={() => claimItem({variables: {
+                      userId: user,
+                      itemId: item.id
+                    }})}
                   />
                 )
               })}
@@ -65,21 +68,20 @@ const SingleReceipt = ({ navigation }) => {
             </View>
           </View>
         </ScrollView>
-        <View style={{ alignItems: "center" }}>
-          {/* <View >
-        <AppButton title="Claim Items" />
-        <AppButton title="Refresh List" />
-
-        </View> */}
+        <View>
+          <View style={styles.buttonContainer}>
+            {/* <AppButton title="Claim Items" width="47.5%" /> */}
+            <AppButton title="Refresh List" />
+          </View>
 
           {Number(user) === data.receipt.cardDownId && (
-            <>
+            <View style={{ alignItems: "center" }}>
               <Text style={styles.text}>You are the card down person</Text>
               <AppButton
                 title="Approve Selections"
                 onPress={() => navigation.navigate("SummaryScreen")}
               />
-            </>
+            </View>
           )}
         </View>
       </SafeAreaView>
@@ -109,6 +111,10 @@ const styles = StyleSheet.create({
   itemContainer: {
     justifyContent: "flex-start",
     alignItems: "center"
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around"
   },
   text: {
     color: colors.white,
