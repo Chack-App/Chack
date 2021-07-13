@@ -19,13 +19,19 @@ import { AuthContext } from "../../context/authContext"
 
 const CreateEvent = ({ navigation }) => {
   const { user } = useContext(AuthContext)
+  const { setCurrentEventId } = useContext(AuthContext)
+
   const [eventName, setEventName] = useState();
   const [eventDesc, setEventDesc] = useState();
+
   const [addEvent] = useMutation(CREATE_EVENT, {
       refetchQueries: [{
         query: GET_ACTIVE_USER_EVENTS,
         variables: {id: user}
-      }]
+      }],
+      onCompleted(data) {
+        setCurrentEventId(data.addEvent.id)
+      }
     }
     // {
     //   update (cache, { data }) {
@@ -68,7 +74,11 @@ const CreateEvent = ({ navigation }) => {
           <AppButton
             title="Create Event"
             onPress={() => {
-              addEvent({variables: {eventName, eventDesc}});
+              addEvent({variables: {
+                eventName,
+                eventDesc,
+                userId: user
+              }});
               navigation.navigate("SingleEvent");
             }}
           />

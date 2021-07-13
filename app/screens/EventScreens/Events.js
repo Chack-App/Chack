@@ -5,7 +5,8 @@ import {
   View,
   Text,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Alert
 } from "react-native"
 import colors from "../../config/colors"
 import AppButton from "../../components/AppButton"
@@ -22,10 +23,21 @@ const Events = ({ navigation }) => {
   // const { token } = useContext(AuthContext)
   const { user } = useContext(AuthContext)
   const { setCurrentEventId } = useContext(AuthContext)
+
   const [id, setId] = useState(user)
   const [passcode, setPasscode] = useState()
-  const [joinEvent] = useMutation(JOIN_EVENT)
-  // console.log('user (in events)', user)
+
+  const [joinEvent] = useMutation(JOIN_EVENT, {
+    refetchQueries: [{
+      query: GET_ACTIVE_USER_EVENTS,
+      variables: {id: user}
+    }],
+    onCompleted(data) {
+      console.log(data)
+      setCurrentEventId(data.joinEvent.id)
+    }
+  })
+
   const { loading, error, data } = useQuery(GET_ACTIVE_USER_EVENTS, {
     variables: { id: user },
     fetchPolicy: "cache-and-network"
@@ -40,6 +52,26 @@ const Events = ({ navigation }) => {
   }
   if (!data || !user) {
     return <Text>No Data</Text>
+  }
+
+  const handleJoin = () => {
+    if (passcode.length !== 4) {
+      Alert.alert(
+        "Invalid Passcode",
+        "Please enter 4 digit passcode"
+      ),
+      [{
+        text: "OK"
+      }]
+    } else {
+      joinEvent({
+        variables: {
+          passcode,
+          userId: user
+        }
+      })
+      navigation.navigate("SingleEvent")
+    }
   }
 
   return (
@@ -57,12 +89,7 @@ const Events = ({ navigation }) => {
           />
           <AppButton
             title="Join"
-            onPress={() => {
-              joinEvent({
-                variables: { passcode }
-              })
-              navigation.navigate("SingleEvent")
-            }}
+            onPress={handleJoin}
           />
           {/* <AppTextInput/> */}
         </View>

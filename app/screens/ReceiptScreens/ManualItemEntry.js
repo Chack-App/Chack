@@ -6,7 +6,8 @@ import {
   View,
   Text,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Button
 } from "react-native"
 import colors from "../../config/colors"
 import AppButton from "../../components/AppButton"
@@ -32,10 +33,15 @@ const ManualItemEntry = ({ navigation }) => {
     }]
   })
 
-  const handleChange = (event, index, type) => {
-    console.log('event', event)
+  const handleChange = (text, index, type) => {
     const updatedItemList = [...itemList];
-    updatedItemList[index][type] = event;
+    updatedItemList[index][type] = text;
+    setItemList(updatedItemList);
+  }
+
+  const handleDelete = (index) => {
+    const updatedItemList = [...itemList];
+    updatedItemList.splice(index, 1)
     setItemList(updatedItemList);
   }
     return (
@@ -43,14 +49,18 @@ const ManualItemEntry = ({ navigation }) => {
       <SafeAreaView style={styles.container}>
         <View style={styles.itemEntryContainer}>
           <AppTextInput
+            value={itemName}
             icon="shopping-outline"
             placeholder="Item Name"
             onChangeText={text => setItemName(text)}/>
           <AppTextInput
+            value={itemPrice}
             icon="cash"
             placeholder="Item Price"
             keyboardType="numeric"
-            onChangeText={text => setItemPrice(Number(text).toFixed(2))}/>
+            // onChangeText={text => setItemPrice(Number(text).toFixed(2))}
+            onChangeText={text => setItemPrice(text)}
+            />
           <AppButton
             title="Add Item"
             onPress={() => {
@@ -73,9 +83,15 @@ const ManualItemEntry = ({ navigation }) => {
               placeholder="Price"
               keyboardType="numeric"
               onChangeText={(text) => handleChange(text, index, "price")}
-          />
+            />
+            <AppButton
+              title="DELETE"
+              onPress={(text) => {
+                handleDelete(index)
+              }}
+            />
           </View>
-        ) : <Text>No Items</Text>}
+        ) : <Text style={styles.text}>No Items</Text>}
         </ScrollView>
         <AppButton
           title="Confirm All"
@@ -120,7 +136,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     borderRadius: 15,
     padding: 5,
-    height: 130,
+    height: 200,
     width: "95%",
     marginVertical: 5
   },
