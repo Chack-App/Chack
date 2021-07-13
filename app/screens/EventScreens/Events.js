@@ -32,6 +32,7 @@ const Events = ({ navigation }) => {
       variables: {id: user}
     }],
     onCompleted(data) {
+      console.log(data)
       setCurrentEventId(data.joinEvent.id)
     }
   })
@@ -69,7 +70,10 @@ const Events = ({ navigation }) => {
             title="Join"
             onPress={() => {
               joinEvent({
-                variables: { passcode }
+                variables: {
+                  passcode,
+                  userId: user
+                }
               })
               navigation.navigate("SingleEvent")
             }}

@@ -50,8 +50,8 @@ export const CREATE_EVENT = gql`
 `
 
 export const JOIN_EVENT = gql`
-  mutation JoinAnEvent($passcode: String) {
-    joinEvent(passcode: $passcode) {
+  mutation JoinAnEvent($passcode: String, $userId: ID!) {
+    joinEvent(passcode: $passcode, userId: $userId) {
       id
       passcode
     }
