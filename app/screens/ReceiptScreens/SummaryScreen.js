@@ -36,9 +36,11 @@ const SummaryScreen = () => {
 
   //need to set current user's subtotal
   let userSubtotal = 0
-  data.receipt.items.map(item => {
-    userSubtotal += item.price / 100
-  })
+  let filteredItems = data.receipt.items.filter(
+    item => item.users[0].id === user
+  )
+  console.log(filteredItems)
+  filteredItems.map(item => (userSubtotal += item.price / 100))
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -48,8 +50,11 @@ const SummaryScreen = () => {
           currentEventUsers.map(user => {
             //need filtered list
             const itemList = data.receipt.items
+            const filteredUserItems = itemList.filter(
+              item => item.users[0].id === user.id
+            )
             let subtotal = 0
-            itemList.map(item => {
+            filteredUserItems.map(item => {
               subtotal += item.price / 100
             })
             return (
@@ -57,7 +62,7 @@ const SummaryScreen = () => {
                 <Text style={styles.text}>
                   {user.firstName} {user.lastName}
                 </Text>
-                {itemList.map(item => {
+                {filteredUserItems.map(item => {
                   return (
                     <View key={item.id}>
                       <Text style={styles.secondaryText}>
