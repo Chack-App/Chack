@@ -24,15 +24,29 @@ async function readReceipt(imguri) {
 
   // console.log("ORIGINAL ---->", textArr)
 
-  let returnObj = {}
+  // for (let i = 0; i < textArr.length; i++) {
+  //   let currentObject = textArr[i]
+  //   returnObj[currentObject.description] = currentObject.boundingPoly.vertices
+  // }
 
-  for (let i = 0; i < textArr.length; i++) {
-    let currentObject = textArr[i]
-    returnObj[currentObject.description] = currentObject.boundingPoly.vertices
+  function runThisThing(apiArray) {
+    let result = {}
+    apiArray.forEach(item => {
+      if (result.hasOwnProperty(`${item.description}`)) {
+        const test = Math.ceil(Math.random() * 100)
+        result[`${item.description}~~~~${test}`] = item.boundingPoly.vertices
+      } else {
+        result[item.description] = item.boundingPoly.vertices
+      }
+    })
+    return result
+    //
+    //   console.log(apiArray.length)
   }
 
-  console.log("for loop finished", returnObj)
-  return returnObj
+  const resultData = runThisThing(detections)
+
+  console.log("for loop finished", resultData)
 }
 
 // const result = {
