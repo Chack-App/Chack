@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 import { Text, View, TouchableOpacity } from "react-native"
 import { Camera } from "expo-camera"
 
-import readReceipt from "../../../googlevision"
+// import readReceipt from "../../../googlevision"
 
 export default function CameraScreen() {
   const [hasPermission, setHasPermission] = useState(null)
@@ -60,7 +60,7 @@ export default function CameraScreen() {
               if (cameraRef) {
                 let photo = await cameraRef.takePictureAsync()
                 console.log("photo", photo)
-                readReceipt(photo)
+                // readReceipt(photo)
               }
             }}
           >

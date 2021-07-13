@@ -35,8 +35,6 @@ export default async function readReceipt(imguri) {
   return returnObj
 }
 
-readReceipt("assets/foodReceipt2.jpeg")
-
 // const result = {
 //   '1': [
 //     { x: 234, y: 314 },
