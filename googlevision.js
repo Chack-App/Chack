@@ -4,7 +4,7 @@ const PORT = process.env.PORT || 5000
 
 const vision = require("@google-cloud/vision")
 
-export default async function readReceipt(imguri) {
+async function readReceipt(imguri) {
   // Creates a client
   const client = new vision.ImageAnnotatorClient({
     keyFilename: "./GoogleKey.json"
