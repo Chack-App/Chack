@@ -6,6 +6,7 @@ import {
 } from "@apollo/client"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
+// create env variable for local IP instead of local host
 const httpLink = createHttpLink({
   uri: "http://localhost:8000/graphql",
   credentials: "same-origin"
