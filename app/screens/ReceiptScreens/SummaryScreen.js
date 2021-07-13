@@ -35,19 +35,15 @@ const SummaryScreen = () => {
     return <Text>No Data</Text>
   }
 
-  console.log('data...', data)
+  console.log("data...", data)
   // console.log(currentEventUsers)
 
   const isCardDownUser = user === data.receipt.cardDownId
 
   //need to set current user's subtotal
   let userSubtotal = 0
-  let claimedItems = data.receipt.items.filter(
-    item => item.users[0]
-  )
-  let filteredItems = claimedItems.filter(
-    item => item.users[0].id === user
-  )
+  let claimedItems = data.receipt.items.filter(item => item.users[0])
+  let filteredItems = claimedItems.filter(item => item.users[0].id === user)
   // console.log(filteredItems)
   filteredItems.map(item => (userSubtotal += item.price / 100))
 
@@ -108,8 +104,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     // alignItems: "center",
     backgroundColor: colors.primary,
-    padding: "1em",
-    margin: "1em"
+    padding: 10,
+    margin: 10
   },
   text: {
     color: colors.white,

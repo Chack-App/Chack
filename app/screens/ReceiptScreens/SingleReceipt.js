@@ -17,7 +17,7 @@ import { useQuery } from "@apollo/client"
 import { GET_RECEIPT } from "../../client/queries/receiptQueries"
 import { AuthContext } from "../../context/authContext"
 
-const SingleReceipt = () => {
+const SingleReceipt = ({ navigation }) => {
   const { user } = useContext(AuthContext)
   const { currentReceiptId } = useContext(AuthContext)
   const [myItems, setMyItems] = useState([])
@@ -75,7 +75,10 @@ const SingleReceipt = () => {
           {Number(user) === data.receipt.cardDownId && (
             <>
               <Text style={styles.text}>You are the card down person</Text>
-              <AppButton title="Approve Selections" />
+              <AppButton
+                title="Approve Selections"
+                onPress={() => navigation.navigate("SummaryScreen")}
+              />
             </>
           )}
         </View>
