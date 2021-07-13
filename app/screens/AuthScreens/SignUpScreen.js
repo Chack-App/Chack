@@ -19,7 +19,7 @@ const SignUpScreen = () => {
   const [lastName, setLastName] = useState()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
-  const [PayPalMe, setPayPalMe] = useState()
+  const [payPalMe, setPayPalMe] = useState()
   const { token, setToken } = useContext(AuthContext)
   const { user, setUser } = useContext(AuthContext)
   const [signup] = useMutation(SIGNUP)
@@ -82,7 +82,7 @@ const SignUpScreen = () => {
                 password: password,
                 firstName: firstName,
                 lastName: lastName,
-                payPaylMe: PayPalMe
+                payPalMe: payPalMe
               }
             })
             await AsyncStorage.setItem("USER", data.signup.id)

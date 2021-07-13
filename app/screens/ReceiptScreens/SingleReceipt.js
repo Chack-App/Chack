@@ -17,7 +17,7 @@ import { useQuery } from "@apollo/client"
 import { GET_RECEIPT } from "../../client/queries/receiptQueries"
 import { AuthContext } from "../../context/authContext"
 
-const SingleReceipt = () => {
+const SingleReceipt = ({ navigation }) => {
   const { user } = useContext(AuthContext)
   const { currentReceiptId } = useContext(AuthContext)
   const [myItems, setMyItems] = useState([])
@@ -32,19 +32,18 @@ const SingleReceipt = () => {
     return <Text>Error</Text>
   }
   let subTotal = 0
- //console.log(data)
+  //console.log(data)
 
-  const toggle = (item) => {
+  const toggle = item => {
     const itemId = item.id
     const indexInState = myItems.indexOf(item)
-    indexInState === -1 ? 
-    setMyItems([...myItems, item]) : 
-    setMyItems(myItems => myItems.filter(item => item.id!=itemId))
+    indexInState === -1
+      ? setMyItems([...myItems, item])
+      : setMyItems(myItems => myItems.filter(item => item.id != itemId))
   }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-
         <ScrollView>
           <View style={styles.itemContainer}>
             {data.receipt.items &&
@@ -56,7 +55,7 @@ const SingleReceipt = () => {
                     title={item.name}
                     price={item.price / 100}
                     isClaimed={item.isClaimed}
-                    isToggled={myItems.indexOf(item)!=-1}
+                    isToggled={myItems.indexOf(item) != -1}
                     onPress={() => toggle(item)}
                   />
                 )
@@ -66,20 +65,23 @@ const SingleReceipt = () => {
             </View>
           </View>
         </ScrollView>
-        <View style={{alignItems: 'center'}}>
-          <View >
-        <AppButton title="Claim Items" /> 
-        <AppButton title="Refresh List" /> 
+        <View style={{ alignItems: "center" }}>
+          {/* <View >
+        <AppButton title="Claim Items" />
+        <AppButton title="Refresh List" />
 
+        </View> */}
+
+          {Number(user) === data.receipt.cardDownId && (
+            <>
+              <Text style={styles.text}>You are the card down person</Text>
+              <AppButton
+                title="Approve Selections"
+                onPress={() => navigation.navigate("SummaryScreen")}
+              />
+            </>
+          )}
         </View>
-
-        {Number(user) === data.receipt.cardDownId && (
-          <>
-            <Text style={styles.text}>You are the card down person</Text>
-            <AppButton title="Approve Selections" />
-          </>
-            )}
-            </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )
@@ -91,7 +93,7 @@ const SingleReceipt = () => {
   the item on behalf of the user
   item.setUser(user)
 
-  Refresh List Button is used to 
+  Refresh List Button is used to
   update the list to account for
   other peoples item claims
 
