@@ -41,8 +41,9 @@ export const GET_PAST_EVENT_RECEIPTS = gql`
 `
 
 export const CREATE_EVENT = gql`
-  mutation CreateAnEvent($eventName: String, $description: String) {
-    addEvent(eventName: $eventName, description: $description) {
+  mutation CreateAnEvent($eventName: String, $description: String, $userId: ID!) {
+    addEvent(eventName: $eventName, description: $description, userId: $userId) {
+      id
       eventName
       description
     }
