@@ -19,6 +19,7 @@ const SignUpScreen = () => {
   const [lastName, setLastName] = useState()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
+  const [PayPalMe, setPayPalMe] = useState()
   const { token, setToken } = useContext(AuthContext)
   const { user, setUser } = useContext(AuthContext)
   const [signup] = useMutation(SIGNUP)
@@ -61,6 +62,16 @@ const SignUpScreen = () => {
             secureTextEntry
             textContentType="password"
           />
+          <AppTextInput
+            icon="onepassword"
+            autoCapitalize="none"
+            autoCorrect={false}
+            onChangeText={text => setPayPalMe(text)}
+            placeholder="PayPal.me"
+            placeholderTextColor={colors.placeholderColor}
+            secureTextEntry
+            textContentType="password"
+          />
         </View>
         <AuthButton
           title="Sign Up"
@@ -70,7 +81,8 @@ const SignUpScreen = () => {
                 email: email,
                 password: password,
                 firstName: firstName,
-                lastName: lastName
+                lastName: lastName,
+                payPaylMe: PayPalMe
               }
             })
             await AsyncStorage.setItem("USER", data.signup.id)
