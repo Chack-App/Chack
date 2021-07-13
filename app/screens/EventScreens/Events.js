@@ -5,7 +5,8 @@ import {
   View,
   Text,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Alert
 } from "react-native"
 import colors from "../../config/colors"
 import AppButton from "../../components/AppButton"
@@ -53,6 +54,26 @@ const Events = ({ navigation }) => {
     return <Text>No Data</Text>
   }
 
+  const handleJoin = () => {
+    if (passcode.length !== 4) {
+      Alert.alert(
+        "Invalid Passcode",
+        "Please enter 4 digit passcode"
+      ),
+      [{
+        text: "OK"
+      }]
+    } else {
+      joinEvent({
+        variables: {
+          passcode,
+          userId: user
+        }
+      })
+      navigation.navigate("SingleEvent")
+    }
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -68,15 +89,7 @@ const Events = ({ navigation }) => {
           />
           <AppButton
             title="Join"
-            onPress={() => {
-              joinEvent({
-                variables: {
-                  passcode,
-                  userId: user
-                }
-              })
-              navigation.navigate("SingleEvent")
-            }}
+            onPress={handleJoin}
           />
           {/* <AppTextInput/> */}
         </View>
