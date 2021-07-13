@@ -35,7 +35,7 @@ async function readReceipt(imguri) {
   return returnObj
 }
 
-readReceipt()
+readReceipt(/Users/jasonchen/Fullstack/senior-phase/capstone/Chack/assets/mickyDsR.jpeg)
 
 // const result = {
 //   '1': [
