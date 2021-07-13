@@ -31,15 +31,17 @@ const SummaryScreen = () => {
     console.error(error)
     return <Text>Error</Text>
   }
-  console.log(data)
-  console.log(currentEventUsers)
+  // console.log(data)
+  // console.log(currentEventUsers)
+
+  const isCardDownUser = user === data.receipt.cardDownId
 
   //need to set current user's subtotal
   let userSubtotal = 0
   let filteredItems = data.receipt.items.filter(
     item => item.users[0].id === user
   )
-  console.log(filteredItems)
+  // console.log(filteredItems)
   filteredItems.map(item => (userSubtotal += item.price / 100))
 
   return (
@@ -75,7 +77,11 @@ const SummaryScreen = () => {
               </View>
             )
           })}
-        <AppButton title={`Pay $${userSubtotal} Now`} />
+        {isCardDownUser ? (
+          <AppButton title={`They Should Pay`} />
+        ) : (
+          <AppButton title={`Pay $${userSubtotal} Now`} />
+        )}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )
