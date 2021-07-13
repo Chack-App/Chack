@@ -13,7 +13,7 @@ export const GET_RECEIPT = gql`
         price
         isClaimed
         splitBetween
-        user {
+        users {
           id
           firstName
           lastName

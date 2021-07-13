@@ -32,8 +32,8 @@ const EventNavigator = () => (
     {/* Moved receipt navigation to event navigator below */}
     <Stack.Screen
       name="SingleReceipt"
-      component={SingleReceipt}
-      // component={SummaryScreen}
+      // component={SingleReceipt}
+      component={SummaryScreen}
       options={{ ...gatewayHeaderStyles, headerTitle: "Your Receipt" }}
     />
     <Stack.Screen
