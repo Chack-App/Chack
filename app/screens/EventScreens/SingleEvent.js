@@ -20,6 +20,7 @@ const SingleEvent = ({ navigation }) => {
   const { user } = useContext(AuthContext)
   const { currentEventId } = useContext(AuthContext)
   const { setCurrentReceiptId } = useContext(AuthContext)
+  const { setCurrentEventUsers } = useContext(AuthContext)
 
   const [receiptName, setReceiptName] = useState("")
 
@@ -27,6 +28,8 @@ const SingleEvent = ({ navigation }) => {
     variables: { id: currentEventId },
     fetchPolicy: "cache-and-network"
   })
+
+  console.log(data)
 
   const [addReceipt] = useMutation(CREATE_RECEIPT, {
     refetchQueries: [
@@ -100,6 +103,7 @@ const SingleEvent = ({ navigation }) => {
                     title={receipt.name}
                     onPress={() => {
                       setCurrentReceiptId(receipt.id)
+                      setCurrentEventUsers(data.event.users)
                       navigation.navigate("SingleReceipt")
                     }}
                   />

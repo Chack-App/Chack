@@ -10,6 +10,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState("")
   const [currentEventId, setCurrentEventId] = useState("")
   const [currentReceiptId, setCurrentReceiptId] = useState("")
+  const [currentEventUsers, setCurrentEventUsers] = useState([])
 
   useEffect(() => {
     let isMounted = true
@@ -47,8 +48,19 @@ const AuthProvider = ({ children }) => {
   // }
 
   const providerValue = useMemo(() => {
-    return { token, setToken, user, setUser, currentEventId, setCurrentEventId, currentReceiptId, setCurrentReceiptId }
-  }, [token, user, currentEventId, currentReceiptId])
+    return {
+      token,
+      setToken,
+      user,
+      setUser,
+      currentEventId,
+      setCurrentEventId,
+      currentReceiptId,
+      setCurrentReceiptId,
+      currentEventUsers,
+      setCurrentEventUsers
+    }
+  }, [token, user, currentEventId, currentReceiptId, currentEventUsers])
 
   return (
     <AuthContext.Provider value={providerValue}>
