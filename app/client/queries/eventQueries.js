@@ -14,6 +14,11 @@ export const GET_EVENT = gql`
         eventId
         cardDownId
       }
+      users {
+        id
+        firstName
+        lastName
+      }
     }
   }
 `

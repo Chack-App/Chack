@@ -38,15 +38,13 @@ const SingleReceipt = () => {
         <View style={styles.itemContainer}>
           {data.receipt.items &&
             data.receipt.items.map(item => {
-
               subTotal += item.price / 100
               return (
                 <ItemButton
                   key={item.id}
                   title={item.name}
                   price={item.price / 100}
-                  onPress={()=>{
-                  }}
+                  onPress={() => {}}
                 />
               )
             })}
@@ -54,14 +52,14 @@ const SingleReceipt = () => {
             <Text style={styles.text}>Subtotal: ${subTotal}</Text>
           </View>
         </View>
-        {Number(user) === data.receipt.cardDownId ?
-          (<View>
+        {Number(user) === data.receipt.cardDownId ? (
+          <View>
             <Text style={styles.text}>You are the card down person</Text>
-            <AppButton
-              title="Approve Selections"
-            />
-          </View>) : (
-          <View></View>)}
+            <AppButton title="Approve Selections" />
+          </View>
+        ) : (
+          <View></View>
+        )}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )
@@ -72,7 +70,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     // alignItems: "center",
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.secondary
   },
   itemContainer: {
     justifyContent: "flex-start",
