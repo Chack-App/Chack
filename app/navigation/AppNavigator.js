@@ -16,8 +16,8 @@ const AppNavigator = () => (
       let iconName;
 
       if (route.name === 'Events') iconName = focused ? 'calendar' : 'calendar-outline';
-      else if (route.name === 'Friends') iconName = focused ? 'ios-people-circle' : 'ios-people-circle-outline';
-      else if (route.name === 'New Transaction') iconName = focused ? 'add-circle' : 'add-circle-outline';
+      // else if (route.name === 'Friends') iconName = focused ? 'ios-people-circle' : 'ios-people-circle-outline';
+      // else if (route.name === 'New Transaction') iconName = focused ? 'add-circle' : 'add-circle-outline';
       else if (route.name === 'Activity') iconName = focused ? 'stats-chart' : 'stats-chart-outline';
       else if (route.name === 'Account') iconName = focused ? 'person-circle' : 'person-circle-outline';
 
@@ -29,9 +29,9 @@ const AppNavigator = () => (
     activeTintColor: 'tomato',
     inactiveTintColor: 'gray',
   }}>
-    <Tab.Screen name="Friends" component={Friends} />
+    {/* <Tab.Screen name="Friends" component={Friends} /> */}
     <Tab.Screen name="Events" component={EventNavigator}/>
-    <Tab.Screen name="New Transaction" component={CreateTransaction} />
+    {/* <Tab.Screen name="New Transaction" component={CreateTransaction} /> */}
     <Tab.Screen name="Activity" component={Activity} />
     <Tab.Screen name="Account" component={Account} />
   </Tab.Navigator>

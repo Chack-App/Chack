@@ -69,8 +69,6 @@ const SignUpScreen = () => {
             onChangeText={text => setPayPalMe(text)}
             placeholder="PayPal.me"
             placeholderTextColor={colors.placeholderColor}
-            secureTextEntry
-            textContentType="password"
           />
         </View>
         <AuthButton
