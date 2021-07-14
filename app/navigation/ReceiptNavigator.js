@@ -13,6 +13,7 @@ const ReceiptNavigator = () => (
       component={SingleReceipt}
       options={{ ...gatewayHeaderStyles, headerTitle: "Your Receipt" }}
     />
+
     <Stack.Screen
       name="ManualItemEntry"
       component={ManualItemEntry}

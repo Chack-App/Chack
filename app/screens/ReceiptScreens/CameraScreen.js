@@ -1,17 +1,26 @@
 import React, { useState, useEffect, useRef } from "react"
 import { Text, View, TouchableOpacity } from "react-native"
 import { Camera } from "expo-camera"
+import { CameraRoll } from "@react-native-community/cameraroll"
+import * as MediaLibrary from "expo-media-library"
 
-// import readReceipt from "../../../googlevision"
+// import { readReceipt } from "../../../googlevision"
 
 export default function CameraScreen() {
   const [hasPermission, setHasPermission] = useState(null)
   const [cameraRef, setCameraRef] = useState(null)
   const [type, setType] = useState(Camera.Constants.Type.back)
+  const [mediaPermissions, setMediaPermissions] = useState(null)
   useEffect(() => {
     ;(async () => {
       const { status } = await Camera.requestPermissionsAsync()
       setHasPermission(status === "granted")
+    })()
+  }, [])
+  useEffect(() => {
+    ;(async () => {
+      const { status } = await MediaLibrary.requestPermissionsAsync()
+      setMediaPermissions(status === "granted")
     })()
   }, [])
   if (hasPermission === null) {
@@ -60,7 +69,7 @@ export default function CameraScreen() {
               if (cameraRef) {
                 let photo = await cameraRef.takePictureAsync()
                 console.log("photo", photo)
-                // readReceipt(photo)
+                const asset = await MediaLibrary.createAssetAsync(photo.uri)
               }
             }}
           >
