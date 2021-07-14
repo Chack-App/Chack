@@ -21,15 +21,17 @@ import { AuthContext } from "../../context/authContext"
 const SingleReceipt = ({ navigation }) => {
   const { user } = useContext(AuthContext)
   const { currentReceiptId } = useContext(AuthContext)
+  const [toggle, setToggle] = useState(true)
+  console.log(toggle)
   const [claimItem] = useMutation(CLAIM_ITEM, {
     refetchQueries: [
       { query: GET_RECEIPT, variables: { id: currentReceiptId } }
-    ], 
-    onCompleted(data){
+    ],
+    onCompleted(data) {
       console.log(data)
     }
   })
-  const { loading, error, data } = useQuery(GET_RECEIPT, {
+  const { loading, error, data, refetch } = useQuery(GET_RECEIPT, {
     variables: { id: currentReceiptId }
   })
   if (loading) {
@@ -56,10 +58,14 @@ const SingleReceipt = ({ navigation }) => {
                     price={item.price / 100}
                     isClaimed={item.isClaimed}
                     isMine={filteredItems.includes(item)}
-                    onPress={() => claimItem({variables: {
-                      userId: user,
-                      itemId: item.id
-                    }})}
+                    onPress={() =>
+                      claimItem({
+                        variables: {
+                          userId: user,
+                          itemId: item.id
+                        }
+                      })
+                    }
                   />
                 )
               })}
@@ -71,7 +77,7 @@ const SingleReceipt = ({ navigation }) => {
         <View>
           <View style={styles.buttonContainer}>
             {/* <AppButton title="Claim Items" width="47.5%" /> */}
-            <AppButton title="Refresh List" />
+            <AppButton title="Refresh List" onPress={() => refetch()} />
           </View>
 
           {Number(user) === data.receipt.cardDownId && (
