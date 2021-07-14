@@ -5,10 +5,13 @@ import {
   createHttpLink
 } from "@apollo/client"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { DEV_SERVER, PRODUCTION_SERVER } from "../../secrets"
+
+const serverUri = (process.env.NODE_ENV === "development") ? DEV_SERVER : PRODUCTION_SERVER
 
 // create env variable for local IP instead of local host
 const httpLink = createHttpLink({
-  uri: "http://localhost:8000/graphql",
+  uri: serverUri,
   credentials: "same-origin"
 })
 
@@ -23,7 +26,7 @@ const authLink = new ApolloLink(async (operation, forward) => {
 })
 
 const client = new ApolloClient({
-  uri: "http://localhost:8000/graphql",
+  uri: serverUri,
   link: authLink.concat(httpLink),
   cache: new InMemoryCache()
 })
