@@ -6,6 +6,7 @@ import {
   Text,
   Keyboard,
   TouchableWithoutFeedback,
+  Alert,
   TextInput
 } from "react-native";
 import colors from "../../config/colors";
@@ -50,6 +51,26 @@ const CreateEvent = ({ navigation }) => {
     //   }
     // }
     );
+
+  const handleSubmit = () => {
+    if (!eventName) {
+      Alert.alert(
+        "Event Name Missing",
+        "Please enter a name for your event"
+      ),
+      [{
+        text: "OK"
+      }]
+      return;
+    }
+    addEvent({variables: {
+      eventName,
+      eventDesc,
+      userId: user
+    }});
+    navigation.navigate("SingleEvent");
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -73,16 +94,8 @@ const CreateEvent = ({ navigation }) => {
         </View>
           <AppButton
             title="Create Event"
-            onPress={() => {
-              addEvent({variables: {
-                eventName,
-                eventDesc,
-                userId: user
-              }});
-              navigation.navigate("SingleEvent");
-            }}
+            onPress={handleSubmit}
           />
-
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )

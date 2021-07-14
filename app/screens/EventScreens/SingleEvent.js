@@ -6,6 +6,7 @@ import {
   Text,
   Keyboard,
   TouchableWithoutFeedback,
+  Alert,
   ScrollView
 } from "react-native"
 import colors from "../../config/colors"
@@ -54,10 +55,33 @@ const SingleEvent = ({ navigation }) => {
     return <Text>No Data</Text>
   }
 
+  const handleCreate = () => {
+    if (!receiptName) {
+      Alert.alert(
+        "Receipt Name Missing",
+        "Please enter a name for your receipt"
+      ),
+      [{
+        text: "OK"
+      }]
+      return;
+    }
+    addReceipt({
+      variables: {
+        name: receiptName,
+        eventId: Number(currentEventId),
+        cardDownId: Number(user)
+      }
+    })
+    setReceiptName("")
+    navigation.navigate("SelectCamera")
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
         <Text style={styles.text}>{data.event.eventName}</Text>
+        <Text style={styles.text}>{`EVENT CODE: ${data.event.passcode}`}</Text>
         <View style={styles.createReceiptContainer}>
           <Text style={styles.text}>New Receipt</Text>
           <AppTextInput
@@ -67,17 +91,7 @@ const SingleEvent = ({ navigation }) => {
           />
           <AppButton
             title="Create"
-            onPress={() => {
-              addReceipt({
-                variables: {
-                  name: receiptName,
-                  eventId: Number(currentEventId),
-                  cardDownId: Number(user)
-                }
-              })
-              setReceiptName("")
-              navigation.navigate("SelectCamera")
-            }}
+            onPress={handleCreate}
           />
         </View>
         <ScrollView>

@@ -25,7 +25,7 @@ const Events = ({ navigation }) => {
   const { setCurrentEventId } = useContext(AuthContext)
 
   const [id, setId] = useState(user)
-  const [passcode, setPasscode] = useState()
+  const [passcode, setPasscode] = useState("")
 
   const [joinEvent] = useMutation(JOIN_EVENT, {
     refetchQueries: [{
@@ -33,8 +33,17 @@ const Events = ({ navigation }) => {
       variables: {id: user}
     }],
     onCompleted(data) {
-      console.log(data)
       setCurrentEventId(data.joinEvent.id)
+      navigation.navigate("SingleEvent")
+    },
+    onError() {
+      Alert.alert(
+        "Invalid Passcode",
+        "Please check your passcode"
+      ),
+      [{
+        text: "OK"
+      }]
     }
   })
 
@@ -70,7 +79,6 @@ const Events = ({ navigation }) => {
           userId: user
         }
       })
-      navigation.navigate("SingleEvent")
     }
   }
 
