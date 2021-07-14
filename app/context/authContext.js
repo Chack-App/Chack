@@ -11,6 +11,9 @@ const AuthProvider = ({ children }) => {
   const [currentEventId, setCurrentEventId] = useState("")
   const [currentReceiptId, setCurrentReceiptId] = useState("")
   const [currentEventUsers, setCurrentEventUsers] = useState([])
+  const [currentReceiptPaypalHandle, setCurrentReceiptPaypalHandle] =
+    useState("")
+  const [currentReceiptUserTotal, setCurrentReceiptUserTotal] = useState("")
 
   useEffect(() => {
     let isMounted = true
@@ -58,9 +61,21 @@ const AuthProvider = ({ children }) => {
       currentReceiptId,
       setCurrentReceiptId,
       currentEventUsers,
-      setCurrentEventUsers
+      setCurrentEventUsers,
+      currentReceiptPaypalHandle,
+      setCurrentReceiptPaypalHandle,
+      currentReceiptUserTotal,
+      setCurrentReceiptUserTotal
     }
-  }, [token, user, currentEventId, currentReceiptId, currentEventUsers])
+  }, [
+    token,
+    user,
+    currentEventId,
+    currentReceiptId,
+    currentEventUsers,
+    currentReceiptPaypalHandle,
+    currentReceiptUserTotal
+  ])
 
   return (
     <AuthContext.Provider value={providerValue}>

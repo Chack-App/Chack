@@ -14,23 +14,33 @@ import colors from "../../config/colors"
 import ItemButton from "../../components/ItemButton"
 import AppButton from "../../components/AppButton"
 import { useQuery, useMutation } from "@apollo/client"
-import { GET_RECEIPT } from "../../client/queries/receiptQueries"
+import { GET_RECEIPT, SET_APPROVED } from "../../client/queries/receiptQueries"
 import { CLAIM_ITEM } from "../../client/queries/itemQueries"
 import { AuthContext } from "../../context/authContext"
+import AppTextInput from "../../components/AppTextInput"
 
 const SingleReceipt = ({ navigation }) => {
   const { user } = useContext(AuthContext)
   const { currentReceiptId } = useContext(AuthContext)
+  const [tax, setTax] = useState(0)
+  const [tip, setTip] = useState(0)
+  const [setApproved] = useMutation(SET_APPROVED, {
+    refetchQueries: [
+      { query: GET_RECEIPT, variables: { id: currentReceiptId } }
+    ]
+  })
   const [claimItem] = useMutation(CLAIM_ITEM, {
     refetchQueries: [
       { query: GET_RECEIPT, variables: { id: currentReceiptId } }
-    ], 
-    onCompleted(data){
-      console.log(data)
-    }
+    ],
+    onCompleted(data) {}
   })
-  const { loading, error, data } = useQuery(GET_RECEIPT, {
-    variables: { id: currentReceiptId }
+  const { loading, error, data, refetch } = useQuery(GET_RECEIPT, {
+    variables: { id: currentReceiptId },
+    onCompleted(data) {
+      setTip(data.receipt.tip)
+      setTax(data.receipt.tax)
+    }
   })
   if (loading) {
     return <Text>Loading</Text>
@@ -38,8 +48,49 @@ const SingleReceipt = ({ navigation }) => {
   if (error) {
     return <Text>Error</Text>
   }
-  let claimedItems = data.receipt.items.filter(item => item.users[0]) // all claimed items
+  let allItems = data.receipt.items
+  // console.log(data)
+  //Query resulted in Strict-Mode Array, needed to adjust to be able to sort properly
+  let unstrictItems = JSON.parse(JSON.stringify(allItems))
+  unstrictItems.sort((a, b) => {
+    return Number(a.id) - Number(b.id)
+  })
+
+  let claimedItems = unstrictItems.filter(item => item.users[0]) // all claimed items
   let filteredItems = claimedItems.filter(item => item.users[0].id === user) // items that belong to user
+
+  let isApproved = data.receipt.isApproved
+
+  // if (isApproved) {
+  //   navigation.navigate("SummaryScreen")
+  // }
+
+  const handleApproved = () => {
+    if (Number(tip) > 100 || Number(tip) < 0 || isNaN(Number(tip))) {
+      Alert.alert("tip must be a number between 0 and 100")
+      console.log("tip error")
+    } else if (isNaN(Number(tax))) {
+      Alert.alert("tax must be a number")
+      console.log("tax error")
+    } else if (claimedItems.length !== allItems.length) {
+      Alert.alert("All Items must be claimed before Approval"),
+        [
+          {
+            text: "OK"
+          }
+        ]
+    } else {
+      setApproved({
+        variables: {
+          id: currentReceiptId,
+          tax: Number(tax * 100),
+          tip: Number(tip)
+        }
+      })
+      navigation.navigate("SummaryScreen")
+    }
+  }
+
   let subTotal = 0
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -47,19 +98,24 @@ const SingleReceipt = ({ navigation }) => {
         <ScrollView>
           <View style={styles.itemContainer}>
             {data.receipt.items &&
-              data.receipt.items.map(item => {
+              unstrictItems.map(item => {
                 subTotal += item.price / 100
                 return (
                   <ItemButton
+                    disabled={isApproved}
                     key={item.id}
                     title={item.name}
                     price={item.price / 100}
                     isClaimed={item.isClaimed}
                     isMine={filteredItems.includes(item)}
-                    onPress={() => claimItem({variables: {
-                      userId: user,
-                      itemId: item.id
-                    }})}
+                    onPress={() =>
+                      claimItem({
+                        variables: {
+                          userId: user,
+                          itemId: item.id
+                        }
+                      })
+                    }
                   />
                 )
               })}
@@ -71,16 +127,36 @@ const SingleReceipt = ({ navigation }) => {
         <View>
           <View style={styles.buttonContainer}>
             {/* <AppButton title="Claim Items" width="47.5%" /> */}
-            <AppButton title="Refresh List" />
+            {isApproved ? (
+              <AppButton
+                title="Continue to Summary"
+                onPress={() => {
+                  navigation.navigate("SummaryScreen")
+                }}
+              />
+            ) : (
+              <AppButton title="Refresh List" onPress={() => refetch()} />
+            )}
           </View>
 
-          {Number(user) === data.receipt.cardDownId && (
+          {!isApproved && Number(user) === data.receipt.cardDownId && (
             <View style={{ alignItems: "center" }}>
               <Text style={styles.text}>You are the card down person</Text>
-              <AppButton
-                title="Approve Selections"
-                onPress={() => navigation.navigate("SummaryScreen")}
+              <AppTextInput
+                icon="account"
+                placeholder="tax in $"
+                autoCapitalize="words"
+                onChangeText={text => setTax(text)}
+                placeholderTextColor={colors.placeholderColor}
               />
+              <AppTextInput
+                icon="account"
+                placeholder="tip as %"
+                autoCapitalize="words"
+                onChangeText={text => setTip(text)}
+                placeholderTextColor={colors.placeholderColor}
+              />
+              <AppButton title="Approve Selections" onPress={handleApproved} />
             </View>
           )}
         </View>

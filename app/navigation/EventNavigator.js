@@ -11,6 +11,7 @@ import SingleReceipt from "../screens/ReceiptScreens/SingleReceipt"
 import CameraScreen from "../screens/ReceiptScreens/CameraScreen"
 import SummaryScreen from "../screens/ReceiptScreens/SummaryScreen"
 import UploadScreen from "../screens/ReceiptScreens/UploadScreen"
+import PayPal from "../screens/ReceiptScreens/PayPal"
 
 const Stack = createStackNavigator()
 
@@ -62,6 +63,11 @@ const EventNavigator = () => (
       name="UploadScreen"
       component={UploadScreen}
       options={{ ...gatewayHeaderStyles, headerTitle: "UploadScreen" }}
+    />
+    <Stack.Screen
+      name="PayPal"
+      component={PayPal}
+      options={{ ...gatewayHeaderStyles, headerTitle: "PayPal" }}
     />
   </Stack.Navigator>
 )
