@@ -5,7 +5,7 @@ import * as MediaLibrary from "expo-media-library"
 
 // import { readReceipt } from "../../../googlevision"
 
-export default function CameraScreen() {
+export default function CameraScreen({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null)
   const [cameraRef, setCameraRef] = useState(null)
   const [type, setType] = useState(Camera.Constants.Type.back)
@@ -69,6 +69,7 @@ export default function CameraScreen() {
                 let photo = await cameraRef.takePictureAsync()
                 console.log("photo", photo)
                 const asset = await MediaLibrary.createAssetAsync(photo.uri)
+                navigation.navigate("UploadScreen")
               }
             }}
           >

@@ -13,6 +13,7 @@ import colors from "../../config/colors"
 import * as ImagePicker from "expo-image-picker"
 
 import { AuthContext } from "../../context/authContext"
+import AppButton from "../../components/AppButton"
 
 const UploadScreen = () => {
   const [image, setImage] = useState(null)
@@ -51,7 +52,7 @@ const UploadScreen = () => {
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
         >
-          <Button title="Pick an image from camera roll" onPress={pickImage} />
+          <AppButton title="Upload Receipt" onPress={pickImage} />
           {image && (
             <Image
               source={{ uri: image }}
@@ -71,28 +72,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.secondary
   },
-  itemEntryContainer: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: colors.primary,
-    borderRadius: 25,
-    padding: 10,
-    height: 200,
-    width: "95%",
-    marginVertical: 5
-  },
-  itemContainer: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: colors.primary,
-    borderRadius: 15,
-    padding: 5,
-    height: 200,
-    width: "95%",
-    marginVertical: 5
-  },
+
   text: {
     color: colors.white,
     fontSize: 20,
