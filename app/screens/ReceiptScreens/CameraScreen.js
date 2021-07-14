@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import { Text, View, TouchableOpacity } from "react-native"
 import { Camera } from "expo-camera"
-import { CameraRoll } from "@react-native-community/cameraroll"
 import * as MediaLibrary from "expo-media-library"
 
 // import { readReceipt } from "../../../googlevision"
