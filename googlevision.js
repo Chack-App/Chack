@@ -49,6 +49,10 @@ async function readReceipt(imguri) {
   console.log("for loop finished", resultData)
 }
 
+// readReceipt(
+//   "/Users/jasonchen/Fullstack/senior-phase/capstone/Chack/assets/foodReceipt2.jpeg"
+// )
+
 // const result = {
 //   '1': [
 //     { x: 234, y: 314 },

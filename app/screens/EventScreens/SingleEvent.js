@@ -5,7 +5,8 @@ import {
   View,
   Text,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  ScrollView
 } from "react-native"
 import colors from "../../config/colors"
 import ReceiptButton from "../../components/ReceiptButton"
@@ -79,25 +80,28 @@ const SingleEvent = ({ navigation }) => {
             }}
           />
         </View>
-        <View style={styles.receiptContainer}>
-          <Text style={styles.text}>ACTIVE RECEIPTS</Text>
-          {data.event.receipts &&
-            data.event.receipts.map(receipt => {
-              if (!receipt.isPaid) {
-                return (
-                  <ReceiptButton
-                    key={receipt.id}
-                    title={receipt.name}
-                    onPress={() => {
-                      setCurrentReceiptId(receipt.id)
-                      setCurrentEventUsers(data.event.users)
-                      navigation.navigate("SingleReceipt")
-                    }}
-                  />
-                )
-              }
-            })}
-        </View>
+        <ScrollView>
+          <View style={styles.receiptContainer}>
+            <Text style={styles.text}>ACTIVE RECEIPTS</Text>
+
+            {data.event.receipts &&
+              data.event.receipts.map(receipt => {
+                if (!receipt.isPaid) {
+                  return (
+                    <ReceiptButton
+                      key={receipt.id}
+                      title={receipt.name}
+                      onPress={() => {
+                        setCurrentReceiptId(receipt.id)
+                        setCurrentEventUsers(data.event.users)
+                        navigation.navigate("SingleReceipt")
+                      }}
+                    />
+                  )
+                }
+              })}
+          </View>
+        </ScrollView>
         <View style={styles.receiptContainer}>
           <Text style={styles.text}>PAST RECEIPTS</Text>
           {data.event.receipts &&
@@ -137,9 +141,11 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   receiptContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
     backgroundColor: colors.primary,
     borderRadius: 25,
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
     padding: 15,
     width: "95%",

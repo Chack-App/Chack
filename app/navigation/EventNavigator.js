@@ -10,6 +10,7 @@ import ManualItemEntry from "../screens/ReceiptScreens/ManualItemEntry"
 import SingleReceipt from "../screens/ReceiptScreens/SingleReceipt"
 import CameraScreen from "../screens/ReceiptScreens/CameraScreen"
 import SummaryScreen from "../screens/ReceiptScreens/SummaryScreen"
+import UploadScreen from "../screens/ReceiptScreens/UploadScreen"
 
 const Stack = createStackNavigator()
 
@@ -56,6 +57,11 @@ const EventNavigator = () => (
       name="CameraScreen"
       component={CameraScreen}
       options={{ ...gatewayHeaderStyles, headerTitle: "CameraScreen" }}
+    />
+    <Stack.Screen
+      name="UploadScreen"
+      component={UploadScreen}
+      options={{ ...gatewayHeaderStyles, headerTitle: "UploadScreen" }}
     />
   </Stack.Navigator>
 )
