@@ -22,6 +22,8 @@ async function readReceipt(imguri) {
   let textArr = []
   detections.forEach(text => textArr.push(text))
 
+  console.log("OTHER DATA******", detections)
+
   // console.log("ORIGINAL ---->", textArr)
 
   // for (let i = 0; i < textArr.length; i++) {
@@ -49,9 +51,9 @@ async function readReceipt(imguri) {
   console.log("for loop finished", resultData)
 }
 
-// readReceipt(
-//   "/Users/jasonchen/Fullstack/senior-phase/capstone/Chack/assets/foodReceipt2.jpeg"
-// )
+readReceipt(
+  "/Users/jasonchen/Fullstack/senior-phase/capstone/Chack/assets/foodReceipt2.jpeg"
+)
 
 // const result = {
 //   '1': [

@@ -7,7 +7,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "server": "nodemon UploadScreen.js"
+    "server": "nodemon googlevision.js"
   },
   "dependencies": {
     "@apollo/client": "^3.3.21",
@@ -37,7 +37,8 @@
     "react-native-screens": "~3.0.0",
     "react-native-web": "~0.13.12",
     "uuid": "^8.3.2",
-    "expo-media-library": "~12.0.2"
+    "expo-media-library": "~12.0.2",
+    "expo-file-system": "~11.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

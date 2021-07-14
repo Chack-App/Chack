@@ -66,7 +66,12 @@ export default function CameraScreen({ navigation }) {
             style={{ alignSelf: "center" }}
             onPress={async () => {
               if (cameraRef) {
-                let photo = await cameraRef.takePictureAsync()
+                let photo = await cameraRef.takePictureAsync({
+                  uri: true,
+                  width: true,
+                  height: true,
+                  base64: true
+                })
                 console.log("photo", photo)
                 const asset = await MediaLibrary.createAssetAsync(photo.uri)
                 navigation.navigate("UploadScreen")
