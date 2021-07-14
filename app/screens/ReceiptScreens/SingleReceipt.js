@@ -27,9 +27,7 @@ const SingleReceipt = ({ navigation }) => {
     refetchQueries: [
       { query: GET_RECEIPT, variables: { id: currentReceiptId } }
     ],
-    onCompleted(data) {
-      console.log(data)
-    }
+    onCompleted(data) {}
   })
   const { loading, error, data, refetch } = useQuery(GET_RECEIPT, {
     variables: { id: currentReceiptId }
@@ -40,8 +38,16 @@ const SingleReceipt = ({ navigation }) => {
   if (error) {
     return <Text>Error</Text>
   }
-  let claimedItems = data.receipt.items.filter(item => item.users[0]) // all claimed items
+  let allItems = data.receipt.items
+  //Query resulted in Strict-Mode Array, needed to adjust to be able to sort properly
+  let unstrictItems = JSON.parse(JSON.stringify(allItems))
+  unstrictItems.sort((a, b) => {
+    return Number(a.id) - Number(b.id)
+  })
+
+  let claimedItems = unstrictItems.filter(item => item.users[0]) // all claimed items
   let filteredItems = claimedItems.filter(item => item.users[0].id === user) // items that belong to user
+
   let subTotal = 0
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -49,7 +55,7 @@ const SingleReceipt = ({ navigation }) => {
         <ScrollView>
           <View style={styles.itemContainer}>
             {data.receipt.items &&
-              data.receipt.items.map(item => {
+              unstrictItems.map(item => {
                 subTotal += item.price / 100
                 return (
                   <ItemButton
