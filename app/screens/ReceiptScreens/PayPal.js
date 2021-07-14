@@ -6,6 +6,7 @@ import { AuthContext } from "../../context/authContext"
 const PayPal = () => {
   const { currentReceiptPaypalHandle } = useContext(AuthContext)
   const { currentReceiptUserTotal } = useContext(AuthContext)
+
   return <WebView source={{ uri: "https://reactnative.dev/" }} />
 }
 
