@@ -80,6 +80,7 @@ const SingleEvent = ({ navigation }) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
         <Text style={styles.text}>{data.event.eventName}</Text>
+        <Text style={styles.text}>{`EVENT CODE: ${data.event.passcode}`}</Text>
         <View style={styles.createReceiptContainer}>
           <Text style={styles.text}>New Receipt</Text>
           <AppTextInput
