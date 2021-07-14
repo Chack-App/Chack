@@ -7,6 +7,7 @@ import {
   Text,
   Keyboard,
   TouchableWithoutFeedback,
+  Alert,
   Button
 } from "react-native"
 import colors from "../../config/colors"
@@ -43,6 +44,40 @@ const ManualItemEntry = ({ navigation }) => {
     const updatedItemList = [...itemList];
     updatedItemList.splice(index, 1)
     setItemList(updatedItemList);
+  }
+
+  const handleSubmit = () => {
+    //Verify Inputs
+    for (let i = 0; i < itemList.length; i++) {
+      console.log(itemList[i])
+      if (!itemList[i].name) {
+        Alert.alert(
+          "Item Name Missing",
+          "Please enter a name for all items"
+        ),
+        [{
+          text: "OK"
+        }]
+        return;
+      } else if (!Number(itemList[i].price)) {
+        Alert.alert(
+          "Invalid Price",
+          "Please enter a valid price for all items"
+        ),
+        [{
+          text: "OK"
+        }]
+        return;
+      }
+    }
+    const itemListIntegers = itemList.map((item) => {
+      return {name: item.name, price: Math.floor(Number(item.price) * 100)}
+    });
+    addItems({variables: {
+      items: itemListIntegers,
+      receiptId: currentReceiptId
+    }});
+    navigation.navigate("SingleReceipt");
   }
     return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -95,16 +130,7 @@ const ManualItemEntry = ({ navigation }) => {
         </ScrollView>
         <AppButton
           title="Confirm All"
-          onPress={() => {
-            const itemListIntegers = itemList.map((item) => {
-              return {name: item.name, price: Math.floor(Number(item.price) * 100)}
-            });
-            addItems({variables: {
-              items: itemListIntegers,
-              receiptId: currentReceiptId
-            }});
-            navigation.navigate("SingleReceipt");
-        }}
+          onPress={handleSubmit}
         />
       </SafeAreaView>
     </TouchableWithoutFeedback>
