@@ -5,7 +5,8 @@ import {
   View,
   Text,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Alert
 } from "react-native"
 import colors from "../../config/colors"
 import ReceiptButton from "../../components/ReceiptButton"
@@ -53,6 +54,28 @@ const SingleEvent = ({ navigation }) => {
     return <Text>No Data</Text>
   }
 
+  const handleCreate = () => {
+    if (!receiptName) {
+      Alert.alert(
+        "Receipt Name Missing",
+        "Please enter a name for your receipt"
+      ),
+      [{
+        text: "OK"
+      }]
+      return;
+    }
+    addReceipt({
+      variables: {
+        name: receiptName,
+        eventId: Number(currentEventId),
+        cardDownId: Number(user)
+      }
+    })
+    setReceiptName("")
+    navigation.navigate("SelectCamera")
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -66,17 +89,7 @@ const SingleEvent = ({ navigation }) => {
           />
           <AppButton
             title="Create"
-            onPress={() => {
-              addReceipt({
-                variables: {
-                  name: receiptName,
-                  eventId: Number(currentEventId),
-                  cardDownId: Number(user)
-                }
-              })
-              setReceiptName("")
-              navigation.navigate("SelectCamera")
-            }}
+            onPress={handleCreate}
           />
         </View>
         <View style={styles.receiptContainer}>

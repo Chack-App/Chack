@@ -25,7 +25,7 @@ const Events = ({ navigation }) => {
   const { setCurrentEventId } = useContext(AuthContext)
 
   const [id, setId] = useState(user)
-  const [passcode, setPasscode] = useState()
+  const [passcode, setPasscode] = useState("")
 
   const [joinEvent] = useMutation(JOIN_EVENT, {
     refetchQueries: [{
