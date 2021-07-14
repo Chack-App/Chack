@@ -6,23 +6,89 @@ import { useQuery } from "@apollo/client"
 import AppButton from "../components/AppButton"
 import { AuthContext } from "../context/authContext"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import AppTextInput from "../components/AppTextInput"
+import AuthButton from "../components/AuthButton"
 
 const Account = ({ navigation }) => {
   const { token, setToken } = useContext(AuthContext)
   const { user, setUser } = useContext(AuthContext)
   const [id, setId] = useState(user)
-  const { loading, error, data } = useQuery(GET_USER, { variables: { id } })
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
+  const [payPalMe, setPayPalMe] = useState("")
+  const { loading, error, data } = useQuery(GET_USER, {
+    variables: { id },
+    onCompleted(data) {
+      setFirstName(data.user.firstName)
+      setLastName(data.user.lastName)
+      setEmail(data.user.email)
+      setPayPalMe(data.user.payPalMe)
+    }
+  })
   if (loading) {
     return <Text>Loading</Text>
   }
   if (error) {
     return <Text>Error</Text>
   }
+  if (!data || !user) {
+    return <Text>No Data</Text>
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text>ACCOUNT</Text>
-        <Text>{data.user.email}</Text>
+        <Text style={styles.text}>ACCOUNT</Text>
+        <AppTextInput
+          icon="account"
+          placeholder="First Name"
+          autoCapitalize="words"
+          onChangeText={text => setFirstName(text)}
+          placeholderTextColor={colors.placeholderColor}
+          value={firstName}
+        />
+        <AppTextInput
+          icon="account"
+          placeholder="Last Name"
+          autoCapitalize="words"
+          onChangeText={text => setLastName(text)}
+          placeholderTextColor={colors.placeholderColor}
+          value={lastName}
+        />
+        <AppTextInput
+          icon="email"
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="email-address"
+          onChangeText={text => setEmail(text)}
+          placeholder="Email"
+          placeholderTextColor={colors.placeholderColor}
+          textContentType="emailAddress"
+          value={email}
+        />
+        <AppTextInput
+          icon="onepassword"
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={text => setPayPalMe(text)}
+          placeholder="PayPal.me"
+          placeholderTextColor={colors.placeholderColor}
+          value={payPalMe}
+        />
+        <AuthButton
+          title="Update"
+          onPress={async () => {
+            const { data } = await signup({
+              variables: {
+                email: email,
+                firstName: firstName,
+                lastName: lastName,
+                payPalMe: payPalMe
+              }
+            })
+          }}
+        />
         <AppButton
           title="Logout"
           onPress={async () => {
@@ -42,6 +108,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.secondary
+  },
+  text: {
+    color: colors.black,
+    fontSize: 20,
+    fontWeight: "bold"
   }
 })
 
