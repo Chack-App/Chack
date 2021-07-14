@@ -2,12 +2,13 @@ import React, { useState, useContext } from "react"
 import { Text, SafeAreaView, StyleSheet, View } from "react-native"
 import colors from "../config/colors"
 import { GET_USER } from "../client/queries/userQueries"
-import { useQuery } from "@apollo/client"
+import { useMutation, useQuery } from "@apollo/client"
 import AppButton from "../components/AppButton"
 import { AuthContext } from "../context/authContext"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import AppTextInput from "../components/AppTextInput"
 import AuthButton from "../components/AuthButton"
+import { UPDATE_USER } from "../client/queries/userQueries"
 
 const Account = ({ navigation }) => {
   const { token, setToken } = useContext(AuthContext)
@@ -17,6 +18,7 @@ const Account = ({ navigation }) => {
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
   const [payPalMe, setPayPalMe] = useState("")
+  const [update] = useMutation(UPDATE_USER)
   const { loading, error, data } = useQuery(GET_USER, {
     variables: { id },
     onCompleted(data) {
@@ -39,7 +41,8 @@ const Account = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputContainer}>
-        <Text style={styles.text}>ACCOUNT</Text>
+        <Text style={styles.text}>ACCOUNT INFORMATION</Text>
+        <Text style={styles.text}>{email}</Text>
         <AppTextInput
           icon="account"
           placeholder="First Name"
@@ -57,17 +60,6 @@ const Account = ({ navigation }) => {
           value={lastName}
         />
         <AppTextInput
-          icon="email"
-          autoCapitalize="none"
-          autoCorrect={false}
-          keyboardType="email-address"
-          onChangeText={text => setEmail(text)}
-          placeholder="Email"
-          placeholderTextColor={colors.placeholderColor}
-          textContentType="emailAddress"
-          value={email}
-        />
-        <AppTextInput
           icon="onepassword"
           autoCapitalize="none"
           autoCorrect={false}
@@ -79,7 +71,7 @@ const Account = ({ navigation }) => {
         <AuthButton
           title="Update"
           onPress={async () => {
-            const { data } = await signup({
+            const { data } = await update({
               variables: {
                 email: email,
                 firstName: firstName,
