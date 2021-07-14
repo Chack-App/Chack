@@ -16,11 +16,14 @@ import AppButton from "../../components/AppButton"
 import { useQuery } from "@apollo/client"
 import { GET_RECEIPT } from "../../client/queries/receiptQueries"
 import { AuthContext } from "../../context/authContext"
+import { GET_USER } from "../../client/queries/userQueries"
 
-const SummaryScreen = () => {
+const SummaryScreen = ({ navigation }) => {
   const { user } = useContext(AuthContext)
   const { currentReceiptId } = useContext(AuthContext)
   const { currentEventUsers } = useContext(AuthContext)
+  const { setCurrentReceiptPaypalHandle } = useContext(AuthContext)
+  const { setCurrentReceiptUserTotal } = useContext(AuthContext)
 
   const { loading, error, data } = useQuery(GET_RECEIPT, {
     variables: { id: currentReceiptId }
@@ -41,7 +44,7 @@ const SummaryScreen = () => {
   const tip = data.receipt.tip / 100
   const tax = data.receipt.tax / 100
 
-  const isCardDownUser = user === data.receipt.cardDownId
+  const isCardDownUser = Number(user) === data.receipt.cardDownId
 
   //need to set current user's subtotal
   let userSubtotal = 0
@@ -112,7 +115,14 @@ const SummaryScreen = () => {
           {isCardDownUser ? (
             <AppButton title={`They Should Pay`} />
           ) : (
-            <AppButton title={`Pay $${userGrandTotal} Now`} />
+            <AppButton
+              title={`Pay $${userGrandTotal} Now`}
+              onPress={() => {
+                setCurrentReceiptUserTotal(userGrandTotal)
+                setCurrentReceiptPaypalHandle(data.receipt.cardDownHandle)
+                navigation.navigate("PayPal")
+              }}
+            />
           )}
         </ScrollView>
       </SafeAreaView>

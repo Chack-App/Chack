@@ -61,10 +61,12 @@ const SingleEvent = ({ navigation }) => {
         "Receipt Name Missing",
         "Please enter a name for your receipt"
       ),
-      [{
-        text: "OK"
-      }]
-      return;
+        [
+          {
+            text: "OK"
+          }
+        ]
+      return
     }
     addReceipt({
       variables: {
@@ -89,10 +91,7 @@ const SingleEvent = ({ navigation }) => {
             placeholder="Name"
             onChangeText={receiptName => setReceiptName(receiptName)}
           />
-          <AppButton
-            title="Create"
-            onPress={handleCreate}
-          />
+          <AppButton title="Create" onPress={handleCreate} />
         </View>
         <ScrollView>
           <View style={styles.receiptContainer}>

@@ -10,6 +10,7 @@ export const GET_RECEIPT = gql`
       cardDownId
       tax
       tip
+      cardDownHandle
       items {
         id
         name
