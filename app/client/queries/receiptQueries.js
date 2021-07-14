@@ -6,6 +6,7 @@ export const GET_RECEIPT = gql`
       id
       name
       isPaid
+      isApproved
       cardDownId
       items {
         id
@@ -30,6 +31,15 @@ export const CREATE_RECEIPT = gql`
       cardDownId
       eventId
       name
+    }
+  }
+`
+
+export const SET_APPROVED = gql`
+  mutation SetApproved($id: ID!) {
+    setApproved(id: $id) {
+      id
+      isApproved
     }
   }
 `
