@@ -76,14 +76,16 @@ const SummaryScreen = () => {
                     </View>
                   )
                 })}
-                <Text style={styles.text}>Subtotal: ${subtotal}</Text>
+                <Text style={styles.text}>
+                  Subtotal: ${subtotal.toFixed(2)}
+                </Text>
               </View>
             )
           })}
         {isCardDownUser ? (
           <AppButton title={`They Should Pay`} />
         ) : (
-          <AppButton title={`Pay $${userSubtotal} Now`} />
+          <AppButton title={`Pay $${userSubtotal.toFixed(2)} Now`} />
         )}
       </SafeAreaView>
     </TouchableWithoutFeedback>

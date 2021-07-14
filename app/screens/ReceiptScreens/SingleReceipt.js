@@ -21,8 +21,6 @@ import { AuthContext } from "../../context/authContext"
 const SingleReceipt = ({ navigation }) => {
   const { user } = useContext(AuthContext)
   const { currentReceiptId } = useContext(AuthContext)
-  const [toggle, setToggle] = useState(true)
-  console.log(toggle)
   const [claimItem] = useMutation(CLAIM_ITEM, {
     refetchQueries: [
       { query: GET_RECEIPT, variables: { id: currentReceiptId } }
@@ -48,6 +46,12 @@ const SingleReceipt = ({ navigation }) => {
   let claimedItems = unstrictItems.filter(item => item.users[0]) // all claimed items
   let filteredItems = claimedItems.filter(item => item.users[0].id === user) // items that belong to user
 
+  let test = true
+
+  if (test) {
+    navigation.navigate("SummaryScreen")
+  }
+
   let subTotal = 0
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -59,6 +63,7 @@ const SingleReceipt = ({ navigation }) => {
                 subTotal += item.price / 100
                 return (
                   <ItemButton
+                    disabled={true}
                     key={item.id}
                     title={item.name}
                     price={item.price / 100}
