@@ -5,6 +5,9 @@ export const GET_USER = gql`
     user(id: $id) {
       id
       email
+      firstName
+      lastName
+      payPalMe
     }
   }
 `
@@ -39,6 +42,26 @@ export const SIGNUP = gql`
       token
       email
       id
+      firstName
+      lastName
+      payPalMe
+    }
+  }
+`
+export const UPDATE_USER = gql`
+  mutation updateUser(
+    $email: String!
+    $firstName: String!
+    $lastName: String!
+    $payPalMe: String!
+  ) {
+    updateUser(
+      email: $email
+      firstName: $firstName
+      lastName: $lastName
+      payPalMe: $payPalMe
+    ) {
+      email
       firstName
       lastName
       payPalMe
