@@ -7,7 +7,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "server": "nodemon googlevision.js"
+    "server": "nodemon UploadScreen.js"
   },
   "dependencies": {
     "@apollo/client": "^3.3.21",

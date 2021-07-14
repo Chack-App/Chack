@@ -7,16 +7,66 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   Keyboard,
-  StyleSheet
+  StyleSheet,
+  Alert
 } from "react-native"
 import colors from "../../config/colors"
 import * as ImagePicker from "expo-image-picker"
 
 import { AuthContext } from "../../context/authContext"
 import AppButton from "../../components/AppButton"
+import { GOOGLE_CLOUD_VISION_API_KEY } from "../../../secrets"
+
+// const vision = require("@google-cloud/vision")
+
+// async function readReceipt(imguri) {
+//   // Creates a client
+//   const client = new vision.ImageAnnotatorClient({
+//     keyFilename: "../../../GoogleKey.json"
+//   })
+
+//   const fileName = imguri
+
+//   // Performs text detection on the local file
+
+//   const [result] = await client.textDetection(fileName)
+//   const detections = result.textAnnotations
+//   //return detections
+
+//   // Creates array of objects for each detected piece of text
+//   let textArr = []
+//   detections.forEach(text => textArr.push(text))
+
+//   // console.log("ORIGINAL ---->", textArr)
+
+//   // for (let i = 0; i < textArr.length; i++) {
+//   //   let currentObject = textArr[i]
+//   //   returnObj[currentObject.description] = currentObject.boundingPoly.vertices
+//   // }
+
+//   function runThisThing(apiArray) {
+//     let result = {}
+//     apiArray.forEach(item => {
+//       if (result.hasOwnProperty(`${item.description}`)) {
+//         const test = Math.ceil(Math.random() * 100)
+//         result[`${item.description}~~~~${test}`] = item.boundingPoly.vertices
+//       } else {
+//         result[item.description] = item.boundingPoly.vertices
+//       }
+//     })
+//     return result
+//     //
+//     //   console.log(apiArray.length)
+//   }
+
+//   const resultData = runThisThing(detections)
+
+//   console.log("for loop finished", resultData)
+// }
 
 const UploadScreen = () => {
   const [image, setImage] = useState(null)
+  const [uploadingState, setUploadingState] = useState()
   const { currentReceiptId } = useContext(AuthContext)
 
   useEffect(() => {
@@ -46,6 +96,68 @@ const UploadScreen = () => {
     }
   }
 
+  const handleScan = () => {
+    if (!image) {
+      Alert.alert("No image uploaded", "Please select image from library"),
+        [
+          {
+            text: "OK"
+          }
+        ]
+      return
+    }
+    console.log("here is image*****", image)
+    submitToGoogle(image)
+  }
+
+  const submitToGoogle = async img => {
+    try {
+      // this.setState({ uploading: true })
+      let body = JSON.stringify({
+        requests: [
+          {
+            features: [
+              // { type: "LABEL_DETECTION", maxResults: 10 },
+              // { type: "LANDMARK_DETECTION", maxResults: 5 },
+              // { type: "FACE_DETECTION", maxResults: 5 },
+              // { type: "LOGO_DETECTION", maxResults: 5 },
+              { type: "TEXT_DETECTION", maxResults: 5 }
+              // { type: "DOCUMENT_TEXT_DETECTION", maxResults: 5 },
+              // { type: "SAFE_SEARCH_DETECTION", maxResults: 5 },
+              // { type: "IMAGE_PROPERTIES", maxResults: 5 },
+              // { type: "CROP_HINTS", maxResults: 5 },
+              // { type: "WEB_DETECTION", maxResults: 5 }
+            ],
+            image: {
+              source: {
+                imageUri: img
+              }
+            }
+          }
+        ]
+      })
+      let response = await fetch(
+        "https://vision.googleapis.com/v1/images:annotate?key=" +
+          GOOGLE_CLOUD_VISION_API_KEY,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          method: "POST",
+          body: body
+        }
+      )
+      let responseJson = await response.json()
+      console.log(responseJson)
+      // this.setState({
+      //   googleResponse: responseJson,
+      //   uploading: false
+      // })
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -59,6 +171,7 @@ const UploadScreen = () => {
               style={{ width: 200, height: 200 }}
             />
           )}
+          <AppButton title="Scan Image" onPress={handleScan} />
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
