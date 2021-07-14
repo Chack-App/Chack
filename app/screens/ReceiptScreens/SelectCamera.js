@@ -5,12 +5,11 @@ import {
   View,
   Text,
   Keyboard,
-  TouchableWithoutFeedback,
+  TouchableWithoutFeedback
 } from "react-native"
 import colors from "../../config/colors"
 
 import AppButton from "../../components/AppButton"
-
 
 const SelectCamera = ({ navigation }) => {
   return (
@@ -20,6 +19,10 @@ const SelectCamera = ({ navigation }) => {
         <AppButton
           title="Scan Receipt"
           onPress={() => navigation.navigate("CameraScreen")}
+        />
+        <AppButton
+          title="Upload Receipt"
+          onPress={() => navigation.navigate("UploadScreen")}
         />
         <AppButton
           title="Enter Items Manually"
@@ -41,7 +44,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 20,
     fontWeight: "bold"
-  },
+  }
 })
 
-export default SelectCamera;
+export default SelectCamera

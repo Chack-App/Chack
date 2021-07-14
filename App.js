@@ -13,7 +13,6 @@ import { AuthContext } from "./app/context/authContext"
 import AppButton from "./app/components/AppButton"
 import Main from "./Main"
 
-
 export default function App() {
   const [user, setUser] = useState(false)
   // const { token } = useContext(AuthContext)
