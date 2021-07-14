@@ -2,10 +2,10 @@ import React from "react"
 import { StyleSheet, Text, TouchableOpacity,View } from "react-native"
 import colors from "../config/colors"
 
-function ItemButton({ title, price, onPress, isToggled, isClaimed }) {
+function ItemButton({ title, price, onPress, isClaimed, isMine }) {
   const styles = StyleSheet.create({
     button: {
-      backgroundColor: isToggled ? colors.isSelected: colors.primary,
+      backgroundColor: isClaimed && isMine ? colors.isSelected: isClaimed ? 'gray': colors.primary,
       borderRadius: 25,
       justifyContent: "space-between",
       flexDirection: "row",
@@ -36,3 +36,6 @@ function ItemButton({ title, price, onPress, isToggled, isClaimed }) {
 
 
 export default ItemButton
+
+// calamari
+// steak
