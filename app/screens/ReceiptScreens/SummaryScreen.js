@@ -7,7 +7,8 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   TextInput,
-  Alert
+  Alert,
+  ScrollView
 } from "react-native"
 import colors from "../../config/colors"
 import ItemButton from "../../components/ItemButton"
@@ -37,6 +38,8 @@ const SummaryScreen = () => {
 
   console.log("data...", data)
   // console.log(currentEventUsers)
+  const tip = data.receipt.tip / 100
+  const tax = data.receipt.tax / 100
 
   const isCardDownUser = user === data.receipt.cardDownId
 
@@ -47,46 +50,71 @@ const SummaryScreen = () => {
   // console.log(filteredItems)
   filteredItems.map(item => (userSubtotal += item.price / 100))
 
+  let billTotal = 0
+  claimedItems.map(item => (billTotal += item.price / 100))
+
+  let userGrandTotal = (
+    (userSubtotal / billTotal) * tax +
+    userSubtotal * tip +
+    userSubtotal
+  ).toFixed(2)
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        <View style={styles.itemContainer}></View>
-        {currentEventUsers &&
-          currentEventUsers.map(user => {
-            //need filtered list
-            const itemList = claimedItems
-            const filteredUserItems = itemList.filter(
-              item => item.users[0].id === user.id
-            )
-            let subtotal = 0
-            filteredUserItems.map(item => {
-              subtotal += item.price / 100
-            })
-            return (
-              <View key={user.id} style={styles.userContainer}>
-                <Text style={styles.text}>
-                  {user.firstName} {user.lastName}
-                </Text>
-                {filteredUserItems.map(item => {
-                  return (
-                    <View key={item.id}>
-                      <Text style={styles.secondaryText}>
-                        {item.name} {item.price / 100}
-                      </Text>
-                    </View>
-                  )
-                })}
-                <Text style={styles.text}>
-                  Subtotal: ${subtotal.toFixed(2)}
-                </Text>
-              </View>
-            )
-          })}
-        {isCardDownUser ? (
-          <AppButton title={`They Should Pay`} />
-        ) : (
-          <AppButton title={`Pay $${userSubtotal.toFixed(2)} Now`} />
-        )}
+        <ScrollView>
+          {currentEventUsers &&
+            currentEventUsers.map(user => {
+              //need filtered list
+              const itemList = claimedItems
+              const filteredUserItems = itemList.filter(
+                item => item.users[0].id === user.id
+              )
+              let subtotal = 0
+              filteredUserItems.map(item => {
+                subtotal += item.price / 100
+              })
+              return (
+                <View key={user.id} style={styles.userContainer}>
+                  <Text style={styles.text}>
+                    {user.firstName} {user.lastName}
+                  </Text>
+                  {filteredUserItems.map(item => {
+                    return (
+                      <View key={item.id}>
+                        <Text style={styles.secondaryText}>
+                          {item.name} {item.price / 100}
+                        </Text>
+                      </View>
+                    )
+                  })}
+
+                  <Text style={styles.text}>
+                    Subtotal: ${subtotal.toFixed(2)}
+                  </Text>
+                  <Text style={styles.text}>
+                    Tip: ${(subtotal * tip).toFixed(2)}
+                  </Text>
+                  <Text style={styles.text}>
+                    Tax: ${((subtotal / billTotal) * tax).toFixed(2)}
+                  </Text>
+                  <Text style={styles.text}>
+                    Total: $
+                    {(
+                      (subtotal / billTotal) * tax +
+                      subtotal * tip +
+                      subtotal
+                    ).toFixed(2)}
+                  </Text>
+                </View>
+              )
+            })}
+          {isCardDownUser ? (
+            <AppButton title={`They Should Pay`} />
+          ) : (
+            <AppButton title={`Pay $${userGrandTotal} Now`} />
+          )}
+        </ScrollView>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )

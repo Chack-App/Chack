@@ -17,10 +17,13 @@ import { useQuery, useMutation } from "@apollo/client"
 import { GET_RECEIPT, SET_APPROVED } from "../../client/queries/receiptQueries"
 import { CLAIM_ITEM } from "../../client/queries/itemQueries"
 import { AuthContext } from "../../context/authContext"
+import AppTextInput from "../../components/AppTextInput"
 
 const SingleReceipt = ({ navigation }) => {
   const { user } = useContext(AuthContext)
   const { currentReceiptId } = useContext(AuthContext)
+  const [tax, setTax] = useState(0)
+  const [tip, setTip] = useState(0)
   const [setApproved] = useMutation(SET_APPROVED, {
     refetchQueries: [
       { query: GET_RECEIPT, variables: { id: currentReceiptId } }
@@ -33,7 +36,11 @@ const SingleReceipt = ({ navigation }) => {
     onCompleted(data) {}
   })
   const { loading, error, data, refetch } = useQuery(GET_RECEIPT, {
-    variables: { id: currentReceiptId }
+    variables: { id: currentReceiptId },
+    onCompleted(data) {
+      setTip(data.receipt.tip)
+      setTax(data.receipt.tax)
+    }
   })
   if (loading) {
     return <Text>Loading</Text>
@@ -42,7 +49,7 @@ const SingleReceipt = ({ navigation }) => {
     return <Text>Error</Text>
   }
   let allItems = data.receipt.items
-  console.log(data)
+  // console.log(data)
   //Query resulted in Strict-Mode Array, needed to adjust to be able to sort properly
   let unstrictItems = JSON.parse(JSON.stringify(allItems))
   unstrictItems.sort((a, b) => {
@@ -59,7 +66,13 @@ const SingleReceipt = ({ navigation }) => {
   // }
 
   const handleApproved = () => {
-    if (claimedItems.length !== allItems.length) {
+    if (Number(tip) > 100 || Number(tip) < 0 || isNaN(Number(tip))) {
+      Alert.alert("tip must be a number between 0 and 100")
+      console.log("tip error")
+    } else if (isNaN(Number(tax))) {
+      Alert.alert("tax must be a number")
+      console.log("tax error")
+    } else if (claimedItems.length !== allItems.length) {
       Alert.alert("All Items must be claimed before Approval"),
         [
           {
@@ -69,7 +82,9 @@ const SingleReceipt = ({ navigation }) => {
     } else {
       setApproved({
         variables: {
-          id: currentReceiptId
+          id: currentReceiptId,
+          tax: Number(tax * 100),
+          tip: Number(tip)
         }
       })
       navigation.navigate("SummaryScreen")
@@ -127,6 +142,20 @@ const SingleReceipt = ({ navigation }) => {
           {!isApproved && Number(user) === data.receipt.cardDownId && (
             <View style={{ alignItems: "center" }}>
               <Text style={styles.text}>You are the card down person</Text>
+              <AppTextInput
+                icon="account"
+                placeholder="tax in $"
+                autoCapitalize="words"
+                onChangeText={text => setTax(text)}
+                placeholderTextColor={colors.placeholderColor}
+              />
+              <AppTextInput
+                icon="account"
+                placeholder="tip as %"
+                autoCapitalize="words"
+                onChangeText={text => setTip(text)}
+                placeholderTextColor={colors.placeholderColor}
+              />
               <AppButton title="Approve Selections" onPress={handleApproved} />
             </View>
           )}
