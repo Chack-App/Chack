@@ -8,7 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 
 // create env variable for local IP instead of local host
 const httpLink = createHttpLink({
-  uri: "http://192.168.1.162/graphql",
+  uri: "http://localhost:8000/graphql",
   credentials: "same-origin"
 })
 
@@ -23,7 +23,7 @@ const authLink = new ApolloLink(async (operation, forward) => {
 })
 
 const client = new ApolloClient({
-  uri: "http://192.168.1.162/graphql",
+  uri: "http://localhost:8000/graphql",
   link: authLink.concat(httpLink),
   cache: new InMemoryCache()
 })
