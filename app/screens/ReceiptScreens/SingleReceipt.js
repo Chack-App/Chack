@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     padding: 15,
     //width: "95%",
-    marginRight: 23.85
+    marginRight: 12
   }
 })
 
