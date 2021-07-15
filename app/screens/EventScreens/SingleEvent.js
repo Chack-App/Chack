@@ -21,7 +21,7 @@ import { AuthContext } from "../../context/authContext"
 const SingleEvent = ({ navigation }) => {
   const { user } = useContext(AuthContext)
   const { currentEventId } = useContext(AuthContext)
-  const { setCurrentReceiptId } = useContext(AuthContext)
+  const { currentReceiptId, setCurrentReceiptId } = useContext(AuthContext)
   const { setCurrentEventUsers } = useContext(AuthContext)
 
   const [receiptName, setReceiptName] = useState("")
@@ -41,7 +41,9 @@ const SingleEvent = ({ navigation }) => {
       }
     ],
     onCompleted(data) {
+      console.log(data.addReceipt.id)
       setCurrentReceiptId(data.addReceipt.id)
+      console.log("my receipt", currentReceiptId)
     }
   })
 
