@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import colors from "../config/colors"
 import Events from "../screens/EventScreens/Events"
 import CreateEvent from "../screens/EventScreens/CreateEvent"
@@ -12,10 +12,16 @@ import CameraScreen from "../screens/ReceiptScreens/CameraScreen"
 import SummaryScreen from "../screens/ReceiptScreens/SummaryScreen"
 import UploadScreen from "../screens/ReceiptScreens/UploadScreen"
 import PayPal from "../screens/ReceiptScreens/PayPal"
+import { AuthContext } from "../context/authContext"
 
 const Stack = createStackNavigator()
 
-const EventNavigator = () => (
+const EventNavigator = () => {
+  const {currentEventName} = useContext(AuthContext)
+  const {currentEventCode} = useContext(AuthContext)
+  const {currentReceiptName} = useContext(AuthContext)
+
+  return(
   <Stack.Navigator initialRouteName="Events">
     <Stack.Screen
       name="Events"
@@ -30,24 +36,24 @@ const EventNavigator = () => (
     <Stack.Screen
       name="SingleEvent"
       component={SingleEvent}
-      options={{ ...gatewayHeaderStyles, headerTitle: "Your Event" }}
+      options={{ ...gatewayHeaderStyles, headerTitle: `${currentEventName} (code: ${currentEventCode})` }}
     />
     {/* Moved receipt navigation to event navigator below */}
     <Stack.Screen
       name="SingleReceipt"
       component={SingleReceipt}
       // component={SummaryScreen}
-      options={{ ...gatewayHeaderStyles, headerTitle: "Your Receipt" }}
+      options={{ ...gatewayHeaderStyles, headerTitle: `${currentReceiptName}` }}
     />
     <Stack.Screen
       name="SummaryScreen"
       component={SummaryScreen}
-      options={{ ...gatewayHeaderStyles, headerTitle: "Receipt Summary" }}
+      options={{ ...gatewayHeaderStyles, headerTitle: `${currentReceiptName} Summary` }}
     />
     <Stack.Screen
       name="SelectCamera"
       component={SelectCamera}
-      options={{ ...gatewayHeaderStyles, headerTitle: "New Receipt" }}
+      options={{ ...gatewayHeaderStyles, headerTitle: `${currentReceiptName}` }}
     />
     <Stack.Screen
       name="ManualItemEntry"
@@ -57,12 +63,12 @@ const EventNavigator = () => (
     <Stack.Screen
       name="CameraScreen"
       component={CameraScreen}
-      options={{ ...gatewayHeaderStyles, headerTitle: "CameraScreen" }}
+      options={{ ...gatewayHeaderStyles, headerTitle: "Scan Receipt" }}
     />
     <Stack.Screen
       name="UploadScreen"
       component={UploadScreen}
-      options={{ ...gatewayHeaderStyles, headerTitle: "UploadScreen" }}
+      options={{ ...gatewayHeaderStyles, headerTitle: "Upload Receipt" }}
     />
     <Stack.Screen
       name="PayPal"
@@ -70,7 +76,7 @@ const EventNavigator = () => (
       options={{ ...gatewayHeaderStyles, headerTitle: "PayPal" }}
     />
   </Stack.Navigator>
-)
+)}
 
 const gatewayHeaderStyles = {
   headerTransparent: false,

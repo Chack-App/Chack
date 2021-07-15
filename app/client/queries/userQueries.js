@@ -94,6 +94,7 @@ export const GET_ACTIVE_USER_EVENTS = gql`
       id
       eventName
       description
+      passcode
     }
   }
 `
@@ -103,6 +104,7 @@ export const GET_PAST_USER_EVENTS = gql`
       id
       eventName
       description
+      passcode
     }
   }
 `

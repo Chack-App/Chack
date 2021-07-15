@@ -9,7 +9,10 @@ const AuthProvider = ({ children }) => {
   const [token, setToken] = useState("")
   const [user, setUser] = useState("")
   const [currentEventId, setCurrentEventId] = useState("")
+  const [currentEventName, setCurrentEventName] = useState("")
+  const [currentEventCode, setCurrentEventCode] = useState("")
   const [currentReceiptId, setCurrentReceiptId] = useState("")
+  const [currentReceiptName, setCurrentReceiptName] = useState("")
   const [currentEventUsers, setCurrentEventUsers] = useState([])
   const [currentReceiptPaypalHandle, setCurrentReceiptPaypalHandle] =
     useState("")
@@ -58,8 +61,14 @@ const AuthProvider = ({ children }) => {
       setUser,
       currentEventId,
       setCurrentEventId,
+      currentEventName,
+      setCurrentEventName,
+      currentEventCode, 
+      setCurrentEventCode,
       currentReceiptId,
       setCurrentReceiptId,
+      currentReceiptName,
+      setCurrentReceiptName,
       currentEventUsers,
       setCurrentEventUsers,
       currentReceiptPaypalHandle,
@@ -71,7 +80,10 @@ const AuthProvider = ({ children }) => {
     token,
     user,
     currentEventId,
+    currentEventName,
+    currentEventCode, 
     currentReceiptId,
+    currentReceiptName,
     currentEventUsers,
     currentReceiptPaypalHandle,
     currentReceiptUserTotal

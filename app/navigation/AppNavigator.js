@@ -7,6 +7,8 @@ import CreateTransaction from "../screens/CreateTransactionScreen";
 import Activity from "../screens/Activity";
 import Account from "../screens/Account";
 import EventNavigator from "./EventNavigator";
+import ActivityNavigator from "./ActivityNavigator";
+import colors from "../config/colors";
 
 const Tab = createBottomTabNavigator();
 
@@ -32,10 +34,19 @@ const AppNavigator = () => (
     {/* <Tab.Screen name="Friends" component={Friends} /> */}
     <Tab.Screen name="Events" component={EventNavigator}/>
     {/* <Tab.Screen name="New Transaction" component={CreateTransaction} /> */}
-    <Tab.Screen name="Activity" component={Activity} />
+    <Tab.Screen name="Activity" component={ActivityNavigator}/>
     <Tab.Screen name="Account" component={Account} />
   </Tab.Navigator>
 
 );
+
+const gatewayHeaderStyles = {
+  headerTransparent: false,
+  headerTintColor: colors.white,
+  headerStyle: {
+    backgroundColor: colors.primary
+  },
+  headerTitle: ""
+}
 
 export default AppNavigator;

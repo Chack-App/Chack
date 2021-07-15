@@ -39,6 +39,8 @@ const SummaryScreen = ({ navigation }) => {
     return <Text>No Data</Text>
   }
 
+  const receiptHasBeenPaid = data.receipt.isPaid //if receipt has been paid dont show button at bottom
+
   //console.log("data...", data)
   // console.log(currentEventUsers)
   const tip = data.receipt.tip / 100
@@ -122,7 +124,7 @@ const SummaryScreen = ({ navigation }) => {
                 )
               })}
             <View style={{flexDirection:'row',justifyContent:'center'}}>
-              {isCardDownUser ? (
+              {!receiptHasBeenPaid&&(isCardDownUser ? (
                 <AppButton title={`They Should Pay`} />
               ) : (
                 <AppButton
@@ -133,7 +135,7 @@ const SummaryScreen = ({ navigation }) => {
                     navigation.navigate("PayPal")
                   }}
                 />
-              )}
+              ))}
             </View>
           </View>
         </TouchableWithoutFeedback>
