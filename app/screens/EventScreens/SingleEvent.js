@@ -80,10 +80,16 @@ const SingleEvent = ({ navigation }) => {
     setReceiptName("")
     navigation.navigate("SelectCamera")
   }
+  //console.log(data)
 
+  let numActiveReceipts = data.event.receipts.filter(receipt => receipt.isPaid===false).length
+  let eventIsActive = !data.event.isComplete
+  // console.log(data.event)
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
+        {eventIsActive && 
+        <>
         <View style={styles.createReceiptContainer}>
           <Text style={{ ...styles.text, textAlign: "center" }}>
             NEW RECEIPT
@@ -123,7 +129,7 @@ const SingleEvent = ({ navigation }) => {
                 }
               })}
           </ScrollView>
-        </View>
+        </View></>}
         <View style={styles.receiptContainer}>
           <Text style={{ ...styles.text, textAlign: "center" }}>
             PAST RECEIPTS
@@ -140,7 +146,7 @@ const SingleEvent = ({ navigation }) => {
                         setCurrentReceiptId(receipt.id)
                         setCurrentReceiptName(receipt.name)
                         setCurrentEventUsers(data.event.users)
-                        navigation.navigate("SingleReceipt")
+                        navigation.navigate("SummaryScreen")
                       }}
                     />
                   )
@@ -148,6 +154,23 @@ const SingleEvent = ({ navigation }) => {
               })}
           </ScrollView>
         </View>
+        {eventIsActive&&<AppButton title="Close Event" onPress={()=>{
+          if(numActiveReceipts>0){
+            Alert.alert(
+              "Cannot close event with active receipts",
+              "Please close all active receipts before attempting to close this event"
+              ),
+              [
+                {
+                  text: "OK"
+                }
+              ]
+              return
+            }
+            else {
+              navigation.navigate("CloseEvent")
+            }}
+          }/>}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )

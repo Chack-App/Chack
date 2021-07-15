@@ -6,6 +6,7 @@ export const GET_EVENT = gql`
       id
       eventName
       description
+      isComplete
       passcode
       receipts {
         id
@@ -63,4 +64,13 @@ export const JOIN_EVENT = gql`
       passcode
     }
   }
+`
+export const CLOSE_EVENT = gql`
+mutation CloseEvent($id: ID!){
+  closeEvent(id: $id){
+    id
+    eventName
+    isComplete
+  }
+}
 `

@@ -48,3 +48,13 @@ export const SET_APPROVED = gql`
     }
   }
 `
+
+export const CLOSE_RECEIPT = gql`
+mutation CloseReceipt($id: ID!){
+  closeReceipt(id: $id){
+    id
+    name
+    isPaid
+  }
+}
+`

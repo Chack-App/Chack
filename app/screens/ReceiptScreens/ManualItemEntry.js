@@ -49,7 +49,7 @@ const ManualItemEntry = ({ navigation }) => {
   const handleSubmit = () => {
     //Verify Inputs
     for (let i = 0; i < itemList.length; i++) {
-      console.log(itemList[i])
+      //console.log(itemList[i])
       if (!itemList[i].name) {
         Alert.alert(
           "Item Name Missing",

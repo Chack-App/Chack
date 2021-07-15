@@ -34,7 +34,7 @@ const SingleReceipt = ({ navigation }) => {
       { query: GET_RECEIPT, variables: { id: currentReceiptId } }
     ],
     onCompleted(data) {
-      console.log(data)
+      //console.log(data)
     }
   })
   const { loading, error, data, refetch } = useQuery(GET_RECEIPT, {
@@ -144,6 +144,7 @@ const SingleReceipt = ({ navigation }) => {
                 icon="account"
                 placeholder="tax in $"
                 autoCapitalize="words"
+                keyboardType="numeric"
                 onChangeText={text => setTax(text)}
                 placeholderTextColor={colors.placeholderColor}
               />
@@ -151,6 +152,7 @@ const SingleReceipt = ({ navigation }) => {
                 icon="account"
                 placeholder="tip as %"
                 autoCapitalize="words"
+                keyboardType="numeric"
                 onChangeText={text => setTip(text)}
                 placeholderTextColor={colors.placeholderColor}
               />
