@@ -33,7 +33,9 @@ const SingleReceipt = ({ navigation }) => {
     refetchQueries: [
       { query: GET_RECEIPT, variables: { id: currentReceiptId } }
     ],
-    onCompleted(data) {}
+    onCompleted(data) {
+      console.log(data)
+    }
   })
   const { loading, error, data, refetch } = useQuery(GET_RECEIPT, {
     variables: { id: currentReceiptId },
@@ -60,10 +62,6 @@ const SingleReceipt = ({ navigation }) => {
   let filteredItems = claimedItems.filter(item => item.users[0].id === user) // items that belong to user
 
   let isApproved = data.receipt.isApproved
-
-  // if (isApproved) {
-  //   navigation.navigate("SummaryScreen")
-  // }
 
   const handleApproved = () => {
     if (Number(tip) > 100 || Number(tip) < 0 || isNaN(Number(tip))) {
@@ -102,19 +100,19 @@ const SingleReceipt = ({ navigation }) => {
                 subTotal += item.price / 100
                 return (
                   <ItemButton
-                    disabled={isApproved}
+                    //disabled={isApproved}  //--> screws up scrolling 
                     key={item.id}
                     title={item.name}
                     price={item.price / 100}
                     isClaimed={item.isClaimed}
                     isMine={filteredItems.includes(item)}
-                    onPress={() =>
-                      claimItem({
+                    onPress={() =>{
+                      isApproved===false && claimItem({
                         variables: {
                           userId: user,
                           itemId: item.id
                         }
-                      })
+                      })}
                     }
                   />
                 )

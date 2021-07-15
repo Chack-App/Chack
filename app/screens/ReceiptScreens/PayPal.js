@@ -7,7 +7,7 @@ const PayPal = () => {
   const { currentReceiptPaypalHandle } = useContext(AuthContext)
   const { currentReceiptUserTotal } = useContext(AuthContext)
 
-  return <WebView source={{ uri: "https://reactnative.dev/" }} />
+  return <WebView source={{ uri: `https://www.paypal.com/paypalme/${currentReceiptPaypalHandle}/${currentReceiptUserTotal}` }} />
 }
 
 export default PayPal

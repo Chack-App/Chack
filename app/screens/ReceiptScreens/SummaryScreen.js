@@ -39,7 +39,7 @@ const SummaryScreen = ({ navigation }) => {
     return <Text>No Data</Text>
   }
 
-  console.log("data...", data)
+  //console.log("data...", data)
   // console.log(currentEventUsers)
   const tip = data.receipt.tip / 100
   const tax = data.receipt.tax / 100
@@ -74,7 +74,7 @@ const SummaryScreen = ({ navigation }) => {
                 item => item.users[0].id === user.id
               )
               let subtotal = 0
-              filteredUserItems.map(item => {
+              filteredUserItems.forEach(item => {
                 subtotal += item.price / 100
               })
               return (

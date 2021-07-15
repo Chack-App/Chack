@@ -28,22 +28,23 @@ const Events = ({ navigation }) => {
   const [passcode, setPasscode] = useState("")
 
   const [joinEvent] = useMutation(JOIN_EVENT, {
-    refetchQueries: [{
-      query: GET_ACTIVE_USER_EVENTS,
-      variables: {id: user}
-    }],
+    refetchQueries: [
+      {
+        query: GET_ACTIVE_USER_EVENTS,
+        variables: { id: user }
+      }
+    ],
     onCompleted(data) {
       setCurrentEventId(data.joinEvent.id)
       navigation.navigate("SingleEvent")
     },
     onError() {
-      Alert.alert(
-        "Invalid Passcode",
-        "Please check your passcode"
-      ),
-      [{
-        text: "OK"
-      }]
+      Alert.alert("Invalid Passcode", "Please check your passcode"),
+        [
+          {
+            text: "OK"
+          }
+        ]
     }
   })
 
@@ -65,13 +66,12 @@ const Events = ({ navigation }) => {
 
   const handleJoin = () => {
     if (passcode.length !== 4) {
-      Alert.alert(
-        "Invalid Passcode",
-        "Please enter 4 digit passcode"
-      ),
-      [{
-        text: "OK"
-      }]
+      Alert.alert("Invalid Passcode", "Please enter 4 digit passcode"),
+        [
+          {
+            text: "OK"
+          }
+        ]
     } else {
       joinEvent({
         variables: {
@@ -95,10 +95,7 @@ const Events = ({ navigation }) => {
             returnKeyType="search"
             onChangeText={passcode => setPasscode(passcode)}
           />
-          <AppButton
-            title="Join"
-            onPress={handleJoin}
-          />
+          <AppButton title="Join" onPress={handleJoin} />
           {/* <AppTextInput/> */}
         </View>
         <AppButton
@@ -109,20 +106,17 @@ const Events = ({ navigation }) => {
         <View style={styles.activeEventList}>
           <Text>ACTIVE EVENTS</Text>
         </View>
-        {
-          data.activeUserEvents.map(event => (
-            <AppButton
+        {data.activeUserEvents.map(event => (
+          <AppButton
             key={event.id}
             title={event.eventName}
             eventId={event.id}
             onPress={() => {
-              setCurrentEventId(event.id);
-              navigation.navigate("SingleEvent");
-            }
-          }
-            />
-          ))
-        }
+              setCurrentEventId(event.id)
+              navigation.navigate("SingleEvent")
+            }}
+          />
+        ))}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )

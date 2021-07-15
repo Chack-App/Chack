@@ -72,7 +72,7 @@ export const UPDATE_USER = gql`
 // const [id, setId] = useState(1)
 // const { loading, error, data } = useQuery(GET_USER, {variables: {id}} );
 // if (loading) {
-//   return <Text>Loading</Text>
+//   return null
 // }
 // if (error) {
 //   return <Text>Error</Text>
