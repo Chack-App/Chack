@@ -24,7 +24,7 @@ const SingleReceipt = ({ navigation }) => {
   const [claimItem] = useMutation(CLAIM_ITEM, {
     refetchQueries: [
       { query: GET_RECEIPT, variables: { id: currentReceiptId } }
-    ], 
+    ],
     onCompleted(data){
       console.log(data)
     }
@@ -44,6 +44,10 @@ const SingleReceipt = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
+        <AppButton
+          title="Edit"
+          onPress={() => navigation.navigate("ManualItemEntry")}
+        />
         <ScrollView>
           <View style={styles.itemContainer}>
             {data.receipt.items &&
