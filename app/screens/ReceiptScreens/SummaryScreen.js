@@ -39,7 +39,9 @@ const SummaryScreen = ({ navigation }) => {
     return <Text>No Data</Text>
   }
 
-  console.log("data...", data)
+  const receiptHasBeenPaid = data.receipt.isPaid //if receipt has been paid dont show button at bottom
+
+  //console.log("data...", data)
   // console.log(currentEventUsers)
   const tip = data.receipt.tip / 100
   const tax = data.receipt.tax / 100
@@ -63,70 +65,82 @@ const SummaryScreen = ({ navigation }) => {
   ).toFixed(2)
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView style={styles.container}>
-        <ScrollView>
-          {currentEventUsers &&
-            currentEventUsers.map(user => {
-              //need filtered list
-              const itemList = claimedItems
-              const filteredUserItems = itemList.filter(
-                item => item.users[0].id === user.id
-              )
-              let subtotal = 0
-              filteredUserItems.map(item => {
-                subtotal += item.price / 100
-              })
-              return (
-                <View key={user.id} style={styles.userContainer}>
-                  <Text style={styles.text}>
-                    {user.firstName} {user.lastName}
-                  </Text>
-                  {filteredUserItems.map(item => {
-                    return (
-                      <View key={item.id}>
-                        <Text style={styles.secondaryText}>
-                          {item.name} {item.price / 100}
-                        </Text>
-                      </View>
-                    )
-                  })}
-
-                  <Text style={styles.text}>
-                    Subtotal: ${subtotal.toFixed(2)}
-                  </Text>
-                  <Text style={styles.text}>
-                    Tip: ${(subtotal * tip).toFixed(2)}
-                  </Text>
-                  <Text style={styles.text}>
-                    Tax: ${((subtotal / billTotal) * tax).toFixed(2)}
-                  </Text>
-                  <Text style={styles.text}>
-                    Total: $
-                    {(
-                      (subtotal / billTotal) * tax +
-                      subtotal * tip +
-                      subtotal
-                    ).toFixed(2)}
-                  </Text>
-                </View>
-              )
-            })}
-          {isCardDownUser ? (
-            <AppButton title={`They Should Pay`} />
-          ) : (
-            <AppButton
-              title={`Pay $${userGrandTotal} Now`}
-              onPress={() => {
-                setCurrentReceiptUserTotal(userGrandTotal)
-                setCurrentReceiptPaypalHandle(data.receipt.cardDownHandle)
-                navigation.navigate("PayPal")
-              }}
-            />
-          )}
-        </ScrollView>
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <TouchableWithoutFeedback>
+          <View>
+            {currentEventUsers &&
+              currentEventUsers.map(user => {
+                //need filtered list
+                const itemList = claimedItems
+                const filteredUserItems = itemList.filter(
+                  item => item.users[0].id === user.id
+                )
+                let subtotal = 0
+                filteredUserItems.forEach(item => {
+                  subtotal += item.price / 100
+                })
+                return (
+                  <View key={user.id} style={styles.userContainer}>
+                    <Text style={styles.text}>
+                      {user.firstName} {user.lastName}
+                    </Text>
+                    {filteredUserItems.map(item => {
+                      return (
+                        <View key={item.id} style={styles.itemLine}>
+                          <Text style={styles.secondaryText}>{item.name}</Text>
+                          <Text style={styles.secondaryText}>
+                            ${item.price / 100}
+                          </Text>
+                        </View>
+                      )
+                    })}
+                    <View style={styles.itemLine}>
+                      <Text style={styles.text}>Subtotal:</Text>
+                      <Text style={styles.text}>${subtotal.toFixed(2)}</Text>
+                    </View>
+                    <View style={styles.itemLine}>
+                      <Text style={styles.text}>Tip:</Text>
+                      <Text style={styles.text}>
+                        ${(subtotal * tip).toFixed(2)}
+                      </Text>
+                    </View>
+                    <View style={styles.itemLine}>
+                      <Text style={styles.text}>Tax:</Text>
+                      <Text style={styles.text}>${subtotal.toFixed(2)}</Text>
+                    </View>
+                    <View style={styles.itemLine}>
+                      <Text style={styles.text}>Total:</Text>
+                      <Text style={styles.text}>
+                        $
+                        {(
+                          (subtotal / billTotal) * tax +
+                          subtotal * tip +
+                          subtotal
+                        ).toFixed(2)}
+                      </Text>
+                    </View>
+                  </View>
+                )
+              })}
+            <View style={{flexDirection:'row',justifyContent:'center'}}>
+              {!receiptHasBeenPaid&&(isCardDownUser ? (
+                <AppButton title={`They Should Pay`} />
+              ) : (
+                <AppButton
+                  title={`Pay $${userGrandTotal} Now`}
+                  onPress={() => {
+                    setCurrentReceiptUserTotal(userGrandTotal)
+                    setCurrentReceiptPaypalHandle(data.receipt.cardDownHandle)
+                    navigation.navigate("PayPal")
+                  }}
+                />
+              ))}
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
@@ -156,6 +170,10 @@ const styles = StyleSheet.create({
     color: colors.secondary,
     fontSize: 20,
     fontWeight: "bold"
+  },
+  itemLine: {
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   priceContainer: {
     backgroundColor: colors.primary,
