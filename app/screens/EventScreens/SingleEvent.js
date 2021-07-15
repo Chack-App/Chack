@@ -57,7 +57,6 @@ const SingleEvent = ({ navigation }) => {
   }
 
   const handleCreate = () => {
-    console.log('ayyyy')
     if (!receiptName) {
       Alert.alert(
         "Receipt Name Missing",
