@@ -16,16 +16,31 @@ import AppTextInput from "../../components/AppTextInput"
 import { AuthContext } from "../../context/authContext"
 import { ADD_ITEMS } from "../../client/queries/itemQueries"
 import { GET_RECEIPT } from "../../client/queries/receiptQueries"
-import { useMutation } from "@apollo/client"
+import { useQuery, useMutation } from "@apollo/client"
 
 // How many characters should each passcode be?
 
-const ManualItemEntry = ({ navigation }) => {
+const EditReceiptScreen = ({ navigation }) => {
   const { currentReceiptId } = useContext(AuthContext)
 
   const [itemList, setItemList] = useState([])
   const [itemName, setItemName] = useState()
   const [itemPrice, setItemPrice] = useState()
+
+  const { loading, error, data } = useQuery(GET_RECEIPT, {
+    variables: { id: currentReceiptId },
+    onCompleted(data) {
+      let otherArray = []
+      data.receipt.items.forEach(item => otherArray.push(item))
+      setItemList(JSON.parse(JSON.stringify(otherArray)))
+    }
+  })
+  if (loading) {
+    return <Text>Loading</Text>
+  }
+  if (error) {
+    return <Text>Error</Text>
+  }
 
   const [addItems] = useMutation(ADD_ITEMS, {
     refetchQueries: [
@@ -138,7 +153,7 @@ const ManualItemEntry = ({ navigation }) => {
             <Text style={styles.text}>No Items</Text>
           )}
         </ScrollView>
-        <AppButton title="Confirm All" onPress={handleSubmit} />
+        <AppButton title="Confirm All" onPress={() => handleSubmit} />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )
@@ -186,4 +201,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ManualItemEntry
+export default EditReceiptScreen

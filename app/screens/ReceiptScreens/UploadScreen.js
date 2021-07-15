@@ -18,7 +18,7 @@ import AppButton from "../../components/AppButton"
 import { GOOGLE_CLOUD_VISION_API_KEY } from "../../../secrets"
 import { parseData } from "../../calculations"
 import { useMutation } from "@apollo/client"
-import { ADD_ITEMS } from '../../client/queries/itemQueries'
+import { ADD_ITEMS } from "../../client/queries/itemQueries"
 import { GET_RECEIPT } from "../../client/queries/receiptQueries"
 
 // const vision = require("@google-cloud/vision")
@@ -74,10 +74,12 @@ const UploadScreen = ({ navigation }) => {
   const { currentReceiptId } = useContext(AuthContext)
   console.log(currentReceiptId)
   const [addItems] = useMutation(ADD_ITEMS, {
-    refetchQueries: [{
-      query: GET_RECEIPT,
-      variables: {id: currentReceiptId}
-    }]
+    refetchQueries: [
+      {
+        query: GET_RECEIPT,
+        variables: { id: currentReceiptId }
+      }
+    ]
   })
 
   useEffect(() => {
@@ -179,14 +181,16 @@ const UploadScreen = ({ navigation }) => {
       let responseJson = await response.json()
       // console.log("please", responseJson.responses[0].textAnnotations)
       const parsedData = parseData(responseJson.responses[0].textAnnotations)
-      console.log('Our result: ', parsedData)
+      console.log("Our result: ", parsedData)
       // const itemListIntegers = parsedData.map((item) => {
       //   return {name: item.name, price: Math.floor(Number(item.price) * 100)})
-      addItems({ variables: {
-        items: parsedData,
-        receiptId: currentReceiptId
-      }})
-      navigation.navigate("ManualItemEntry")
+      addItems({
+        variables: {
+          items: parsedData,
+          receiptId: currentReceiptId
+        }
+      })
+      navigation.navigate("SingleReceipt")
       // this.setState({
       //   googleResponse: responseJson,
       //   uploading: false

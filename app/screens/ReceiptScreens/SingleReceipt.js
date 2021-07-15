@@ -25,7 +25,7 @@ const SingleReceipt = ({ navigation }) => {
     refetchQueries: [
       { query: GET_RECEIPT, variables: { id: currentReceiptId } }
     ],
-    onCompleted(data){
+    onCompleted(data) {
       console.log(data)
     }
   })
@@ -46,7 +46,7 @@ const SingleReceipt = ({ navigation }) => {
       <SafeAreaView style={styles.container}>
         <AppButton
           title="Edit"
-          onPress={() => navigation.navigate("ManualItemEntry")}
+          onPress={() => navigation.navigate("EditReceiptScreen")}
         />
         <ScrollView>
           <View style={styles.itemContainer}>
@@ -60,10 +60,14 @@ const SingleReceipt = ({ navigation }) => {
                     price={item.price / 100}
                     isClaimed={item.isClaimed}
                     isMine={filteredItems.includes(item)}
-                    onPress={() => claimItem({variables: {
-                      userId: user,
-                      itemId: item.id
-                    }})}
+                    onPress={() =>
+                      claimItem({
+                        variables: {
+                          userId: user,
+                          itemId: item.id
+                        }
+                      })
+                    }
                   />
                 )
               })}
