@@ -22,6 +22,7 @@ const SingleEvent = ({ navigation }) => {
   const { user } = useContext(AuthContext)
   const { currentEventId } = useContext(AuthContext)
   const { currentReceiptId, setCurrentReceiptId } = useContext(AuthContext)
+  const { setCurrentReceiptName } = useContext(AuthContext)
   const { setCurrentEventUsers } = useContext(AuthContext)
 
   const [receiptName, setReceiptName] = useState("")
@@ -63,10 +64,12 @@ const SingleEvent = ({ navigation }) => {
         "Receipt Name Missing",
         "Please enter a name for your receipt"
       ),
-      [{
-        text: "OK"
-      }]
-      return;
+        [
+          {
+            text: "OK"
+          }
+        ]
+      return
     }
     addReceipt({
       variables: {
@@ -75,58 +78,106 @@ const SingleEvent = ({ navigation }) => {
         cardDownId: Number(user)
       }
     })
+    setCurrentReceiptName(receiptName)
     setReceiptName("")
     navigation.navigate("SelectCamera")
   }
+  //console.log(data)
 
+  let numActiveReceipts = data.event.receipts.filter(
+    receipt => receipt.isPaid === false
+  ).length
+  let eventIsActive = !data.event.isComplete
+  // console.log(data.event)
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.text}>{data.event.eventName}</Text>
-        <Text style={styles.text}>{`EVENT CODE: ${data.event.passcode}`}</Text>
-        <View style={styles.createReceiptContainer}>
-          <Text style={styles.text}>New Receipt</Text>
-          <AppTextInput
-            keyboardTyp="default"
-            placeholder="Name"
-            onChangeText={receiptName => setReceiptName(receiptName)}
-          />
-          <AppButton
-            title="Create"
-            onPress={handleCreate}
-          />
-        </View>
-        <ScrollView>
-          <View style={styles.receiptContainer}>
-            <Text style={styles.text}>ACTIVE RECEIPTS</Text>
-
+        {eventIsActive && (
+          <>
+            <View style={styles.createReceiptContainer}>
+              <Text style={{ ...styles.text, textAlign: "center" }}>
+                NEW RECEIPT
+              </Text>
+              <View style={{ justifyContent: "center", textAlign: "center" }}>
+                <AppTextInput
+                  keyboardTyp="default"
+                  placeholder="Name"
+                  onChangeText={receiptName => setReceiptName(receiptName)}
+                />
+              </View>
+              <AppButton title="CREATE" onPress={handleCreate} />
+            </View>
+            <View style={styles.receiptContainer}>
+              <Text style={{ ...styles.text, textAlign: "center" }}>
+                ACTIVE RECEIPTS
+              </Text>
+              <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+                {data.event.receipts &&
+                  data.event.receipts.map(receipt => {
+                    if (!receipt.isPaid) {
+                      return (
+                        <ReceiptButton
+                          key={receipt.id}
+                          title={receipt.name}
+                          onPress={() => {
+                            setCurrentReceiptId(receipt.id)
+                            setCurrentReceiptName(receipt.name)
+                            setCurrentEventUsers(data.event.users)
+                            navigation.navigate("SingleReceipt")
+                          }}
+                        />
+                      )
+                    }
+                  })}
+              </ScrollView>
+            </View>
+          </>
+        )}
+        <View style={styles.receiptContainer}>
+          <Text style={{ ...styles.text, textAlign: "center" }}>
+            PAST RECEIPTS
+          </Text>
+          <ScrollView contentContainerStyle={{ alignItems: "center" }}>
             {data.event.receipts &&
               data.event.receipts.map(receipt => {
-                if (!receipt.isPaid) {
+                if (receipt.isPaid) {
                   return (
                     <ReceiptButton
                       key={receipt.id}
                       title={receipt.name}
                       onPress={() => {
                         setCurrentReceiptId(receipt.id)
+                        setCurrentReceiptName(receipt.name)
                         setCurrentEventUsers(data.event.users)
-                        navigation.navigate("SingleReceipt")
+                        navigation.navigate("SummaryScreen")
                       }}
                     />
                   )
                 }
               })}
-          </View>
-        </ScrollView>
-        <View style={styles.receiptContainer}>
-          <Text style={styles.text}>PAST RECEIPTS</Text>
-          {data.event.receipts &&
-            data.event.receipts.map(receipt => {
-              if (receipt.isPaid) {
-                return <ReceiptButton key={receipt.id} title={receipt.name} />
-              }
-            })}
+          </ScrollView>
         </View>
+        {eventIsActive && (
+          <AppButton
+            title="Close Event"
+            onPress={() => {
+              if (numActiveReceipts > 0) {
+                Alert.alert(
+                  "Cannot close event with active receipts",
+                  "Please close all active receipts before attempting to close this event"
+                ),
+                  [
+                    {
+                      text: "OK"
+                    }
+                  ]
+                return
+              } else {
+                navigation.navigate("CloseEvent")
+              }
+            }}
+          />
+        )}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )
@@ -145,8 +196,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   createReceiptContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: colors.primary,
@@ -157,13 +207,13 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   receiptContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: "column",
     backgroundColor: colors.primary,
     borderRadius: 25,
-    justifyContent: "space-between",
-    alignItems: "center",
+    justifyContent: "flex-start",
+    alignItems: "stretch",
     padding: 15,
+    flex: 1,
     width: "95%",
     marginVertical: 10
   }

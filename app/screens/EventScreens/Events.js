@@ -6,10 +6,12 @@ import {
   Text,
   Keyboard,
   TouchableWithoutFeedback,
-  Alert
+  Alert,
+  ScrollView
 } from "react-native"
 import colors from "../../config/colors"
 import AppButton from "../../components/AppButton"
+import ReceiptButton from "../../components/AppButton"
 import AppSearchInput from "../../components/AppSearchInput"
 import { GET_ACTIVE_USER_EVENTS } from "../../client/queries/userQueries"
 import { GET_USER_EVENTS } from "../../client/queries/userQueries"
@@ -23,6 +25,8 @@ const Events = ({ navigation }) => {
   // const { token } = useContext(AuthContext)
   const { user } = useContext(AuthContext)
   const { setCurrentEventId } = useContext(AuthContext)
+  const { setCurrentEventName } = useContext(AuthContext)
+  const { setCurrentEventCode } = useContext(AuthContext)
 
   const [id, setId] = useState(user)
   const [passcode, setPasscode] = useState("")
@@ -36,6 +40,8 @@ const Events = ({ navigation }) => {
     ],
     onCompleted(data) {
       setCurrentEventId(data.joinEvent.id)
+      setCurrentEventName(data.joinEvent.eventName)
+      setCurrentEventCode(data.joinEvent.passcode)
       navigation.navigate("SingleEvent")
     },
     onError() {
@@ -102,9 +108,28 @@ const Events = ({ navigation }) => {
           title="Create Event"
           onPress={() => navigation.navigate("CreateEvent")}
         />
-        <Text>___________________________________________________</Text>
-        <View style={styles.activeEventList}>
-          <Text>ACTIVE EVENTS</Text>
+        <View style={styles.activeEventsList}>
+          <Text style={{ ...styles.text, textAlign: "center" }}>
+            ACTIVE EVENTS
+          </Text>
+          <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+            {data.activeUserEvents.map(event => {
+              return (
+                <AppButton
+                  key={event.id}
+                  title={event.eventName}
+                  eventId={event.id}
+                  borderWidth={1}
+                  onPress={() => {
+                    setCurrentEventId(event.id)
+                    setCurrentEventName(event.eventName)
+                    setCurrentEventCode(event.passcode)
+                    navigation.navigate("SingleEvent")
+                  }}
+                />
+              )
+            })}
+          </ScrollView>
         </View>
         {data.activeUserEvents.map(event => (
           <AppButton
@@ -147,10 +172,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   activeEventsList: {
-    flex: 1,
     flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center"
+    backgroundColor: colors.primary,
+    borderRadius: 25,
+    justifyContent: "flex-start",
+    alignItems: "stretch",
+    padding: 15,
+    flex: 1,
+    width: "95%",
+    marginVertical: 10
   }
 })
 

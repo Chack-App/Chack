@@ -7,7 +7,8 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   TextInput,
-  Alert
+  Alert,
+  ScrollView
 } from "react-native"
 import colors from "../../config/colors"
 import ItemButton from "../../components/ItemButton"
@@ -15,11 +16,14 @@ import AppButton from "../../components/AppButton"
 import { useQuery } from "@apollo/client"
 import { GET_RECEIPT } from "../../client/queries/receiptQueries"
 import { AuthContext } from "../../context/authContext"
+import { GET_USER } from "../../client/queries/userQueries"
 
-const SummaryScreen = () => {
+const SummaryScreen = ({ navigation }) => {
   const { user } = useContext(AuthContext)
   const { currentReceiptId } = useContext(AuthContext)
   const { currentEventUsers } = useContext(AuthContext)
+  const { setCurrentReceiptPaypalHandle } = useContext(AuthContext)
+  const { setCurrentReceiptUserTotal } = useContext(AuthContext)
 
   const { loading, error, data } = useQuery(GET_RECEIPT, {
     variables: { id: currentReceiptId }
@@ -35,10 +39,14 @@ const SummaryScreen = () => {
     return <Text>No Data</Text>
   }
 
-  console.log("data...", data)
-  // console.log(currentEventUsers)
+  const receiptHasBeenPaid = data.receipt.isPaid //if receipt has been paid dont show button at bottom
 
-  const isCardDownUser = user === data.receipt.cardDownId
+  //console.log("data...", data)
+  // console.log(currentEventUsers)
+  const tip = data.receipt.tip / 100
+  const tax = data.receipt.tax / 100
+
+  const isCardDownUser = Number(user) === data.receipt.cardDownId
 
   //need to set current user's subtotal
   let userSubtotal = 0
@@ -47,46 +55,92 @@ const SummaryScreen = () => {
   // console.log(filteredItems)
   filteredItems.map(item => (userSubtotal += item.price / 100))
 
+  let billTotal = 0
+  claimedItems.map(item => (billTotal += item.price / 100))
+
+  let userGrandTotal = (
+    (userSubtotal / billTotal) * tax +
+    userSubtotal * tip +
+    userSubtotal
+  ).toFixed(2)
+
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.itemContainer}></View>
-        {currentEventUsers &&
-          currentEventUsers.map(user => {
-            //need filtered list
-            const itemList = claimedItems
-            const filteredUserItems = itemList.filter(
-              item => item.users[0].id === user.id
-            )
-            let subtotal = 0
-            filteredUserItems.map(item => {
-              subtotal += item.price / 100
-            })
-            return (
-              <View key={user.id} style={styles.userContainer}>
-                <Text style={styles.text}>
-                  {user.firstName} {user.lastName}
-                </Text>
-                {filteredUserItems.map(item => {
-                  return (
-                    <View key={item.id}>
-                      <Text style={styles.secondaryText}>
-                        {item.name} {item.price / 100}
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <TouchableWithoutFeedback>
+          <View>
+            {currentEventUsers &&
+              currentEventUsers.map(user => {
+                //need filtered list
+                const itemList = claimedItems
+                const filteredUserItems = itemList.filter(
+                  item => item.users[0].id === user.id
+                )
+                let subtotal = 0
+                filteredUserItems.forEach(item => {
+                  subtotal += item.price / 100
+                })
+                return (
+                  <View key={user.id} style={styles.userContainer}>
+                    <Text style={styles.text}>
+                      {user.firstName} {user.lastName}
+                    </Text>
+                    {filteredUserItems.map(item => {
+                      return (
+                        <View key={item.id} style={styles.itemLine}>
+                          <Text style={styles.secondaryText}>{item.name}</Text>
+                          <Text style={styles.secondaryText}>
+                            ${item.price / 100}
+                          </Text>
+                        </View>
+                      )
+                    })}
+                    <View style={styles.itemLine}>
+                      <Text style={styles.text}>Subtotal:</Text>
+                      <Text style={styles.text}>${subtotal.toFixed(2)}</Text>
+                    </View>
+                    <View style={styles.itemLine}>
+                      <Text style={styles.text}>Tip:</Text>
+                      <Text style={styles.text}>
+                        ${(subtotal * tip).toFixed(2)}
                       </Text>
                     </View>
-                  )
-                })}
-                <Text style={styles.text}>Subtotal: ${subtotal}</Text>
-              </View>
-            )
-          })}
-        {isCardDownUser ? (
-          <AppButton title={`They Should Pay`} />
-        ) : (
-          <AppButton title={`Pay $${userSubtotal} Now`} />
-        )}
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
+                    <View style={styles.itemLine}>
+                      <Text style={styles.text}>Tax:</Text>
+                      <Text style={styles.text}>${subtotal.toFixed(2)}</Text>
+                    </View>
+                    <View style={styles.itemLine}>
+                      <Text style={styles.text}>Total:</Text>
+                      <Text style={styles.text}>
+                        $
+                        {(
+                          (subtotal / billTotal) * tax +
+                          subtotal * tip +
+                          subtotal
+                        ).toFixed(2)}
+                      </Text>
+                    </View>
+                  </View>
+                )
+              })}
+            <View style={{flexDirection:'row',justifyContent:'center'}}>
+              {!receiptHasBeenPaid&&(isCardDownUser ? (
+                <AppButton title={`Close Receipt`} onPress={()=>navigation.navigate("CloseReceipt")} />
+              ) : (
+                <AppButton
+                  title={`Pay $${userGrandTotal} Now`}
+                  onPress={() => {
+                    setCurrentReceiptUserTotal(userGrandTotal)
+                    setCurrentReceiptPaypalHandle(data.receipt.cardDownHandle)
+                    navigation.navigate("PayPal")
+                  }}
+                />
+              ))}
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
@@ -116,6 +170,10 @@ const styles = StyleSheet.create({
     color: colors.secondary,
     fontSize: 20,
     fontWeight: "bold"
+  },
+  itemLine: {
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   priceContainer: {
     backgroundColor: colors.primary,

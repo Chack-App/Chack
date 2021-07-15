@@ -1,11 +1,22 @@
 import React from "react"
-import { StyleSheet, Text, TouchableOpacity,View } from "react-native"
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
+} from "react-native"
 import colors from "../config/colors"
 
-function ItemButton({ title, price, onPress, isClaimed, isMine }) {
+function ItemButton({ title, price, onPress, isClaimed, isMine, isApproved }) {
   const styles = StyleSheet.create({
     button: {
-      backgroundColor: isClaimed && isMine ? colors.isSelected: isClaimed ? 'gray': colors.primary,
+      backgroundColor:
+        isClaimed && isMine
+          ? colors.isSelected
+          : isClaimed
+          ? "gray"
+          : colors.primary,
       borderRadius: 25,
       justifyContent: "space-between",
       flexDirection: "row",
@@ -13,7 +24,6 @@ function ItemButton({ title, price, onPress, isClaimed, isMine }) {
       padding: 15,
       width: "95%",
       marginVertical: 10
-      
     },
     text: {
       color: colors.white,
@@ -23,17 +33,31 @@ function ItemButton({ title, price, onPress, isClaimed, isMine }) {
     }
   })
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <View>
-      <Text style={styles.text}>{title}</Text>
-      {/* this is where the person who claimed the items name 
+    <>
+      {isApproved ? (
+        <TouchableWithoutFeedback>
+          <View style={styles.button}>
+          <View>
+            <Text style={styles.text}>{title}</Text>
+            {/* this is where the person who claimed the items name
+        or profile picture goes */}
+          </View>
+          <Text style={styles.text}>${price}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      ) : (
+        <TouchableOpacity style={styles.button} onPress={onPress}>
+          <View>
+            <Text style={styles.text}>{title}</Text>
+            {/* this is where the person who claimed the items name
           or profile picture goes */}
-      </View>
-      <Text style={styles.text}>${price}</Text>
-    </TouchableOpacity>
+          </View>
+          <Text style={styles.text}>${price}</Text>
+        </TouchableOpacity>
+      )}
+    </>
   )
 }
-
 
 export default ItemButton
 
