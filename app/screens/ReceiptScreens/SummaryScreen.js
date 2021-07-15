@@ -125,7 +125,7 @@ const SummaryScreen = ({ navigation }) => {
               })}
             <View style={{flexDirection:'row',justifyContent:'center'}}>
               {!receiptHasBeenPaid&&(isCardDownUser ? (
-                <AppButton title={`They Should Pay`} />
+                <AppButton title={`Close Receipt`} onPress={()=>navigation.navigate("CloseReceipt")} />
               ) : (
                 <AppButton
                   title={`Pay $${userGrandTotal} Now`}

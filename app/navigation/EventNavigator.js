@@ -12,6 +12,7 @@ import CameraScreen from "../screens/ReceiptScreens/CameraScreen"
 import SummaryScreen from "../screens/ReceiptScreens/SummaryScreen"
 import UploadScreen from "../screens/ReceiptScreens/UploadScreen"
 import PayPal from "../screens/ReceiptScreens/PayPal"
+import CloseReceipt from "../screens/ReceiptScreens/CloseReceipt"
 import { AuthContext } from "../context/authContext"
 
 const Stack = createStackNavigator()
@@ -74,6 +75,11 @@ const EventNavigator = () => {
       name="PayPal"
       component={PayPal}
       options={{ ...gatewayHeaderStyles, headerTitle: "PayPal" }}
+    />
+    <Stack.Screen
+      name="CloseReceipt"
+      component={CloseReceipt}
+      options={{ ...gatewayHeaderStyles, headerTitle: "Close Receipt" }}
     />
   </Stack.Navigator>
 )}
