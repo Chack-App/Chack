@@ -100,14 +100,14 @@ const SingleReceipt = ({ navigation }) => {
                 subTotal += item.price / 100
                 return (
                   <ItemButton
-                    //disabled={isApproved}  //--> screws up scrolling 
                     key={item.id}
                     title={item.name}
                     price={item.price / 100}
                     isClaimed={item.isClaimed}
                     isMine={filteredItems.includes(item)}
+                    isApproved={isApproved}
                     onPress={() =>{
-                      isApproved===false && claimItem({
+                      claimItem({
                         variables: {
                           userId: user,
                           itemId: item.id

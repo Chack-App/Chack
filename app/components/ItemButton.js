@@ -1,8 +1,14 @@
 import React from "react"
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
+} from "react-native"
 import colors from "../config/colors"
 
-function ItemButton({ title, price, onPress, isClaimed, isMine, disabled }) {
+function ItemButton({ title, price, onPress, isClaimed, isMine, isApproved }) {
   const styles = StyleSheet.create({
     button: {
       backgroundColor:
@@ -27,18 +33,29 @@ function ItemButton({ title, price, onPress, isClaimed, isMine, disabled }) {
     }
   })
   return (
-    <TouchableOpacity
-      style={styles.button}
-      onPress={onPress}
-      disabled={disabled}
-    >
-      <View>
-        <Text style={styles.text}>{title}</Text>
-        {/* this is where the person who claimed the items name
+    <>
+      {isApproved ? (
+        <TouchableWithoutFeedback>
+          <View style={styles.button}>
+          <View>
+            <Text style={styles.text}>{title}</Text>
+            {/* this is where the person who claimed the items name
+        or profile picture goes */}
+          </View>
+          <Text style={styles.text}>${price}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      ) : (
+        <TouchableOpacity style={styles.button} onPress={onPress}>
+          <View>
+            <Text style={styles.text}>{title}</Text>
+            {/* this is where the person who claimed the items name
           or profile picture goes */}
-      </View>
-      <Text style={styles.text}>${price}</Text>
-    </TouchableOpacity>
+          </View>
+          <Text style={styles.text}>${price}</Text>
+        </TouchableOpacity>
+      )}
+    </>
   )
 }
 
