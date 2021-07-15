@@ -113,8 +113,8 @@ const Events = ({ navigation }) => {
             ACTIVE EVENTS
           </Text>
           <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-            {data.activeUserEvents.map(event => (
-              <AppButton
+            {data.activeUserEvents.map(event => {
+              return (<AppButton
                 key={event.id}
                 title={event.eventName}
                 eventId={event.id}
@@ -124,9 +124,9 @@ const Events = ({ navigation }) => {
                   setCurrentEventName(event.eventName)
                   setCurrentEventCode(event.passcode)
                   navigation.navigate("SingleEvent")
-                }}
-              />
-            ))}
+                }}/>
+                )
+            })}
           </ScrollView>
         </View>
       </SafeAreaView>
