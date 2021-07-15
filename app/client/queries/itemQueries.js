@@ -18,3 +18,15 @@ export const CLAIM_ITEM = gql`
     }
   }
 `
+export const UPDATE_ITEMS = gql`
+  mutation UpdateItems($items: [ItemInput], $receiptId: ID) {
+    updateItems(items: $items, receiptId: $receiptId) {
+      id
+      name
+      price
+      receiptId
+      isClaimed
+      splitBetween
+    }
+  }
+`

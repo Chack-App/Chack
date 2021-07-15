@@ -14,11 +14,9 @@ import colors from "../../config/colors"
 import AppButton from "../../components/AppButton"
 import AppTextInput from "../../components/AppTextInput"
 import { AuthContext } from "../../context/authContext"
-import { ADD_ITEMS } from "../../client/queries/itemQueries"
+import { ADD_ITEMS, UPDATE_ITEMS } from "../../client/queries/itemQueries"
 import { GET_RECEIPT } from "../../client/queries/receiptQueries"
 import { useQuery, useMutation } from "@apollo/client"
-
-// How many characters should each passcode be?
 
 const EditReceiptScreen = ({ navigation }) => {
   const { currentReceiptId } = useContext(AuthContext)
@@ -91,7 +89,7 @@ const EditReceiptScreen = ({ navigation }) => {
     const itemListIntegers = itemList.map(item => {
       return { name: item.name, price: Math.floor(Number(item.price) * 100) }
     })
-    addItems({
+    updateItems({
       variables: {
         items: itemListIntegers,
         receiptId: currentReceiptId
