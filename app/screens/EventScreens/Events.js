@@ -131,17 +131,6 @@ const Events = ({ navigation }) => {
             })}
           </ScrollView>
         </View>
-        {data.activeUserEvents.map(event => (
-          <AppButton
-            key={event.id}
-            title={event.eventName}
-            eventId={event.id}
-            onPress={() => {
-              setCurrentEventId(event.id)
-              navigation.navigate("SingleEvent")
-            }}
-          />
-        ))}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )

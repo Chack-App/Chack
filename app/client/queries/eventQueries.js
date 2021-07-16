@@ -51,6 +51,7 @@ export const CREATE_EVENT = gql`
     addEvent(eventName: $eventName, description: $description, userId: $userId) {
       id
       eventName
+      passcode
       description
     }
   }

@@ -14,7 +14,7 @@ import colors from "../../config/colors"
 import AppButton from "../../components/AppButton"
 import AppTextInput from "../../components/AppTextInput"
 import { AuthContext } from "../../context/authContext"
-import { ADD_ITEMS, UPDATE_ITEMS } from "../../client/queries/itemQueries"
+import { ADD_ITEMS, ADD_OR_UPDATE_ITEMS } from "../../client/queries/itemQueries"
 import { GET_RECEIPT } from "../../client/queries/receiptQueries"
 import { useQuery, useMutation } from "@apollo/client"
 
@@ -25,11 +25,21 @@ const EditReceiptScreen = ({ navigation }) => {
   const [itemName, setItemName] = useState()
   const [itemPrice, setItemPrice] = useState()
 
+  const [addOrUpdateItems] = useMutation(ADD_OR_UPDATE_ITEMS, {
+    refetchQueries: [
+      {
+        query: GET_RECEIPT,
+        variables: { id: currentReceiptId }
+      }
+    ]
+  },
+)
+
   const { loading, error, data } = useQuery(GET_RECEIPT, {
     variables: { id: currentReceiptId },
     onCompleted(data) {
       let otherArray = []
-      data.receipt.items.forEach(item => otherArray.push(item))
+      data.receipt.items.forEach(item => otherArray.push({...item, price: item.price / 100}))
       setItemList(JSON.parse(JSON.stringify(otherArray)))
     }
   })
@@ -87,9 +97,9 @@ const EditReceiptScreen = ({ navigation }) => {
       }
     }
     const itemListIntegers = itemList.map(item => {
-      return { name: item.name, price: Math.floor(Number(item.price) * 100) }
+      return { id: item.id, name: item.name, price: Math.floor(Number(item.price) * 100) }
     })
-    updateItems({
+    addOrUpdateItems({
       variables: {
         items: itemListIntegers,
         receiptId: currentReceiptId
@@ -151,7 +161,7 @@ const EditReceiptScreen = ({ navigation }) => {
             <Text style={styles.text}>No Items</Text>
           )}
         </ScrollView>
-        <AppButton title="Confirm All" onPress={() => handleSubmit} />
+        <AppButton title="Confirm All" onPress={handleSubmit} />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )

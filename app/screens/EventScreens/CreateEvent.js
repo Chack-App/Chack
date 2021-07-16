@@ -20,6 +20,8 @@ import { AuthContext } from "../../context/authContext"
 
 const CreateEvent = ({ navigation }) => {
   const { user } = useContext(AuthContext)
+  const { setCurrentEventName } = useContext(AuthContext)
+  const { setCurrentEventCode } = useContext(AuthContext)
   const { setCurrentEventId } = useContext(AuthContext)
 
   const [eventName, setEventName] = useState();
@@ -31,25 +33,11 @@ const CreateEvent = ({ navigation }) => {
         variables: {id: user}
       }],
       onCompleted(data) {
+        setCurrentEventName(data.addEvent.eventName)
+        setCurrentEventCode(data.addEvent.passcode)
         setCurrentEventId(data.addEvent.id)
       }
     }
-    // {
-    //   update (cache, { data }) {
-    //     const newEvent = data?.addEvent;
-    //     const existingEvents = cache.readQuery({
-    //       query: GET_ACTIVE_USER_EVENTS,
-    //     });
-    //     console.log(existingEvents);
-    //     console.log(newEvent)
-    //     cache.writeQuery({
-    //       query: GET_ACTIVE_USER_EVENTS,
-    //       data: {
-    //         activeUserEvents: existingEvents?.activeUserEvents.concat({name: "Hello World"})
-    //       }
-    //     });
-    //   }
-    // }
     );
 
   const handleSubmit = () => {
@@ -67,7 +55,7 @@ const CreateEvent = ({ navigation }) => {
       eventName,
       eventDesc,
       userId: user
-    }});
+    }});    
     navigation.navigate("SingleEvent");
   }
 
