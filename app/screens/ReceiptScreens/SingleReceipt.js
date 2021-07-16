@@ -93,16 +93,15 @@ const SingleReceipt = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        
-        {Number(user) === data.receipt.cardDownId && //can only edit/add more items if you are card down person
-        <View style={styles.buttonContainer}>
-          <AppButton
-            title="Edit Items"
-            onPress={() => navigation.navigate("EditReceiptScreen")}
-          />
-        </View>}
+        {Number(user) === data.receipt.cardDownId && ( //can only edit/add more items if you are card down person
+          <View style={styles.buttonContainer}>
+            <AppButton
+              title="Edit Items"
+              onPress={() => navigation.navigate("EditReceiptScreen")}
+            />
+          </View>
+        )}
         <ScrollView>
-          
           <View style={styles.itemContainer}>
             {data.receipt.items &&
               unstrictItems.map(item => {
@@ -132,8 +131,8 @@ const SingleReceipt = ({ navigation }) => {
           </View>
         </ScrollView>
         <View>
-          <View style={styles.buttonContainer}> 
-            {isApproved && Number(user) != data.receipt.cardDownId && (   
+          <View style={styles.buttonContainer}>
+            {isApproved && Number(user) != data.receipt.cardDownId && (
               //Button to appear when not card down person and receipt has been approved
               <AppButton
                 title="Continue to Summary"
@@ -142,25 +141,13 @@ const SingleReceipt = ({ navigation }) => {
                 }}
               />
             )}
-            {isApproved && Number(user) != data.receipt.cardDownId && (
-            //Button to appear when not card down person and receipt has not been approved
+            {!isApproved && Number(user) != data.receipt.cardDownId && (
+              //Button to appear when not card down person and receipt has not been approved
 
               <AppButton title="Refresh List" onPress={() => refetch()} />
             )}
           </View>
-
-          {isApproved && Number(user) === data.receipt.cardDownId ? (
-          //Button to appear when card down person and receipt has not been approved
-
-            <View style={styles.buttonContainer}>
-              <AppButton
-                title="Continue to Summary"
-                onPress={() => {
-                  navigation.navigate("SummaryScreen")
-                }}
-              />
-            </View>
-          ) : (
+          {!isApproved && Number(user) === data.receipt.cardDownId && (
             //Button to appear when card down person and receipt has been approved
 
             <View style={{ alignItems: "center" }}>
