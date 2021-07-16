@@ -132,7 +132,7 @@ const SingleReceipt = ({ navigation }) => {
         </ScrollView>
         <View>
           <View style={styles.buttonContainer}>
-            {isApproved && Number(user) != data.receipt.cardDownId && (
+            {isApproved && (
               //Button to appear when not card down person and receipt has been approved
               <AppButton
                 title="Continue to Summary"
