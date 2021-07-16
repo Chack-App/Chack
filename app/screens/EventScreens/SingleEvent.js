@@ -21,7 +21,7 @@ import { AuthContext } from "../../context/authContext"
 const SingleEvent = ({ navigation }) => {
   const { user } = useContext(AuthContext)
   const { currentEventId } = useContext(AuthContext)
-  const { setCurrentReceiptId } = useContext(AuthContext)
+  const { currentReceiptId, setCurrentReceiptId } = useContext(AuthContext)
   const { setCurrentReceiptName } = useContext(AuthContext)
   const { setCurrentEventUsers } = useContext(AuthContext)
 
@@ -42,7 +42,9 @@ const SingleEvent = ({ navigation }) => {
       }
     ],
     onCompleted(data) {
+      console.log(data.addReceipt.id)
       setCurrentReceiptId(data.addReceipt.id)
+      console.log("my receipt", currentReceiptId)
     }
   })
 
@@ -61,16 +63,16 @@ const SingleEvent = ({ navigation }) => {
       Alert.alert(
         "Receipt Name Missing",
         "Please enter a name for your receipt"
-        ),
+      ),
         [
           {
             text: "OK"
           }
         ]
-        return
-      }
-      addReceipt({
-        variables: {
+      return
+    }
+    addReceipt({
+      variables: {
         name: receiptName,
         eventId: Number(currentEventId),
         cardDownId: Number(user)
@@ -82,59 +84,60 @@ const SingleEvent = ({ navigation }) => {
   }
   //console.log(data)
 
-  let numActiveReceipts = data.event.receipts.filter(receipt => receipt.isPaid===false).length
+  let numActiveReceipts = data.event.receipts.filter(
+    receipt => receipt.isPaid === false
+  ).length
   let eventIsActive = !data.event.isComplete
   // console.log(data.event)
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        {eventIsActive && 
-        <>
-        <View style={styles.createReceiptContainer}>
-          <Text style={{ ...styles.text, textAlign: "center" }}>
-            NEW RECEIPT
-          </Text>
-          <View style={{ justifyContent: "center", textAlign: "center" }}>
-            <AppTextInput
-              keyboardTyp="default"
-              placeholder="Name"
-              onChangeText={receiptName => setReceiptName(receiptName)}
-            />
-          </View>
-          <AppButton
-            title="CREATE"
-            onPress={handleCreate}
-          />
-        </View>
-        <View style={styles.receiptContainer}>
-          <Text style={{ ...styles.text, textAlign: "center" }}>
-            ACTIVE RECEIPTS
-          </Text>
-          <ScrollView contentContainerStyle={{alignItems: "center"}}>
-            {data.event.receipts &&
-              data.event.receipts.map(receipt => {
-                if (!receipt.isPaid) {
-                  return (
-                    <ReceiptButton
-                      key={receipt.id}
-                      title={receipt.name}
-                      onPress={() => {
-                        setCurrentReceiptId(receipt.id)
-                        setCurrentReceiptName(receipt.name)
-                        setCurrentEventUsers(data.event.users)
-                        navigation.navigate("SingleReceipt")
-                      }}
-                    />
-                  )
-                }
-              })}
-          </ScrollView>
-        </View></>}
+        {eventIsActive && (
+          <>
+            <View style={styles.createReceiptContainer}>
+              <Text style={{ ...styles.text, textAlign: "center" }}>
+                NEW RECEIPT
+              </Text>
+              <View style={{ justifyContent: "center", textAlign: "center" }}>
+                <AppTextInput
+                  keyboardTyp="default"
+                  placeholder="Name"
+                  onChangeText={receiptName => setReceiptName(receiptName)}
+                />
+              </View>
+              <AppButton title="CREATE" onPress={handleCreate} />
+            </View>
+            <View style={styles.receiptContainer}>
+              <Text style={{ ...styles.text, textAlign: "center" }}>
+                ACTIVE RECEIPTS
+              </Text>
+              <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+                {data.event.receipts &&
+                  data.event.receipts.map(receipt => {
+                    if (!receipt.isPaid) {
+                      return (
+                        <ReceiptButton
+                          key={receipt.id}
+                          title={receipt.name}
+                          onPress={() => {
+                            setCurrentReceiptId(receipt.id)
+                            setCurrentReceiptName(receipt.name)
+                            setCurrentEventUsers(data.event.users)
+                            navigation.navigate("SingleReceipt")
+                          }}
+                        />
+                      )
+                    }
+                  })}
+              </ScrollView>
+            </View>
+          </>
+        )}
         <View style={styles.receiptContainer}>
           <Text style={{ ...styles.text, textAlign: "center" }}>
             PAST RECEIPTS
           </Text>
-          <ScrollView contentContainerStyle={{alignItems: "center"}}>
+          <ScrollView contentContainerStyle={{ alignItems: "center" }}>
             {data.event.receipts &&
               data.event.receipts.map(receipt => {
                 if (receipt.isPaid) {
@@ -154,23 +157,27 @@ const SingleEvent = ({ navigation }) => {
               })}
           </ScrollView>
         </View>
-        {eventIsActive&&<AppButton title="Close Event" onPress={()=>{
-          if(numActiveReceipts>0){
-            Alert.alert(
-              "Cannot close event with active receipts",
-              "Please close all active receipts before attempting to close this event"
-              ),
-              [
-                {
-                  text: "OK"
-                }
-              ]
-              return
-            }
-            else {
-              navigation.navigate("CloseEvent")
+        {eventIsActive && (
+          <AppButton
+            title="Close Event"
+            onPress={() => {
+              if (numActiveReceipts > 0) {
+                Alert.alert(
+                  "Cannot close event with active receipts",
+                  "Please close all active receipts before attempting to close this event"
+                ),
+                  [
+                    {
+                      text: "OK"
+                    }
+                  ]
+                return
+              } else {
+                navigation.navigate("CloseEvent")
+              }
             }}
-          }/>}
+          />
+        )}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   )
@@ -206,7 +213,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "stretch",
     padding: 15,
-    flex:1,
+    flex: 1,
     width: "95%",
     marginVertical: 10
   }

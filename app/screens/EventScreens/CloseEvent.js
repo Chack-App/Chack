@@ -3,7 +3,7 @@ import { SafeAreaView, View, StyleSheet, Text } from 'react-native'
 import colors from '../../config/colors'
 import AppButton from '../../components/AppButton'
 import { CLOSE_EVENT } from '../../client/queries/eventQueries'
-import { GET_ACTIVE_USER_EVENTS } from '../../client/queries/userQueries'
+import { GET_ACTIVE_USER_EVENTS, GET_PAST_USER_EVENTS } from '../../client/queries/userQueries'
 import { useMutation } from "@apollo/client"
 import {AuthContext} from '../../context/authContext'
 
@@ -16,7 +16,11 @@ export default function CloseEvent({navigation}) {
       {
         query: GET_ACTIVE_USER_EVENTS,
         variables: { id: user }
-      }
+      },
+        {
+          query: GET_PAST_USER_EVENTS,
+          variables:{ id: user}
+        }
     ],
         onCompleted(data) {
           // console.log(data)

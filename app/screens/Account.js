@@ -39,10 +39,33 @@ const Account = ({ navigation }) => {
     return <Text>Loading</Text>
   }
   if (error) {
-    return <Text>Error</Text>
+    return (
+    <View>
+      <Text>Error</Text>
+        <AppButton
+        title="Logout"
+        onPress={async () => {
+          await AsyncStorage.clear()
+          setToken("")
+          setUser("")
+        }}
+      />
+    </View>)
   }
   if (!data || !user) {
-    return <Text>No Data</Text>
+    return (
+    <View>
+      <Text>No Data</Text>
+        <AppButton
+        title="Logout"
+        onPress={async () => {
+          await AsyncStorage.clear()
+          setToken("")
+          setUser("")
+        }}
+      />
+    </View>
+    )
   }
 
   return (

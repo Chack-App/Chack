@@ -32,26 +32,10 @@ const AuthProvider = ({ children }) => {
       }
     }
     if (isMounted) getToken()
-
-    // if(token) {
-    //   {loading, error, data} = useQuery(GET_USER)
-    // }
     return () => {
       isMounted = false
     }
   }, [])
-
-  // if (token) {
-  //   const { loading, error, data } = useQuery(GET_USER)
-  //   if (loading) {
-  //     return console.log("loading")
-  //   }
-  //   if (error) {
-  //     return console.error(error)
-  //   }
-  //   console.log(data, "data")
-  //   return setUser(data || "NOTHING")
-  // }
 
   const providerValue = useMemo(() => {
     return {
