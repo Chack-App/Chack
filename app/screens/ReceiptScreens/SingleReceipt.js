@@ -96,6 +96,14 @@ const SingleReceipt = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
+        {Number(user) === data.receipt.cardDownId && ( //can only edit/add more items if you are card down person
+          <View style={styles.buttonContainer}>
+            <AppButton
+              title="Edit Items"
+              onPress={() => navigation.navigate("EditReceiptScreen")}
+            />
+          </View>
+        )}
         <ScrollView>
           <View style={styles.itemContainer}>
             {data.receipt.items &&
@@ -105,18 +113,18 @@ const SingleReceipt = ({ navigation }) => {
                   <ItemButton
                     key={item.id}
                     title={item.name}
-                    price={item.price / 100}
+                    price={(item.price / 100).toFixed(2)}
                     isClaimed={item.isClaimed}
                     isMine={filteredItems.includes(item)}
                     isApproved={isApproved}
-                    onPress={() =>{
+                    onPress={() => {
                       claimItem({
                         variables: {
                           userId: user,
                           itemId: item.id
                         }
-                      })}
-                    }
+                      })
+                    }}
                   />
                 )
               })}
@@ -127,22 +135,26 @@ const SingleReceipt = ({ navigation }) => {
         </ScrollView>
         <View>
           <View style={styles.buttonContainer}>
-            {/* <AppButton title="Claim Items" width="47.5%" /> */}
-            {isApproved ? (
+            {isApproved && (
+              //Button to appear when not card down person and receipt has been approved
               <AppButton
                 title="Continue to Summary"
                 onPress={() => {
                   navigation.navigate("SummaryScreen")
                 }}
               />
-            ) : (
+            )}
+            {!isApproved && Number(user) != data.receipt.cardDownId && (
+              //Button to appear when not card down person and receipt has not been approved
+
               <AppButton title="Refresh List" onPress={() => refetch()} />
             )}
           </View>
-
           {!isApproved && Number(user) === data.receipt.cardDownId && (
+            //Button to appear when card down person and receipt has been approved
+
             <View style={{ alignItems: "center" }}>
-              <Text style={styles.text}>You are the card down person</Text>
+              {/* <Text style={styles.text}>You are the card down person</Text> */}
               <AppTextInput
                 icon="account"
                 placeholder="tax in $"
@@ -159,7 +171,18 @@ const SingleReceipt = ({ navigation }) => {
                 onChangeText={text => setTip(text)}
                 placeholderTextColor={colors.placeholderColor}
               />
-              <AppButton title="Approve Selections" onPress={handleApproved} />
+              <View style={styles.buttonContainer}>
+                <AppButton
+                  title="Approve Selections"
+                  width="40%"
+                  onPress={handleApproved}
+                />
+                <AppButton
+                  title="Refresh List"
+                  width="40%"
+                  onPress={() => refetch()}
+                />
+              </View>
             </View>
           )}
         </View>
@@ -193,7 +216,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+    alignSelf: "stretch"
   },
   text: {
     color: colors.white,

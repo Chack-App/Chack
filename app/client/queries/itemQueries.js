@@ -18,3 +18,14 @@ export const CLAIM_ITEM = gql`
     }
   }
 `
+export const ADD_OR_UPDATE_ITEMS = gql`
+mutation AddOrUpdateItems($items: [ItemInput], $receiptId: ID!){
+  addOrUpdateItems(items: $items, receiptId: $receiptId){
+    id
+    name
+    price
+    isClaimed
+    receiptId
+  }
+}
+`

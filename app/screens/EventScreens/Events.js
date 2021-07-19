@@ -115,18 +115,20 @@ const Events = ({ navigation }) => {
           </Text>
           <ScrollView contentContainerStyle={{ alignItems: "center" }}>
             {data.activeUserEvents.map(event => {
-              return (<AppButton
-                key={event.id}
-                title={event.eventName}
-                eventId={event.id}
-                borderWidth={1}
-                onPress={() => {
-                  setCurrentEventId(event.id)
-                  setCurrentEventName(event.eventName)
-                  setCurrentEventCode(event.passcode)
-                  navigation.navigate("SingleEvent")
-                }}/>
-                )
+              return (
+                <AppButton
+                  key={event.id}
+                  title={event.eventName}
+                  eventId={event.id}
+                  borderWidth={1}
+                  onPress={() => {
+                    setCurrentEventId(event.id)
+                    setCurrentEventName(event.eventName)
+                    setCurrentEventCode(event.passcode)
+                    navigation.navigate("SingleEvent")
+                  }}
+                />
+              )
             })}
           </ScrollView>
         </View>

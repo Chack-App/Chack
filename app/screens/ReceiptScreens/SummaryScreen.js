@@ -108,7 +108,7 @@ const SummaryScreen = ({ navigation }) => {
                     </View>
                     <View style={styles.itemLine}>
                       <Text style={styles.text}>Tax:</Text>
-                      <Text style={styles.text}>${subtotal.toFixed(2)}</Text>
+                      <Text style={styles.text}>${((subtotal/billTotal)*tax).toFixed(2)}</Text>
                     </View>
                     <View style={styles.itemLine}>
                       <Text style={styles.text}>Total:</Text>
