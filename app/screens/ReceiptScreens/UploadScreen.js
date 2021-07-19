@@ -179,7 +179,7 @@ const UploadScreen = ({ navigation }) => {
         }
       )
       let responseJson = await response.json()
-      // console.log("please", responseJson.responses[0].textAnnotations)
+      console.log("please", responseJson.responses[0].textAnnotations)
       const parsedData = parseData(responseJson.responses[0].textAnnotations)
       console.log("Our result: ", parsedData)
       // const itemListIntegers = parsedData.map((item) => {

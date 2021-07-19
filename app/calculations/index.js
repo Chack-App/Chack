@@ -31,7 +31,7 @@ export function parseData(apiArray) {
     // console.log(receipt[i].vertices[0].y - receipt[i - 1].vertices.y)
     if (!receipt[i - 1]) {
       groupedReceipt.push([receipt[i]])
-    } else if (receipt[i].vertices[0].y - receipt[i - 1].vertices[0].y > 6) {
+    } else if (receipt[i].vertices[0].y - receipt[i - 1].vertices[0].y > 15) {
       groupedReceipt.push([receipt[i]])
     } else {
       groupedReceipt[groupedReceipt.length - 1].push(receipt[i])
@@ -78,11 +78,18 @@ export function parseData(apiArray) {
     "CREDIT",
     "SUBTOTAL",
     "CARD",
+    "CASH",
     "TAX",
     "TIP",
     "TRANSACTION",
     "CASH",
-    "CHANGE"
+    "CHANGE",
+    "BALANCE",
+    "DUE",
+    "AMOUNT",
+    "GRATUITY",
+    "SERVICE",
+    "CHARGE"
   ]
   let actualItems = items.filter(item => {
     for (let i = 0; i < ignore.length; i++) {
