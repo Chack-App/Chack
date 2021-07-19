@@ -73,16 +73,15 @@ const ManualItemEntry = ({ navigation }) => {
         return
       }
     }
-    const itemListIntegers = itemList.map(item => {
-      return { name: item.name, price: Math.floor(Number(item.price) * 100) }
-    })
-    addItems({
-      variables: {
-        items: itemListIntegers,
-        receiptId: currentReceiptId
-      }
-    })
-    navigation.navigate("SingleReceipt")
+    const itemListIntegers = itemList.map((item) => {
+      return {name: item.name, price: Math.floor(Number(item.price) * 100)}
+    });
+    addItems({variables: {
+      items: itemListIntegers,
+      receiptId: currentReceiptId
+    }});
+    setItemList([]);
+    navigation.navigate("SingleReceipt");
   }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

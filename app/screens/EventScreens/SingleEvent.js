@@ -17,6 +17,7 @@ import { GET_EVENT } from "../../client/queries/eventQueries"
 import { CREATE_RECEIPT } from "../../client/queries/receiptQueries"
 import { useQuery, useMutation } from "@apollo/client"
 import { AuthContext } from "../../context/authContext"
+import LoadingScreen from "../../components/LoadingScreen"
 
 const SingleEvent = ({ navigation }) => {
   const { user } = useContext(AuthContext)
@@ -49,7 +50,7 @@ const SingleEvent = ({ navigation }) => {
   })
 
   if (loading) {
-    return <Text>Loading</Text>
+    return <LoadingScreen />
   }
   if (error) {
     return <Text>Error</Text>

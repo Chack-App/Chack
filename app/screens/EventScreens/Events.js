@@ -18,6 +18,7 @@ import { GET_USER_EVENTS } from "../../client/queries/userQueries"
 import { JOIN_EVENT, GET_EVENT } from "../../client/queries/eventQueries"
 import { useQuery, useMutation } from "@apollo/client"
 import { AuthContext } from "../../context/authContext"
+import LoadingScreen from "../../components/LoadingScreen"
 
 // How many characters should each passcode be?
 
@@ -60,7 +61,7 @@ const Events = ({ navigation }) => {
   })
   // console.log(data)
   if (loading) {
-    return <Text>Loading</Text>
+    return <LoadingScreen />
   }
   if (error) {
     console.error(error)

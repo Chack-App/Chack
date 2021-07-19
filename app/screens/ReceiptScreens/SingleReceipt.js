@@ -18,6 +18,7 @@ import { GET_RECEIPT, SET_APPROVED } from "../../client/queries/receiptQueries"
 import { CLAIM_ITEM } from "../../client/queries/itemQueries"
 import { AuthContext } from "../../context/authContext"
 import AppTextInput from "../../components/AppTextInput"
+import LoadingScreen from "../../components/LoadingScreen"
 
 const SingleReceipt = ({ navigation }) => {
   const { user } = useContext(AuthContext)
@@ -45,7 +46,9 @@ const SingleReceipt = ({ navigation }) => {
     }
   })
   if (loading) {
-    return <Text>Loading</Text>
+    return (
+    <LoadingScreen />
+    )
   }
   if (error) {
     return <Text>Error</Text>

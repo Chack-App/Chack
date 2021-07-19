@@ -17,6 +17,7 @@ import { useQuery } from "@apollo/client"
 import { GET_RECEIPT } from "../../client/queries/receiptQueries"
 import { AuthContext } from "../../context/authContext"
 import { GET_USER } from "../../client/queries/userQueries"
+import LoadingScreen from "../../components/LoadingScreen"
 
 const SummaryScreen = ({ navigation }) => {
   const { user } = useContext(AuthContext)
@@ -29,7 +30,7 @@ const SummaryScreen = ({ navigation }) => {
     variables: { id: currentReceiptId }
   })
   if (loading) {
-    return <Text>Loading</Text>
+    return <LoadingScreen />
   }
   if (error) {
     console.error(error)

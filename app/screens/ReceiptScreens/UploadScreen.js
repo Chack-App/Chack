@@ -21,53 +21,6 @@ import { useMutation } from "@apollo/client"
 import { ADD_ITEMS } from "../../client/queries/itemQueries"
 import { GET_RECEIPT } from "../../client/queries/receiptQueries"
 
-// const vision = require("@google-cloud/vision")
-
-// async function readReceipt(imguri) {
-//   // Creates a client
-//   const client = new vision.ImageAnnotatorClient({
-//     keyFilename: "../../../GoogleKey.json"
-//   })
-
-//   const fileName = imguri
-
-//   // Performs text detection on the local file
-
-//   const [result] = await client.textDetection(fileName)
-//   const detections = result.textAnnotations
-//   //return detections
-
-//   // Creates array of objects for each detected piece of text
-//   let textArr = []
-//   detections.forEach(text => textArr.push(text))
-
-//   // console.log("ORIGINAL ---->", textArr)
-
-//   // for (let i = 0; i < textArr.length; i++) {
-//   //   let currentObject = textArr[i]
-//   //   returnObj[currentObject.description] = currentObject.boundingPoly.vertices
-//   // }
-
-//   function runThisThing(apiArray) {
-//     let result = {}
-//     apiArray.forEach(item => {
-//       if (result.hasOwnProperty(`${item.description}`)) {
-//         const test = Math.ceil(Math.random() * 100)
-//         result[`${item.description}~~~~${test}`] = item.boundingPoly.vertices
-//       } else {
-//         result[item.description] = item.boundingPoly.vertices
-//       }
-//     })
-//     return result
-//     //
-//     //   console.log(apiArray.length)
-//   }
-
-//   const resultData = runThisThing(detections)
-
-//   console.log("for loop finished", resultData)
-// }
-
 const UploadScreen = ({ navigation }) => {
   const [image, setImage] = useState(null)
   const [uploadingState, setUploadingState] = useState()
@@ -119,22 +72,7 @@ const UploadScreen = ({ navigation }) => {
         ]
       return
     }
-    // console.log("file path***", image)
-    // let base64stringPlease = await FileSystem.writeAsStringAsync(image, , {
-    //   encoding: FileSystem.EncodingType.Base64
-    // })
 
-    // // console.log(
-    // //   "base 64 string===>",
-    // //   "data:image/png;base64, " + base64stringPlease
-    // // )
-
-    // console.log(
-    //   "hello",
-    //   await FileSystem.readAsStringAsync(image, {
-    //     encoding: FileSystem.EncodingType.Base64
-    //   })
-    // )
     let stringbase64 = await FileSystem.readAsStringAsync(image, {
       encoding: FileSystem.EncodingType.Base64
     })
@@ -149,16 +87,7 @@ const UploadScreen = ({ navigation }) => {
         requests: [
           {
             features: [
-              // { type: "LABEL_DETECTION", maxResults: 10 },
-              // { type: "LANDMARK_DETECTION", maxResults: 5 },
-              // { type: "FACE_DETECTION", maxResults: 5 },
-              // { type: "LOGO_DETECTION", maxResults: 5 },
-              // { type: "TEXT_DETECTION", maxResults: 99 }
               { type: "DOCUMENT_TEXT_DETECTION", maxResults: 5 }
-              // { type: "SAFE_SEARCH_DETECTION", maxResults: 5 },
-              // { type: "IMAGE_PROPERTIES", maxResults: 5 },
-              // { type: "CROP_HINTS", maxResults: 5 },
-              // { type: "WEB_DETECTION", maxResults: 5 }
             ],
             image: {
               content: `${img}`
@@ -179,9 +108,9 @@ const UploadScreen = ({ navigation }) => {
         }
       )
       let responseJson = await response.json()
-      // console.log("please", responseJson.responses[0].textAnnotations)
+      //console.log("please", responseJson.responses[0].textAnnotations)
       const parsedData = parseData(responseJson.responses[0].textAnnotations)
-      console.log("Our result: ", parsedData)
+      //console.log("Our result: ", parsedData)
       // const itemListIntegers = parsedData.map((item) => {
       //   return {name: item.name, price: Math.floor(Number(item.price) * 100)})
       addItems({

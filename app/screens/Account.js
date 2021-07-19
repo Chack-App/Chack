@@ -16,6 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import AppTextInput from "../components/AppTextInput"
 import AuthButton from "../components/AuthButton"
 import { UPDATE_USER } from "../client/queries/userQueries"
+import LoadingScreen from "../components/LoadingScreen"
 
 const Account = ({ navigation }) => {
   const { token, setToken } = useContext(AuthContext)
@@ -36,7 +37,7 @@ const Account = ({ navigation }) => {
     }
   })
   if (loading) {
-    return <Text>Loading</Text>
+    return <LoadingScreen />
   }
   if (error) {
     return (
