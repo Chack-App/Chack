@@ -77,6 +77,7 @@ const ManualItemEntry = ({ navigation }) => {
       items: itemListIntegers,
       receiptId: currentReceiptId
     }});
+    setItemList([]);
     navigation.navigate("SingleReceipt");
   }
     return (

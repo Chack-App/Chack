@@ -5,6 +5,7 @@ import { GET_PAST_USER_EVENTS } from "../client/queries/userQueries"
 import { useQuery } from "@apollo/client"
 import AppButton from "../components/AppButton"
 import colors from "../config/colors"
+import LoadingScreen from "../components/LoadingScreen"
 
 const Activity = ({ navigation }) => {
   const { user } = useContext(AuthContext)
@@ -18,7 +19,7 @@ const Activity = ({ navigation }) => {
   })
   // console.log(data)
   if (loading) {
-    return <Text>Loading</Text>
+    return <LoadingScreen />
   }
   if (error) {
     console.error(error)

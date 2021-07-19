@@ -1,6 +1,5 @@
-import React, { Component } from "react"
+import React, { Component, useContext } from "react"
 import { WebView } from "react-native-webview"
-import { useContext } from "react/cjs/react.development"
 import { AuthContext } from "../../context/authContext"
 
 const PayPal = () => {
